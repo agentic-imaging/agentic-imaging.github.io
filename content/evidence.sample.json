@@ -1,0 +1,41 @@
+{
+  "_comment": "ILLUSTRATIVE SAMPLE ONLY. Every value is an explicit placeholder (XX.X). Real evidence rows are generated from the frozen claim manifest after the sealed, custodian-authorized reveal (E10) and human release approval. Do not replace placeholders with real numbers by hand.",
+  "status": "placeholder-pending-sealed-evidence",
+  "rows": [
+    {
+      "case_study": "Deployment — deconvolution quickstart",
+      "modality": "Microscopy (synthetic blur)",
+      "metric": "PSNR (dB)",
+      "value": "XX.X ± X.X (sample)",
+      "evidence_id": "pending E10"
+    },
+    {
+      "case_study": "Deployment — new imaging problem",
+      "modality": "To be named at release",
+      "metric": "Measurement residual",
+      "value": "0.0XX (sample)",
+      "evidence_id": "pending E10"
+    },
+    {
+      "case_study": "Discovery — algorithm search",
+      "modality": "Benchmark suite",
+      "metric": "vs. tuned baseline",
+      "value": "±X.X dB (sample)",
+      "evidence_id": "pending E10"
+    },
+    {
+      "case_study": "Verifier study",
+      "modality": "Fault-injection battery",
+      "metric": "Detection / abstention",
+      "value": "XX% / XX% (sample)",
+      "evidence_id": "pending E10"
+    },
+    {
+      "case_study": "Provenance study",
+      "modality": "Tamper & replay battery",
+      "metric": "Tamper detection",
+      "value": "XX/XX (sample)",
+      "evidence_id": "pending E10"
+    }
+  ]
+}

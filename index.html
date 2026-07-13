@@ -1,0 +1,422 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AgX — Agentic Scientific Imaging</title>
+<meta name="description" content="AgX is an agentic system that plans, runs, verifies, and documents scientific imaging experiments end to end — in two modes: deployment on new imaging problems and discovery of new reconstruction algorithms.">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="stylesheet" href="assets/css/site.css">
+<script>
+/* Apply stored theme before first paint to avoid a flash (localStorage only). */
+(function(){try{var t=localStorage.getItem("agx-theme");if(t==="light"||t==="dark"){document.documentElement.setAttribute("data-theme",t);}}catch(e){}})();
+</script>
+<noscript><style>#theme-toggle,#toc-toggle,.trace-actions{display:none!important}</style></noscript>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <a class="brand" href="#top">AgX</a>
+    <button id="toc-toggle" class="icon-btn" aria-expanded="false" aria-controls="toc" aria-label="Toggle table of contents">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M2 4h12M2 8h12M2 12h12" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+    </button>
+    <nav class="topnav" aria-label="Site">
+      <a href="#system">System</a>
+      <a href="#evidence">Evidence</a>
+      <a href="#report">Report</a>
+      <a href="#docs">Docs</a>
+      <a href="#examples">Examples</a>
+      <a href="#trace">Trace</a>
+    </nav>
+    <button id="theme-toggle" class="icon-btn" aria-pressed="false" aria-label="Toggle dark mode">
+      <svg class="icon-sun" width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><circle cx="8" cy="8" r="3.2" stroke="currentColor" stroke-width="1.5"/><path d="M8 1.2v1.8M8 13v1.8M1.2 8H3M13 8h1.8M3.2 3.2l1.3 1.3M11.5 11.5l1.3 1.3M12.8 3.2l-1.3 1.3M4.5 11.5l-1.3 1.3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+      <svg class="icon-moon" width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M13.5 9.5A6 6 0 0 1 6.5 2.5a6 6 0 1 0 7 7Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>
+    </button>
+  </div>
+</header>
+
+<div id="top" class="hero">
+  <h1>AgX</h1>
+  <p class="subtitle">Agentic Scientific Imaging</p>
+  <p class="tagline">A system of language-model agents that plans, implements, runs, verifies, and documents
+     computational-imaging experiments end to end — with the skepticism built in.</p>
+  <p class="byline">The AgX team · author list and affiliations to be finalized at public release · 2026</p>
+  <div class="hero-links">
+    <a class="btn" href="#report">Technical report <span class="pending">pending</span></a>
+    <a class="btn" aria-disabled="true" role="link" href="#report" title="Code release is prepared by the release pipeline and published only after the human release gate.">Code <span class="pending">pending</span></a>
+    <a class="btn" aria-disabled="true" role="link" href="#docs" title="Tutorial video ships with the release.">Video <span class="pending">pending</span></a>
+    <a class="btn" href="#trace">Trace demo</a>
+  </div>
+</div>
+
+<div class="layout">
+  <nav class="toc" id="toc" aria-label="Table of contents">
+    <h2>Contents</h2>
+    <ol>
+      <li><a href="#overview">Overview</a></li>
+      <li><a href="#system">The system</a></li>
+      <li><a href="#evidence">Evidence</a></li>
+      <li><a href="#report">Technical report</a></li>
+      <li><a href="#docs">Documentation</a></li>
+      <li><a href="#examples">Examples</a></li>
+      <li><a href="#trace">Trace viewer</a></li>
+    </ol>
+    <div class="toc-extra">
+      <ol>
+        <li><a href="license.html">License</a></li>
+        <li><a href="privacy.html">Privacy</a></li>
+        <li><a href="accessibility.html">Accessibility</a></li>
+      </ol>
+    </div>
+  </nav>
+
+  <main id="main">
+    <article>
+
+      <section class="numbered" id="overview">
+        <h2>Overview</h2>
+        <p class="lead">
+          Computational imaging turns raw sensor measurements into images by solving inverse
+          problems: deblurring a microscope, unrolling a lensless camera, reconstructing a
+          black-hole image from interferometric visibilities. Getting a <em>trustworthy</em>
+          reconstruction requires far more than calling a solver — forward models must be
+          checked, hyperparameters tuned on the right split, metrics computed consistently,
+          and every claim traced back to raw arrays.
+        </p>
+        <p>
+          <strong>AgX</strong> is an agentic system that runs this whole loop. Language-model
+          agents plan an experiment, write and review the code, launch it on local or cluster
+          compute, and then — the part we care most about — <em>verify</em> the result against
+          the physics and record complete provenance before any number is allowed to be reported.
+        </p>
+
+        <figure class="figure-wide" id="fig-pipeline">
+          <svg class="teaser-svg" role="img" viewBox="0 0 920 300" aria-labelledby="fig1-title fig1-desc" xmlns="http://www.w3.org/2000/svg">
+            <title id="fig1-title">AgX pipeline overview</title>
+            <desc id="fig1-desc">Measurements flow into an agentic loop of plan, implement, run, and verify, which produces a reconstruction. A provenance ledger below records every step. A verifier gate sits between the loop and any reported claim.</desc>
+            <defs>
+              <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+                <path d="M0 0 L10 5 L0 10 z" fill="currentColor"/>
+              </marker>
+            </defs>
+            <g fill="none" stroke="currentColor" stroke-width="1.6">
+              <!-- measurement -->
+              <rect x="18" y="86" width="150" height="86" rx="10"/>
+              <!-- agentic loop -->
+              <rect x="250" y="40" width="420" height="178" rx="12"/>
+              <rect x="278" y="76" width="130" height="44" rx="8"/>
+              <rect x="512" y="76" width="130" height="44" rx="8"/>
+              <rect x="278" y="148" width="130" height="44" rx="8"/>
+              <rect x="512" y="148" width="130" height="44" rx="8"/>
+              <!-- reconstruction -->
+              <rect x="752" y="86" width="150" height="86" rx="10"/>
+              <!-- flows -->
+              <path d="M168 129 H 246" marker-end="url(#arr)"/>
+              <path d="M408 98 H 508" marker-end="url(#arr)"/>
+              <path d="M577 120 V 144" marker-end="url(#arr)"/>
+              <path d="M512 170 H 412" marker-end="url(#arr)"/>
+              <path d="M343 148 V 124" marker-end="url(#arr)"/>
+              <path d="M670 129 H 748" marker-end="url(#arr)"/>
+              <!-- provenance ledger -->
+              <rect x="250" y="248" width="420" height="38" rx="8" stroke-dasharray="5 4"/>
+              <path d="M460 218 V 244" marker-end="url(#arr)"/>
+            </g>
+            <g font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" fill="currentColor">
+              <text x="93" y="122" font-size="14" text-anchor="middle">measurement</text>
+              <text x="93" y="142" font-size="15" text-anchor="middle" font-style="italic">y</text>
+              <text x="460" y="30" font-size="13" text-anchor="middle" opacity="0.75">agentic loop</text>
+              <text x="343" y="103" font-size="14" text-anchor="middle">plan</text>
+              <text x="577" y="103" font-size="14" text-anchor="middle">implement</text>
+              <text x="343" y="175" font-size="14" text-anchor="middle">verify</text>
+              <text x="577" y="175" font-size="14" text-anchor="middle">run</text>
+              <text x="827" y="122" font-size="14" text-anchor="middle">reconstruction</text>
+              <text x="827" y="142" font-size="15" text-anchor="middle" font-style="italic">x̂</text>
+              <text x="460" y="272" font-size="13" text-anchor="middle">provenance ledger — records, hashes, replay</text>
+            </g>
+          </svg>
+          <figcaption><span class="fig-label">Figure 1.</span> The AgX loop. Agents plan, implement,
+            run, and verify; a provenance ledger records every artifact. This diagram is an original
+            illustration for this page, not a figure from the technical report.</figcaption>
+        </figure>
+
+        <p>
+          AgX operates in two modes.
+          <strong>Deployment</strong>: given a new imaging problem — a forward model, data, and a
+          goal — the system adapts known solvers, tunes them honestly on validation data, and
+          delivers verified reconstructions on held-out test data.
+          <strong>Discovery</strong>: the system proposes candidate reconstruction-algorithm
+          variants, implements and benchmarks them under matched budgets, and reports which
+          survive skeptical review.<sup class="fnref" id="fnref-1"><a href="#fn-1" aria-label="Footnote 1">1</a></sup>
+        </p>
+        <div class="margin-note" role="note">
+          A core AgX rule: <em>frozen ≠ publishable</em>. An artifact can be sealed, hashed, and
+          reproducible and still not be approved as a public claim until its evidence gate passes.
+        </div>
+      </section>
+
+      <section class="numbered" id="system">
+        <h2>The system</h2>
+
+        <h3 id="architecture">Controller, agents, numeric workers</h3>
+        <p>
+          A lightweight controller orchestrates three kinds of components. <strong>Planning and
+          coding agents</strong> (multiple LLM providers in a roundtable, so no single model's
+          blind spots dominate) draft experiment plans, write solver code, and adversarially
+          review each other's work before anything executes. <strong>Numeric workers</strong>
+          run the actual reconstructions — GPU jobs on local machines or a cluster — and only
+          ever exchange arrays and JSON with the agents. <strong>Verifiers</strong> sit between
+          results and reports.
+        </p>
+
+        <h3 id="verifier">The verifier stack</h3>
+        <p>
+          Image-space metrics alone can never approve a result in AgX. Every reconstruction is
+          checked against the measurement it claims to explain: the relative measurement residual
+          <code>‖A(x̂) − y‖ / ‖y‖</code> must be consistent with the declared noise
+          level.<sup class="fnref" id="fnref-2"><a href="#fn-2" aria-label="Footnote 2">2</a></sup>
+          A <em>skeptical advisor</em> watches every run and blocks reporting when artifacts are
+          missing, hashes mismatch, or a result looks too good to be true (which triggers a
+          dedicated attack budget: metric recomputation, seed fragility, forward-model mismatch,
+          convention drift). Code changes pass a multi-agent verification panel before execution.
+        </p>
+
+        <h3 id="provenance">Provenance</h3>
+        <p>
+          Every reported number carries a record: raw arrays, per-sample metrics, code and config
+          hashes, compute environment, and the exact command that produced it. Records are
+          immutable; downstream figures and tables reference them by ID, and replay tooling can
+          re-verify integrity (hash checks), recompute metrics from frozen arrays, and re-run
+          numerics under pinned tolerances.
+        </p>
+        <details>
+          <summary>What a provenance record contains</summary>
+          <div class="details-body">
+            <ul>
+              <li>Frozen artifacts: reconstruction, ground truth (when defined), observation arrays.</li>
+              <li>Per-sample metrics with the exact metric recipe (data range, clipping, SSIM window).</li>
+              <li>Measurement residual against the declared noise model.</li>
+              <li>Code state (commit, dirty-file hashes), configuration, random seeds.</li>
+              <li>Compute capture: host, device, library versions, wall time.</li>
+              <li>Append-only references: which figures and tables cite this record.</li>
+            </ul>
+          </div>
+        </details>
+      </section>
+
+      <section class="numbered" id="evidence">
+        <h2>Evidence</h2>
+        <p>
+          The public evidence for AgX is produced by a preregistered, sealed, label-blind
+          protocol: development and confirmatory data are separated; protocols, budgets, seeds,
+          and stop rules are cryptographically sealed before held-out labels are revealed; and
+          scoring happens once, after an authorized reveal, with the statistics preregistered.
+          Until that reveal completes and a human release gate signs off, <strong>this site shows
+          no real evidence numbers.</strong>
+        </p>
+        <div class="sample-banner" role="note">
+          <strong>Illustrative sample.</strong>
+          <span>The table below is a placeholder rendered from
+          <code>content/evidence.sample.json</code> — pending sealed evidence (E10);
+          <strong>not a release claim</strong>.</span>
+        </div>
+        <div class="table-wrap">
+          <table aria-describedby="evidence-note">
+            <caption class="visually-hidden">Placeholder evidence table with sample values</caption>
+            <thead>
+              <tr><th scope="col">Case study</th><th scope="col">Modality</th><th scope="col">Metric</th><th scope="col">Value</th><th scope="col">Evidence ID</th></tr>
+            </thead>
+            <tbody id="evidence-tbody">
+              <tr><td colspan="5"><noscript>Enable JavaScript to render the sample table, or read
+                <code>content/evidence.sample.json</code> directly — all values are placeholders
+                (<code>XX.X</code>) until the sealed reveal.</noscript></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p id="evidence-note">
+          When the sealed protocol completes, every cell above will be generated from the frozen
+          claim manifest and link to a traceable evidence ID — including null and inconclusive
+          results, which remain visible rather than being dropped.
+        </p>
+      </section>
+
+      <section class="numbered" id="report">
+        <h2>Technical report <span class="chip">pending release gates</span></h2>
+        <p>
+          The AgX technical report (arXiv) is being prepared against the same evidence discipline:
+          every quantitative claim in the report must resolve to an approved evidence record. The
+          report covers the system architecture, the two operating modes, the verifier and
+          provenance subsystems, matched-budget agent ablations, and an honest account of
+          failure modes and limitations. It will be linked here, with checksums, when the human
+          release gate approves publication.<sup class="fnref" id="fnref-3"><a href="#fn-3" aria-label="Footnote 3">3</a></sup>
+        </p>
+      </section>
+
+      <section class="numbered" id="docs">
+        <h2>Documentation <span class="chip">pending</span></h2>
+        <p>
+          Versioned documentation ships with the release and is executable where possible —
+          quickstarts are tested end to end, and every CLI/API snippet is checked against the
+          released code. The planned organization:
+        </p>
+        <ul>
+          <li><strong>Install &amp; doctor</strong> — local setup, environment checks, GPU detection.</li>
+          <li><strong>Zero-to-first-run</strong> — replay a bundled run without any credentials, then a live run.</li>
+          <li><strong>Concepts</strong> — the two modes, verifier stack, provenance model.</li>
+          <li><strong>Deployment guides</strong> — local, GPU workstation, cluster; sandboxing and data-handling policy.</li>
+          <li><strong>Reference</strong> — CLI, configuration schema, extension points, troubleshooting.</li>
+        </ul>
+      </section>
+
+      <section class="numbered" id="examples">
+        <h2>Examples <span class="chip">pending</span></h2>
+        <p>
+          Runnable examples accompany the docs, each with pinned environments and expected
+          artifacts. The first is a CPU-only deconvolution quickstart; the planned interface
+          looks like this (subject to change until release):
+        </p>
+        <div class="codeblock">
+<pre><code># planned interface — final flags land with the release
+agx doctor --json                          # environment + GPU sanity check
+agx run examples/quickstart_deconvolution  # replay a bundled run, no credentials
+agx run examples/quickstart_deconvolution --live   # run the loop yourself</code></pre>
+        </div>
+        <p>
+          Examples deliberately include a <em>negative</em> case — a run where the verifier
+          correctly blocks a bad result — because seeing the system say "no" is the fastest way
+          to understand what its "yes" means.
+        </p>
+      </section>
+
+      <section class="numbered" id="trace">
+        <h2>Trace viewer</h2>
+        <p>
+          Every AgX run produces a trace: the plan, each agent step, verifier decisions, and the
+          provenance trail. The release includes an immutable trace viewer over sanitized public
+          bundles. The panel below is a <strong>self-contained illustrative demo</strong> of that
+          experience with hard-coded local data — it makes no network requests and shows no real
+          experimental results.
+        </p>
+
+        <div class="trace-panel" id="trace-demo">
+          <div class="trace-head">
+            <h3>Deconvolution deployment — illustrative demo trace</h3>
+            <span class="chip">demo data</span>
+            <div class="trace-actions">
+              <button type="button" id="trace-expand">Expand all</button>
+              <button type="button" id="trace-collapse">Collapse all</button>
+            </div>
+          </div>
+
+          <details class="trace-step">
+            <summary><span class="step-no">01</span> Plan <span class="chip">controller</span></summary>
+            <div class="details-body">
+              <dl>
+                <dt>Goal</dt><dd>Reconstruct a blurred, noisy microscopy image; declared Gaussian noise.</dd>
+                <dt>Decision</dt><dd>Start from ADMM-TV; tune on validation split only; report on held-out test split.</dd>
+              </dl>
+              <pre><code>{ "task": "deconvolution", "solver": "admm_tv",
+  "tune_split": "val", "report_split": "test",
+  "budget": { "gpu_hours": 0.5 } }            // demo excerpt</code></pre>
+            </div>
+          </details>
+
+          <details class="trace-step">
+            <summary><span class="step-no">02</span> Agents propose &amp; review <span class="chip">roundtable</span></summary>
+            <div class="details-body">
+              <dl>
+                <dt>Drafter</dt><dd>Coding agent drafts the solver configuration and sweep grid.</dd>
+                <dt>Reviewers</dt><dd>Two independent agents critique: one flags a data-range bug in the metric call; fixed before execution.</dd>
+              </dl>
+              <pre><code>- psnr(x_hat, gt, data_range=x_hat.max())   # reviewer: WRONG — unstable range
++ psnr(clip(x_hat,0,1), gt, data_range=1.0) # locked metric recipe</code></pre>
+            </div>
+          </details>
+
+          <details class="trace-step">
+            <summary><span class="step-no">03</span> Run <span class="chip">numeric worker</span></summary>
+            <div class="details-body">
+              <dl>
+                <dt>Where</dt><dd>GPU worker; agents never touch raw arrays directly.</dd>
+                <dt>Artifacts</dt><dd><code>recon_0000.npy</code>, <code>gt_0000.npy</code>, <code>metrics_0000.json</code> (values in this demo are placeholders).</dd>
+              </dl>
+              <pre><code>[worker] sweep 9 configs on val … done (demo)
+[worker] best config frozen → rerun on test split
+[worker] wrote recon_0000.npy  sha256:demo0000…  (illustrative)</code></pre>
+            </div>
+          </details>
+
+          <details class="trace-step">
+            <summary><span class="step-no">04</span> Verify <span class="chip">verifier gate</span></summary>
+            <div class="details-body">
+              <dl>
+                <dt>Physics check</dt><dd>Measurement residual ‖A(x̂)−y‖/‖y‖ compared against declared noise — <em>sample values only in this demo</em>.</dd>
+                <dt>Skeptical advisor</dt><dd>Artifact completeness, hash integrity, split discipline: PASS (demo).</dd>
+              </dl>
+              <pre><code>residual_rel = 0.0XX   (demo placeholder)
+noise_level  = 0.0XX   (demo placeholder)
+verdict: within declared noise → eligible for reporting (demo)</code></pre>
+            </div>
+          </details>
+
+          <details class="trace-step">
+            <summary><span class="step-no">05</span> Provenance <span class="chip">ledger</span></summary>
+            <div class="details-body">
+              <dl>
+                <dt>Record</dt><dd><code>result_record_0000.json</code> — immutable, canonically hashed (demo).</dd>
+                <dt>References</dt><dd>Figures/tables citing this record are appended to its refs file; nothing is reported without one.</dd>
+              </dl>
+              <pre><code>{ "record_id": "demo-0000", "code_state": { "commit": "demo…" },
+  "artifacts": ["recon_0000.npy", "metrics_0000.json"],
+  "refs": []  }                                // demo excerpt</code></pre>
+            </div>
+          </details>
+        </div>
+      </section>
+
+      <hr>
+
+      <section class="footnotes" aria-label="Footnotes">
+        <h2>Notes</h2>
+        <ol>
+          <li id="fn-1">Discovery-mode results are reported under matched compute budgets against
+            tuned classical and learned baselines; proposals that do not beat their baselines are
+            reported as such. <a href="#fnref-1" aria-label="Back to reference 1">↩</a></li>
+          <li id="fn-2">Reconstructions whose residual exceeds a small multiple of the declared
+            noise level are flagged as physics-inconsistent regardless of how good their
+            image-space metrics look. <a href="#fnref-2" aria-label="Back to reference 2">↩</a></li>
+          <li id="fn-3">Publication itself — the arXiv submission, code release, and this site's
+            evidence pages going live — is a human-executed transaction; the automation prepares
+            it but cannot perform it. <a href="#fnref-3" aria-label="Back to reference 3">↩</a></li>
+        </ol>
+      </section>
+
+    </article>
+  </main>
+</div>
+
+<footer class="site-footer">
+  <div class="footer-inner">
+    <span>© 2026 the AgX authors.</span>
+    <nav aria-label="Legal and accessibility">
+      <a href="license.html">License</a>
+      <a href="privacy.html">Privacy</a>
+      <a href="accessibility.html">Accessibility</a>
+    </nav>
+    <span>Self-contained static page — no analytics, no cookies, no external requests.</span>
+  </div>
+</footer>
+
+<script type="application/json" id="evidence-fallback">
+{ "rows": [
+  { "case_study": "Deployment — deconvolution quickstart", "modality": "Microscopy (synthetic blur)", "metric": "PSNR (dB)", "value": "XX.X ± X.X (sample)", "evidence_id": "pending E10" },
+  { "case_study": "Deployment — new imaging problem", "modality": "To be named at release", "metric": "Measurement residual", "value": "0.0XX (sample)", "evidence_id": "pending E10" },
+  { "case_study": "Discovery — algorithm search", "modality": "Benchmark suite", "metric": "vs. tuned baseline", "value": "±X.X dB (sample)", "evidence_id": "pending E10" },
+  { "case_study": "Verifier study", "modality": "Fault-injection battery", "metric": "Detection / abstention", "value": "XX% / XX% (sample)", "evidence_id": "pending E10" },
+  { "case_study": "Provenance study", "modality": "Tamper & replay battery", "metric": "Tamper detection", "value": "XX/XX (sample)", "evidence_id": "pending E10" }
+] }
+</script>
+<script src="assets/js/site.js" defer></script>
+</body>
+</html>
