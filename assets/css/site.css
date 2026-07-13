@@ -130,11 +130,20 @@ a:hover { text-decoration-thickness: 2px; }
   gap: 1rem;
 }
 .brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
   font-weight: 700;
   font-size: 1.05rem;
   letter-spacing: 0.02em;
   color: var(--text);
   text-decoration: none;
+}
+.brand-logo {
+  width: 1.4em;
+  height: 1.4em;
+  display: block;
+  flex: 0 0 auto;
 }
 .brand:hover { color: var(--accent); }
 .topnav { display: flex; gap: 0.9rem; margin-left: auto; flex-wrap: wrap; }
