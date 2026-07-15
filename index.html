@@ -65,6 +65,7 @@
       <li><a href="#docs">Documentation</a></li>
       <li><a href="#examples">Examples</a></li>
       <li><a href="#trace">Trace viewer</a></li>
+      <li><a href="#workspace">The workspace</a></li>
     </ol>
     <div class="toc-extra">
       <ol>
@@ -378,6 +379,236 @@ verdict: within declared noise → eligible for reporting (demo)</code></pre>
         </div>
       </section>
 
+      <section class="numbered" id="workspace">
+        <h2>The workspace, after a run</h2>
+        <p>
+          A finished run is where the real work starts. In AgX Studio the run opens as a
+          workspace — <strong>Graph</strong>, <strong>Plan</strong>, <strong>Report</strong>, and
+          <strong>Doc</strong> views over the trace, with an <strong>Agent</strong> panel beside
+          them. From there you steer the run with plain-language prompts, add future steps, ask
+          questions about any step, and improve flagged results — until the run assembles a
+          publication-style report and document.
+        </p>
+        <p class="ws-honesty" role="note">
+          <strong>Interactive demo</strong> — every agent reply below is pre-scripted and every
+          number is an illustrative placeholder; the live Studio agent panel ships with the release.
+        </p>
+        <noscript>
+          <p class="ws-noscript">With JavaScript enabled this section becomes an interactive
+          scripted tour; the view panels below show its final state.</p>
+        </noscript>
+
+        <div class="workspace" id="ws">
+          <div class="ws-goals" role="group" aria-label="Run goals (demo)">
+            <span class="ws-goals-label">Goals</span>
+            <span class="ws-goal" id="ws-goal-g1" data-state="met">G1&ensp;Beat the Wiener baseline on val (+1&#8202;dB) <span class="ws-goal-state">met (demo)</span></span>
+            <span class="ws-goal" id="ws-goal-g2" data-state="met">G2&ensp;Residual ≤ 1.2× declared noise on every sample <span class="ws-goal-state">met (demo)</span></span>
+            <span class="ws-goal" id="ws-goal-g3" data-state="met">G3&ensp;Publication-style report + doc <span class="ws-goal-state">met (demo)</span></span>
+          </div>
+
+          <div class="ws-body">
+            <div class="ws-views">
+              <div class="ws-tabs" id="ws-tabs" aria-label="Workspace views"></div>
+
+              <div class="ws-view" id="ws-view-graph" data-view="Graph">
+                <h4 class="ws-view-title">Graph</h4>
+                <div class="ws-dag-wrap">
+                <svg class="ws-dag" viewBox="0 0 720 250" role="img" aria-labelledby="ws-dag-title ws-dag-desc" xmlns="http://www.w3.org/2000/svg">
+                  <title id="ws-dag-title">Run graph (demo)</title>
+                  <desc id="ws-dag-desc">Measurement flows through the forward model into the ADMM-TV solver, then the verifier, then the report. A lambda sweep node hangs off the solver and a re-run node off the verifier; both appear during the tour.</desc>
+                  <defs>
+                    <marker id="ws-arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse">
+                      <path d="M0 0 L10 5 L0 10 z" fill="currentColor"/>
+                    </marker>
+                  </defs>
+                  <g class="ws-dag-edges" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <path d="M126 96 H 148" marker-end="url(#ws-arr)"/>
+                    <path d="M278 96 H 300" marker-end="url(#ws-arr)"/>
+                    <path d="M430 96 H 452" marker-end="url(#ws-arr)"/>
+                    <path d="M582 96 H 604" marker-end="url(#ws-arr)"/>
+                    <path class="ws-dag-e5" d="M365 122 V 158" marker-end="url(#ws-arr)"/>
+                    <path class="ws-dag-e6" d="M517 122 V 158" marker-end="url(#ws-arr)"/>
+                  </g>
+                  <g class="ws-node" data-step="00" tabindex="0" role="button" aria-label="Node: measurement y">
+                    <rect x="6" y="70" width="120" height="52" rx="9"/>
+                    <text x="66" y="92" text-anchor="middle">measurement</text>
+                    <text x="66" y="110" text-anchor="middle" font-style="italic">y</text>
+                  </g>
+                  <g class="ws-node" data-step="01" tabindex="0" role="button" aria-label="Node: forward model A, plan step 01">
+                    <rect x="152" y="70" width="126" height="52" rx="9"/>
+                    <text x="215" y="92" text-anchor="middle">forward model</text>
+                    <text x="215" y="110" text-anchor="middle" font-style="italic">A</text>
+                  </g>
+                  <g class="ws-node" data-step="03" tabindex="0" role="button" aria-label="Node: ADMM-TV solver, plan step 03">
+                    <rect x="304" y="70" width="126" height="52" rx="9"/>
+                    <text x="367" y="92" text-anchor="middle">solver</text>
+                    <text x="367" y="110" text-anchor="middle">ADMM-TV</text>
+                  </g>
+                  <g class="ws-node" data-step="04" tabindex="0" role="button" aria-label="Node: verifier, plan step 04">
+                    <rect x="456" y="70" width="126" height="52" rx="9"/>
+                    <text x="519" y="92" text-anchor="middle">verifier</text>
+                    <text id="ws-dag-badge" x="519" y="110" text-anchor="middle" class="ws-dag-flag">0 flags</text>
+                  </g>
+                  <g class="ws-node" data-step="07" tabindex="0" role="button" aria-label="Node: report">
+                    <rect x="608" y="70" width="106" height="52" rx="9"/>
+                    <text x="661" y="100" text-anchor="middle">report</text>
+                  </g>
+                  <g class="ws-node ws-dag-n5" data-step="05" tabindex="0" role="button" aria-label="Node: lambda sweep on validation, plan step 05">
+                    <rect x="304" y="162" width="126" height="46" rx="9"/>
+                    <text x="367" y="182" text-anchor="middle">λ sweep</text>
+                    <text x="367" y="199" text-anchor="middle">(val)</text>
+                  </g>
+                  <g class="ws-node ws-dag-n6" data-step="06" tabindex="0" role="button" aria-label="Node: re-run sample 3, plan step 06">
+                    <rect x="456" y="162" width="126" height="46" rx="9"/>
+                    <text x="519" y="182" text-anchor="middle">re-run</text>
+                    <text x="519" y="199" text-anchor="middle">0003</text>
+                  </g>
+                </svg>
+                </div>
+                <p class="ws-view-note">Nodes are clickable — selecting one sets the Agent panel's context (demo).</p>
+              </div>
+
+              <div class="ws-view" id="ws-view-plan" data-view="Plan">
+                <h4 class="ws-view-title">Plan</h4>
+                <ol class="ws-plan" id="ws-plan">
+                  <li class="ws-step" data-step="01">
+                    <button type="button" class="ws-step-btn"><span class="step-no">01</span> Forward-model check <span class="chip">done</span></button>
+                  </li>
+                  <li class="ws-step" data-step="02">
+                    <button type="button" class="ws-step-btn"><span class="step-no">02</span> Wiener baseline <span class="chip">done</span></button>
+                  </li>
+                  <li class="ws-step" data-step="03">
+                    <button type="button" class="ws-step-btn"><span class="step-no">03</span> ADMM-TV tuned on val <span class="chip">done</span></button>
+                    <span class="ws-step-note" id="ws-steer-note">steered: high-noise emphasis (demo)</span>
+                  </li>
+                  <li class="ws-step" data-step="04">
+                    <button type="button" class="ws-step-btn"><span class="step-no">04</span> Test-split evaluation <span class="chip">done</span> <span class="chip ws-flagchip" id="ws-step4-flag" hidden>1 sample flagged</span></button>
+                  </li>
+                  <li class="ws-step ws-late" data-step="05">
+                    <button type="button" class="ws-step-btn"><span class="step-no">05</span> λ sweep on val <span class="chip ws-status" data-status="done">done</span></button>
+                  </li>
+                  <li class="ws-step ws-late" data-step="06">
+                    <button type="button" class="ws-step-btn"><span class="step-no">06</span> Re-run sample 3 (corrected scaling) <span class="chip ws-status" data-status="done">done</span></button>
+                  </li>
+                  <li class="ws-step ws-late" data-step="07">
+                    <button type="button" class="ws-step-btn"><span class="step-no">07</span> Assemble report + doc <span class="chip ws-status" data-status="done">done</span></button>
+                  </li>
+                </ol>
+                <p class="ws-view-note">Steps are clickable — selecting one sets the Agent panel's context (demo).</p>
+              </div>
+
+              <div class="ws-view" id="ws-view-report" data-view="Report">
+                <h4 class="ws-view-title">Report</h4>
+                <div class="table-wrap">
+                  <table class="ws-table">
+                    <caption class="visually-hidden">Per-sample demo metrics; all values are placeholders</caption>
+                    <thead>
+                      <tr><th scope="col">Sample</th><th scope="col">PSNR (dB)</th><th scope="col">SSIM</th><th scope="col">residual / noise</th><th scope="col">status</th></tr>
+                    </thead>
+                    <tbody>
+                      <tr><td>0</td><td>XX.X (sample)</td><td>0.9X (sample)</td><td>1.0×*</td><td><span class="chip">PASS</span></td></tr>
+                      <tr><td>1</td><td>XX.X (sample)</td><td>0.9X (sample)</td><td>1.1×*</td><td><span class="chip">PASS</span></td></tr>
+                      <tr><td>2</td><td>XX.X (sample)</td><td>0.9X (sample)</td><td>0.9×*</td><td><span class="chip">PASS</span></td></tr>
+                      <tr id="ws-row3" tabindex="0" aria-label="Sample 3 row — select as context"><td>3</td><td>XX.X (sample)</td><td>0.8X (sample)</td><td id="ws-row3-res">1.1×*</td><td><span class="chip" id="ws-row3-chip">PASS</span></td></tr>
+                    </tbody>
+                  </table>
+                </div>
+                <p class="ws-report-note" id="ws-sweep-note">sweep landed: best λ frozen (demo)</p>
+                <p class="ws-report-note" id="ws-final-note">Report frozen — every row carries a record id, demo-0000 … demo-0003 (demo)</p>
+                <p class="ws-view-note">* illustrative placeholders — pending sealed E10 evidence.</p>
+              </div>
+
+              <div class="ws-view" id="ws-view-doc" data-view="Doc">
+                <h4 class="ws-view-title">Doc</h4>
+                <p class="ws-doc-locked" id="ws-doc-locked" hidden>The doc assembles once every goal
+                  is met. Finish the tour to see the publication-style document.</p>
+                <div class="ws-doc" id="ws-doc-final">
+                  <h5 class="ws-doc-title">Diffusion-agnostic deconvolution under declared noise (illustrative demo)</h5>
+                  <p class="ws-doc-byline">The AgX team — assembled by the run's doc step (demo)</p>
+                  <p class="ws-doc-abstract"><strong>Abstract.</strong> We reconstruct blurred, noisy
+                    microscopy images with an ADMM-TV solver tuned exclusively on a validation split
+                    and evaluated once on a held-out test split. Every reported number in this demo
+                    document is an illustrative placeholder carrying its provenance record id; no
+                    real experimental values appear anywhere on this page. The document itself —
+                    structure, figure, and verification trail — is what the run's final step
+                    assembles.</p>
+                  <ol class="ws-doc-secs">
+                    <li><strong>Setup.</strong> Forward model <em>A</em>: known blur kernel with
+                      declared Gaussian noise; splits fixed before tuning (tune: val, report: test);
+                      record ids demo-0000 … demo-0003.</li>
+                    <li><strong>Method.</strong> ADMM-TV with λ selected by a validation-only sweep
+                      (step 05); the selected λ was frozen before the test-split evaluation.</li>
+                    <li><strong>Results.</strong> Per-sample placeholders: PSNR XX.X (sample), SSIM
+                      0.9X (sample); residual/noise 0.9×*–1.1×* after the corrected re-run of
+                      sample 3 (step 06).
+                      <svg class="ws-doc-fig" viewBox="0 0 520 150" role="img" aria-labelledby="ws-fig1-title ws-fig1-desc" xmlns="http://www.w3.org/2000/svg">
+                        <title id="ws-fig1-title">Figure 1 placeholder (demo)</title>
+                        <desc id="ws-fig1-desc">Two labeled placeholder panels side by side: the blurred measurement and the reconstruction. Purely illustrative patterns, no real data.</desc>
+                        <defs>
+                          <pattern id="ws-pat-blur" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+                            <line x1="0" y1="0" x2="0" y2="7" stroke="currentColor" stroke-width="2.4" opacity="0.28"/>
+                          </pattern>
+                          <pattern id="ws-pat-sharp" width="9" height="9" patternUnits="userSpaceOnUse">
+                            <circle cx="4.5" cy="4.5" r="1.1" fill="currentColor" opacity="0.4"/>
+                          </pattern>
+                        </defs>
+                        <g stroke="currentColor" fill="none" stroke-width="1.4">
+                          <rect x="10" y="12" width="235" height="100" rx="8" fill="url(#ws-pat-blur)"/>
+                          <rect x="275" y="12" width="235" height="100" rx="8" fill="url(#ws-pat-sharp)"/>
+                        </g>
+                        <g fill="currentColor" text-anchor="middle">
+                          <text x="127" y="134">measurement y (placeholder)</text>
+                          <text x="392" y="134">reconstruction x̂ (placeholder)</text>
+                        </g>
+                      </svg>
+                      <span class="ws-doc-figcap"><strong>Fig. 1 (demo).</strong> Side-by-side
+                        placeholder — the released doc embeds the same run's frozen arrays.</span>
+                    </li>
+                    <li><strong>Verification &amp; provenance.</strong> Every row passed the
+                      residual gate (≤ 1.2× declared noise, placeholder values); each figure and
+                      table cell cites its immutable record id, and the records replay.</li>
+                  </ol>
+                  <p class="ws-doc-limits"><strong>Limitations.</strong> This is a scripted
+                    demonstration document: its numbers are placeholders, its figure is synthetic,
+                    and nothing in it is a scientific claim. The released pipeline assembles the
+                    same structure from sealed, human-approved evidence.</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="ws-agent" aria-label="Agent panel (scripted demo)">
+              <div class="ws-agent-head">
+                <h4>Agent</h4>
+                <span class="chip">scripted</span>
+                <span class="chip ws-context" id="ws-context" hidden></span>
+              </div>
+              <div class="ws-chat" id="ws-chat" role="log" aria-live="polite" tabindex="0"
+                   aria-label="Agent chat log">
+                <div class="ws-msg ws-msg-agent">
+                  <p>Done — a publication-style report and doc, every number still an
+                  illustrative placeholder until the sealed evidence is revealed.
+                  (Scripted demo; enable JavaScript for the interactive tour.)</p>
+                </div>
+              </div>
+              <div class="ws-chips" id="ws-chips">
+                <button type="button" class="ws-chipbtn" data-act="1">Steer: prioritize the high-noise regime</button>
+                <button type="button" class="ws-chipbtn" data-act="2">Add step: λ sweep on validation</button>
+                <button type="button" class="ws-chipbtn" data-act="3" id="ws-ask-chip">Ask: why is sample 3 flagged?</button>
+                <button type="button" class="ws-chipbtn" data-act="4">Improve sample 3 (corrected scaling)</button>
+                <button type="button" class="ws-chipbtn" data-act="5">Assemble the publication-style report + doc</button>
+                <button type="button" class="ws-chipbtn ws-reset" id="ws-reset">Reset demo</button>
+              </div>
+              <form class="ws-form" id="ws-form" onsubmit="return false;">
+                <label class="visually-hidden" for="ws-input">Type a demo prompt</label>
+                <input type="text" id="ws-input" name="ws-input" autocomplete="off"
+                       placeholder="Type a prompt (scripted demo)…">
+                <button type="submit">Send</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </section>
+
       <hr>
 
       <section class="footnotes" aria-label="Footnotes">
@@ -421,5 +652,6 @@ verdict: within declared noise → eligible for reporting (demo)</code></pre>
 ] }
 </script>
 <script src="assets/js/site.js" defer></script>
+<script src="assets/js/tour.js" defer></script>
 </body>
 </html>
