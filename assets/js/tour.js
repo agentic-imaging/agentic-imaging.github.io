@@ -38,13 +38,20 @@
   /* ---------- tabs (Graph | Plan | Report | Doc) ---------- */
   var tabs = [];
   function selectTab(idx, focus) {
+    /* If focus is inside a panel about to hide (e.g. the act-5 timed switch to
+       Doc while the user is in Report), move it to the new tab instead of
+       letting it fall to <body>. */
+    var active = document.activeElement;
+    var focusWasInHidden = views.some(function (v, i) {
+      return i !== idx && v.contains(active);
+    });
     tabs.forEach(function (t, i) {
       var on = i === idx;
       t.setAttribute("aria-selected", on ? "true" : "false");
       t.tabIndex = on ? 0 : -1;
       views[i].hidden = !on;
     });
-    if (focus) tabs[idx].focus();
+    if (focus || focusWasInHidden) tabs[idx].focus();
   }
   function buildTabs() {
     tabsBar.setAttribute("role", "tablist");
@@ -83,11 +90,21 @@
     var div = document.createElement("div");
     div.className = "ws-msg ws-msg-" + who;
     var p = document.createElement("p");
-    p.textContent = text;
+    /* Speaker identity for screen readers (visually conveyed by bubble style). */
+    var sr = document.createElement("span");
+    sr.className = "visually-hidden";
+    sr.textContent = who === "agent" ? "Agent (scripted): " : "You: ";
+    p.appendChild(sr);
+    p.appendChild(document.createTextNode(text));
     div.appendChild(p);
     chat.appendChild(div);
     chat.scrollTop = chat.scrollHeight;
   }
+  /* Dedicated polite status region for step-state announcements. */
+  var srStatus = document.createElement("span");
+  srStatus.className = "visually-hidden";
+  srStatus.setAttribute("role", "status");
+  ws.appendChild(srStatus);
   /* Hard-coded (NOT read from the DOM): the HTML ships the FINAL agent message
      for no-JS readers, so the initial one must live here. */
   var initialAgentMsg = "Run complete: steps 01–04 done. The verifier flagged " +
@@ -103,11 +120,21 @@
     ws.querySelectorAll("[data-selected]").forEach(function (el) {
       el.removeAttribute("data-selected");
     });
+    /* Expose selection programmatically on the button-role targets. */
+    ws.querySelectorAll(".ws-node, .ws-step-btn").forEach(function (el) {
+      el.setAttribute("aria-pressed", "false");
+    });
     ws.querySelectorAll('[data-step="' + step + '"]').forEach(function (el) {
       el.setAttribute("data-selected", "true");
+      if (el.classList.contains("ws-node")) el.setAttribute("aria-pressed", "true");
+      var sb = el.querySelector(".ws-step-btn");
+      if (sb) sb.setAttribute("aria-pressed", "true");
     });
-    if ($("ws-row3") === document.activeElement || step === "row3") {
-      ws.querySelector("#ws-row3").setAttribute("data-selected", "true");
+    if (step === "row3") {
+      row3.setAttribute("data-selected", "true");
+      row3.setAttribute("aria-label", "Sample 3 row — selected as context");
+    } else {
+      row3.setAttribute("aria-label", "Sample 3 row — select as context");
     }
     askChip.textContent = (step === "04" || step === "row3")
       ? "Ask about step 04: why is sample 3 flagged?"
@@ -124,17 +151,26 @@
     var node = ev.target.closest(".ws-node");
     if (node && !node.classList.contains("ws-hidden")) {
       var s = node.getAttribute("data-step");
-      setContext(s, s === "00" ? "measurement y" : "step " + s);
+      setContext(s, s === "00" ? "measurement y"
+                 : s === "rep" ? "report output" : "step " + s);
     }
   });
-  ws.querySelectorAll(".ws-node").forEach(function (node) {
-    node.addEventListener("keydown", function (ev) {
+  /* Interactivity is injected HERE so the no-JS page ships no dead controls:
+     static HTML has no role/tabindex on nodes, plan steps, or the report row. */
+  function activate(el) {
+    el.setAttribute("role", "button");
+    el.setAttribute("tabindex", "0");
+    el.setAttribute("aria-pressed", "false");
+    el.addEventListener("keydown", function (ev) {
       if (ev.key === "Enter" || ev.key === " ") {
         ev.preventDefault();
-        node.dispatchEvent(new MouseEvent("click", { bubbles: true }));
+        el.dispatchEvent(new MouseEvent("click", { bubbles: true }));
       }
     });
-  });
+  }
+  ws.querySelectorAll(".ws-node").forEach(activate);
+  ws.querySelectorAll(".ws-step-btn").forEach(activate);
+  row3.setAttribute("tabindex", "0");
   row3.addEventListener("click", function () { setContext("row3", "sample 3 (report row)"); });
   row3.addEventListener("keydown", function (ev) {
     if (ev.key === "Enter" || ev.key === " ") { ev.preventDefault(); row3.click(); }
@@ -142,12 +178,20 @@
 
   /* ---------- goal + status helpers ---------- */
   function setGoal(el, state, text) {
+    if (!el) return;
     el.setAttribute("data-state", state);
-    el.querySelector(".ws-goal-state").textContent = text;
+    var s = el.querySelector(".ws-goal-state");
+    if (s) s.textContent = text;
   }
+  var STEP_NAMES = { "05": "λ sweep on val", "06": "re-run sample 3", "07": "assemble report + doc" };
   function stepStatus(stepNo, status) {
     var chip = ws.querySelector('.ws-step[data-step="' + stepNo + '"] .ws-status');
     if (chip) { chip.setAttribute("data-status", status); chip.textContent = status; }
+    /* Announce transitions in the dedicated status region (not the chat log). */
+    if (status === "running" || status === "done") {
+      srStatus.textContent = "Step " + stepNo +
+        (STEP_NAMES[stepNo] ? " (" + STEP_NAMES[stepNo] + ")" : "") + ": " + status + ".";
+    }
   }
   function showStep(stepNo, show) {
     var li = ws.querySelector('.ws-step[data-step="' + stepNo + '"]');
@@ -235,7 +279,8 @@
     { rx: /report|doc|final|assemble|publish/i,
       run: function () {
         msg("agent", "Assembling: step 07 gathers every record id, regenerates the figure from " +
-          "frozen arrays, and emits the report and the publication-style doc (demo).");
+          "frozen arrays, and emits the report and the publication-style doc — in the released " +
+          "pipeline. Here this is simulated UI only: mock ids, no jobs run (demo).");
         showStep("07", true);
         runStep("07", function () {
           finalNote.hidden = false;
@@ -352,6 +397,7 @@
     clearPending();
     toInitial();
     chat.textContent = "";
+    input.value = "";
     msg("agent", initialAgentMsg);
     switchToView("Graph");
   }

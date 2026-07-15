@@ -35,7 +35,8 @@ The five scripted acts (run in order; chips for later acts stay disabled until r
    to 1.1×* → PASS; goal G2 flips to met.
 5. **Assemble** — "publication-style report + doc": step 07 gathers record ids and emits the
    frozen report plus a compact publication-style document (title, byline, abstract, setup,
-   method, results with a placeholder Fig. 1, verification & provenance, limitations). Every
+   method, results with a placeholder Fig. 1, verification & provenance, limitations) — in the
+   released pipeline; on this page the ids are mock and no computation occurs. Every
    number remains an illustrative placeholder until the sealed evidence is revealed.
 
 Without JavaScript the section renders its final state as stacked panels (the noscript note

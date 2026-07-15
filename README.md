@@ -11,8 +11,10 @@ python3 -m http.server 8080
 # open http://localhost:8080/
 ```
 
-Opening `index.html` directly from `file://` also works (the sample-evidence table then renders
-from an inline mirror instead of fetching `content/evidence.sample.json`).
+Opening `index.html` directly from `file://` also works. The sample-evidence table always
+renders from an inline mirror embedded in the page (zero network requests, even same-origin);
+`content/evidence.sample.json` stays the canonical editable source and must be kept identical
+to the inline mirror.
 
 ## Structure
 

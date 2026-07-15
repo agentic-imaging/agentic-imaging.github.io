@@ -161,13 +161,10 @@
       if (!el) return;
       try { render(JSON.parse(el.textContent).rows); } catch (e) { /* leave noscript row */ }
     };
-    if (window.location.protocol === "file:") {
-      fallback();
-    } else {
-      fetch("content/evidence.sample.json")
-        .then(function (r) { if (!r.ok) throw new Error("http " + r.status); return r.json(); })
-        .then(function (data) { render(data.rows); })
-        .catch(fallback);
-    }
+    /* Zero-network contract: always render from the inline mirror — the page
+       works under connect-src 'none', offline, and from file://. Keep the
+       inline #evidence-fallback JSON identical to content/evidence.sample.json
+       (editing convention; the file remains the canonical editable source). */
+    fallback();
   }
 })();

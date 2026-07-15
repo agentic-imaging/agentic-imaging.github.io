@@ -429,36 +429,36 @@ verdict: within declared noise → eligible for reporting (demo)</code></pre>
                     <path class="ws-dag-e5" d="M365 122 V 158" marker-end="url(#ws-arr)"/>
                     <path class="ws-dag-e6" d="M517 122 V 158" marker-end="url(#ws-arr)"/>
                   </g>
-                  <g class="ws-node" data-step="00" tabindex="0" role="button" aria-label="Node: measurement y">
+                  <g class="ws-node" data-step="00" aria-label="Node: measurement y">
                     <rect x="6" y="70" width="120" height="52" rx="9"/>
                     <text x="66" y="92" text-anchor="middle">measurement</text>
                     <text x="66" y="110" text-anchor="middle" font-style="italic">y</text>
                   </g>
-                  <g class="ws-node" data-step="01" tabindex="0" role="button" aria-label="Node: forward model A, plan step 01">
+                  <g class="ws-node" data-step="01" aria-label="Node: forward model A, plan step 01">
                     <rect x="152" y="70" width="126" height="52" rx="9"/>
                     <text x="215" y="92" text-anchor="middle">forward model</text>
                     <text x="215" y="110" text-anchor="middle" font-style="italic">A</text>
                   </g>
-                  <g class="ws-node" data-step="03" tabindex="0" role="button" aria-label="Node: ADMM-TV solver, plan step 03">
+                  <g class="ws-node" data-step="03" aria-label="Node: ADMM-TV solver, plan step 03">
                     <rect x="304" y="70" width="126" height="52" rx="9"/>
                     <text x="367" y="92" text-anchor="middle">solver</text>
                     <text x="367" y="110" text-anchor="middle">ADMM-TV</text>
                   </g>
-                  <g class="ws-node" data-step="04" tabindex="0" role="button" aria-label="Node: verifier, plan step 04">
+                  <g class="ws-node" data-step="04" aria-label="Node: verifier, plan step 04">
                     <rect x="456" y="70" width="126" height="52" rx="9"/>
                     <text x="519" y="92" text-anchor="middle">verifier</text>
                     <text id="ws-dag-badge" x="519" y="110" text-anchor="middle" class="ws-dag-flag">0 flags</text>
                   </g>
-                  <g class="ws-node" data-step="07" tabindex="0" role="button" aria-label="Node: report">
+                  <g class="ws-node" data-step="rep" aria-label="Node: report">
                     <rect x="608" y="70" width="106" height="52" rx="9"/>
                     <text x="661" y="100" text-anchor="middle">report</text>
                   </g>
-                  <g class="ws-node ws-dag-n5" data-step="05" tabindex="0" role="button" aria-label="Node: lambda sweep on validation, plan step 05">
+                  <g class="ws-node ws-dag-n5" data-step="05" aria-label="Node: lambda sweep on validation, plan step 05">
                     <rect x="304" y="162" width="126" height="46" rx="9"/>
                     <text x="367" y="182" text-anchor="middle">λ sweep</text>
                     <text x="367" y="199" text-anchor="middle">(val)</text>
                   </g>
-                  <g class="ws-node ws-dag-n6" data-step="06" tabindex="0" role="button" aria-label="Node: re-run sample 3, plan step 06">
+                  <g class="ws-node ws-dag-n6" data-step="06" aria-label="Node: re-run sample 3, plan step 06">
                     <rect x="456" y="162" width="126" height="46" rx="9"/>
                     <text x="519" y="182" text-anchor="middle">re-run</text>
                     <text x="519" y="199" text-anchor="middle">0003</text>
@@ -472,26 +472,26 @@ verdict: within declared noise → eligible for reporting (demo)</code></pre>
                 <h4 class="ws-view-title">Plan</h4>
                 <ol class="ws-plan" id="ws-plan">
                   <li class="ws-step" data-step="01">
-                    <button type="button" class="ws-step-btn"><span class="step-no">01</span> Forward-model check <span class="chip">done</span></button>
+                    <span class="ws-step-btn"><span class="step-no">01</span> Forward-model check <span class="chip">done</span></span>
                   </li>
                   <li class="ws-step" data-step="02">
-                    <button type="button" class="ws-step-btn"><span class="step-no">02</span> Wiener baseline <span class="chip">done</span></button>
+                    <span class="ws-step-btn"><span class="step-no">02</span> Wiener baseline <span class="chip">done</span></span>
                   </li>
                   <li class="ws-step" data-step="03">
-                    <button type="button" class="ws-step-btn"><span class="step-no">03</span> ADMM-TV tuned on val <span class="chip">done</span></button>
+                    <span class="ws-step-btn"><span class="step-no">03</span> ADMM-TV tuned on val <span class="chip">done</span></span>
                     <span class="ws-step-note" id="ws-steer-note">steered: high-noise emphasis (demo)</span>
                   </li>
                   <li class="ws-step" data-step="04">
-                    <button type="button" class="ws-step-btn"><span class="step-no">04</span> Test-split evaluation <span class="chip">done</span> <span class="chip ws-flagchip" id="ws-step4-flag" hidden>1 sample flagged</span></button>
+                    <span class="ws-step-btn"><span class="step-no">04</span> Test-split evaluation <span class="chip">done</span> <span class="chip ws-flagchip" id="ws-step4-flag" hidden>1 sample flagged</span></span>
                   </li>
                   <li class="ws-step ws-late" data-step="05">
-                    <button type="button" class="ws-step-btn"><span class="step-no">05</span> λ sweep on val <span class="chip ws-status" data-status="done">done</span></button>
+                    <span class="ws-step-btn"><span class="step-no">05</span> λ sweep on val <span class="chip ws-status" data-status="done">done</span></span>
                   </li>
                   <li class="ws-step ws-late" data-step="06">
-                    <button type="button" class="ws-step-btn"><span class="step-no">06</span> Re-run sample 3 (corrected scaling) <span class="chip ws-status" data-status="done">done</span></button>
+                    <span class="ws-step-btn"><span class="step-no">06</span> Re-run sample 3 (corrected scaling) <span class="chip ws-status" data-status="done">done</span></span>
                   </li>
                   <li class="ws-step ws-late" data-step="07">
-                    <button type="button" class="ws-step-btn"><span class="step-no">07</span> Assemble report + doc <span class="chip ws-status" data-status="done">done</span></button>
+                    <span class="ws-step-btn"><span class="step-no">07</span> Assemble report + doc <span class="chip ws-status" data-status="done">done</span></span>
                   </li>
                 </ol>
                 <p class="ws-view-note">Steps are clickable — selecting one sets the Agent panel's context (demo).</p>
@@ -509,12 +509,12 @@ verdict: within declared noise → eligible for reporting (demo)</code></pre>
                       <tr><td>0</td><td>XX.X (sample)</td><td>0.9X (sample)</td><td>1.0×*</td><td><span class="chip">PASS</span></td></tr>
                       <tr><td>1</td><td>XX.X (sample)</td><td>0.9X (sample)</td><td>1.1×*</td><td><span class="chip">PASS</span></td></tr>
                       <tr><td>2</td><td>XX.X (sample)</td><td>0.9X (sample)</td><td>0.9×*</td><td><span class="chip">PASS</span></td></tr>
-                      <tr id="ws-row3" tabindex="0" aria-label="Sample 3 row — select as context"><td>3</td><td>XX.X (sample)</td><td>0.8X (sample)</td><td id="ws-row3-res">1.1×*</td><td><span class="chip" id="ws-row3-chip">PASS</span></td></tr>
+                      <tr id="ws-row3" aria-label="Sample 3 row — select as context"><td>3</td><td>XX.X (sample)</td><td>0.8X (sample)</td><td id="ws-row3-res">1.1×*</td><td><span class="chip" id="ws-row3-chip">PASS</span></td></tr>
                     </tbody>
                   </table>
                 </div>
                 <p class="ws-report-note" id="ws-sweep-note">sweep landed: best λ frozen (demo)</p>
-                <p class="ws-report-note" id="ws-final-note">Report frozen — every row carries a record id, demo-0000 … demo-0003 (demo)</p>
+                <p class="ws-report-note" id="ws-final-note">Report frozen — every row carries a record id, demo-0000 … demo-0003 (mock ids; nothing was computed for this page)</p>
                 <p class="ws-view-note">* illustrative placeholders — pending sealed E10 evidence.</p>
               </div>
 
@@ -562,11 +562,13 @@ verdict: within declared noise → eligible for reporting (demo)</code></pre>
                         </g>
                       </svg>
                       <span class="ws-doc-figcap"><strong>Fig. 1 (demo).</strong> Side-by-side
-                        placeholder — the released doc embeds the same run's frozen arrays.</span>
+                        placeholder (this one is a synthetic drawing) — the released doc embeds
+                        the same run's frozen arrays.</span>
                     </li>
                     <li><strong>Verification &amp; provenance.</strong> Every row passed the
-                      residual gate (≤ 1.2× declared noise, placeholder values); each figure and
-                      table cell cites its immutable record id, and the records replay.</li>
+                      residual gate (≤ 1.2× declared noise, placeholder values); in the released
+                      pipeline each figure and table cell cites its immutable record id and the
+                      records replay — here every id is fictional and no computation occurred.</li>
                   </ol>
                   <p class="ws-doc-limits"><strong>Limitations.</strong> This is a scripted
                     demonstration document: its numbers are placeholders, its figure is synthetic,
