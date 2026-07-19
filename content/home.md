@@ -5,7 +5,7 @@
 
 The AgX team · author list and affiliations to be finalized at public release · 2026
 
-Links: Technical report (pending) · Code (pending) · Video (pending) · [Trace demo](#trace)
+Links: [See the workspace demo](#workspace) · [Trace demo](#trace) · Technical report (pending) · Code (pending)
 
 ## Overview
 

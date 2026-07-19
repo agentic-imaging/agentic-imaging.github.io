@@ -290,6 +290,10 @@ a:hover { text-decoration-thickness: 2px; }
   border-top: 1px solid var(--border);
 }
 
+/* min-width:0 on BOTH the grid item (main) and article so the single mobile
+   track shrinks to the viewport instead of being held open at the article
+   max-width by a descendant's min-content (wide demos self-scroll). */
+main { min-width: 0; }
 article { max-width: var(--measure); min-width: 0; }
 
 /* ---------- article typography ---------- */
@@ -943,3 +947,140 @@ footer.site-footer {
   .ws-tabs, .ws-chips, .ws-form { display: none !important; }
   .workspace.js .ws-view[hidden] { display: block !important; }
 }
+
+/* W01: tutorial/video route — placeholder box (matches the site's callout pattern) */
+.route-anchor { position: absolute; width: 0; height: 0; overflow: hidden; }
+.video-placeholder {
+  border: 1px solid var(--border);
+  background: var(--bg-alt);
+  border-radius: 8px;
+  padding: 1rem 1.25rem;
+  margin-top: 0.75rem;
+}
+.video-placeholder p { margin: 0; }
+
+/* ============================================================
+   product-oriented landing layout (Codex-style)
+   Concise hero → foregrounded interface demos → feature blocks →
+   detail deferred to the technical report. Adds to the article
+   base above; the demos (#workspace, #trace) keep their own styles.
+   ============================================================ */
+
+/* hero: product framing (concise value prop + CTA row + honesty note) */
+.hero-product { padding: 4rem 1.25rem 2.4rem; }
+.hero-product .tagline {
+  font-family: var(--sans);
+  font-style: normal;
+  max-width: 41rem;
+  font-size: clamp(1.05rem, 2.3vw, 1.25rem);
+  line-height: 1.5;
+  color: var(--text);
+}
+.hero-note {
+  max-width: 40rem;
+  margin: 1.5rem auto 0;
+  font-family: var(--sans);
+  font-size: 0.83rem;
+  line-height: 1.55;
+  color: var(--muted);
+}
+
+/* primary CTA — filled accent; text contrast flips with the theme's accent */
+.btn-primary {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #ffffff;
+  font-weight: 600;
+}
+.btn-primary:hover {
+  color: #ffffff;
+  border-color: var(--accent);
+  filter: brightness(1.07);
+}
+[data-theme="dark"] .btn-primary,
+[data-theme="dark"] .btn-primary:hover { color: #0f1115; }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme]) .btn-primary,
+  :root:not([data-theme]) .btn-primary:hover { color: #0f1115; }
+}
+
+/* feature sections: generous rhythm, larger product headings (no counters) */
+.feature { padding-top: 0.5rem; }
+.feature > h2 {
+  font-size: clamp(1.55rem, 3.4vw, 1.95rem);
+  margin: 3.6rem 0 0.7rem;
+}
+.feature > h2::before { content: none !important; }
+.feature > .lead { max-width: var(--measure); margin-bottom: 1.3rem; }
+
+/* first section (workspace demo) sits right under the hero */
+.feature-lead { padding-top: 0; }
+.feature-lead > h2 { margin-top: 1.4rem; }
+
+/* "full detail in the report →" pointer under a condensed block */
+.feature-more {
+  font-family: var(--sans);
+  font-size: 0.9rem;
+  color: var(--muted);
+  margin-top: 1.3rem;
+}
+
+/* feature cards — responsive 2-up grid of sub-features */
+.feature-cards {
+  display: grid;
+  gap: 0.9rem;
+  grid-template-columns: 1fr;
+  margin: 1.4rem 0;
+}
+@media (min-width: 34rem) {
+  .feature-cards { grid-template-columns: 1fr 1fr; }
+}
+.feature-card {
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--bg-alt);
+  padding: 1rem 1.15rem;
+}
+.feature-card h3 {
+  font-family: var(--sans);
+  font-size: 1.04rem;
+  margin: 0 0 0.4rem;
+}
+.feature-card h3::before { content: none !important; }
+.feature-card p { font-size: 0.93rem; margin: 0; }
+.feature-card-rule {
+  background: var(--bg);
+  border-left: 3px solid var(--accent);
+}
+
+/* resources: report / docs / examples as product cards */
+.resource-grid {
+  display: grid;
+  gap: 0.9rem;
+  grid-template-columns: 1fr;
+  margin: 1.4rem 0;
+}
+@media (min-width: 46rem) {
+  .resource-grid { grid-template-columns: 1fr 1fr; }
+}
+.resource {
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--bg);
+  padding: 1.1rem 1.2rem;
+}
+.resource h3 {
+  font-family: var(--sans);
+  font-size: 1.06rem;
+  margin: 0 0 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+.resource h3::before { content: none !important; }
+.resource p { font-size: 0.93rem; }
+.resource p:last-child { margin-bottom: 0; }
+.resource .codeblock { margin: 0.9rem 0 0; }
+/* a resource that carries a code sample spans the full row when supported */
+.resource:has(.codeblock) { grid-column: 1 / -1; }

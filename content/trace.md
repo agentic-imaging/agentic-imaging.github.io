@@ -1,7 +1,7 @@
 # Trace viewer
 
 Every AgX run produces a trace: the plan, each agent step, verifier decisions, and the
-provenance trail. The release includes an immutable trace viewer over sanitized public bundles.
+provenance trail. The release will ship an immutable trace viewer over sanitized public bundles.
 The demo on the main page is a **self-contained illustrative demo** of that experience with
 hard-coded local data — it makes no network requests and shows no real experimental results.
 
