@@ -1036,7 +1036,7 @@ footer.site-footer {
 /* hero: product framing (concise value prop + CTA row + honesty note) */
 /* the landing hero owns its own generous spacing (this wins over .hero): lots of air above the mark and
    a big open gap down to the content; clamp keeps it proportional on small screens. */
-.hero-product { padding: clamp(4.5rem, 9vw, 9rem) 1.25rem clamp(5rem, 13vw, 11rem); }
+.hero-product { padding: clamp(3.5rem, 6vw, 6.5rem) 1.25rem clamp(4rem, 9vw, 8rem); }
 .hero-product .tagline {
   font-family: var(--sans);
   font-style: normal;
