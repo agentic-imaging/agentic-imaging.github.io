@@ -225,7 +225,7 @@ a:hover { color: var(--accent-hover); }
 /* ---------- hero ---------- */
 .hero {
   text-align: center;
-  padding: 10rem 1.25rem 4rem;   /* lots of air above the mark — spacing is the art */
+  padding: 10rem 1.25rem 6rem;   /* lots of air above the mark, and a comfortable gap to the content below */
 }
 /* Product mark stacked above the wordmark (Codex-style hero): the icon leads, then AgX, then the
    subtitle. The transparent PNG sits inside an iOS-style rounded app-icon tile so the mark reads as a
@@ -1041,11 +1041,12 @@ footer.site-footer {
   line-height: 1.5;
   color: var(--text);
 }
-.hero-note {
+/* the placeholder-numbers disclaimer, now the lead of the Notes section (moved out of the hero) */
+.footnotes-lead {
   max-width: 40rem;
-  margin: 1.5rem auto 0;
+  margin: 0 0 1.1rem;
   font-family: var(--sans);
-  font-size: 0.83rem;
+  font-size: 0.95rem;
   line-height: 1.55;
   color: var(--muted);
 }

@@ -35,7 +35,7 @@
 <link rel="icon" type="image/png" sizes="256x256" href="agx_icon.png">
 <link rel="icon" href="favicon.ico" sizes="any">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
-<link rel="stylesheet" href="assets/css/site.css?v=66c614af">
+<link rel="stylesheet" href="assets/css/site.css?v=670973b7">
 <script>
 /* Apply stored theme + initial top-of-page bar state before first paint to avoid a flash. */
 (function(){try{var t=localStorage.getItem("agx-theme");if(t==="light"||t==="dark"){document.documentElement.setAttribute("data-theme",t);}}catch(e){}
@@ -78,8 +78,6 @@ if((window.scrollY||window.pageYOffset||0)<=4){document.documentElement.classLis
     <a class="btn" href="#report">Technical report <span class="pending">pending</span></a>
     <a class="btn" href="https://github.com/agentic-imaging" target="_blank" rel="noopener">Code</a>
   </div>
-  <p class="hero-note">Every number on this page is an illustrative placeholder until sealed evidence is
-     revealed and human-approved. This site shows the interface — the numbers will live in the report.</p>
 </div>
 
 <div class="layout layout-product">
@@ -605,8 +603,11 @@ agx run examples/quickstart_deconvolution --live   # run the loop yourself</code
 
       <hr>
 
-      <section class="footnotes" aria-label="Footnotes">
+      <section class="footnotes" aria-label="Notes">
         <h2>Notes</h2>
+        <p class="footnotes-lead">Every number on this page is an illustrative placeholder until sealed
+          evidence is revealed and human-approved. This site shows the interface — the numbers will
+          live in the report.</p>
         <ol>
           <li id="fn-1">Discovery-mode results are reported under matched compute budgets against
             tuned classical and learned baselines; proposals that do not beat their baselines are
