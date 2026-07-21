@@ -661,6 +661,8 @@ footer.site-footer {
   gap: 1.4rem;
   flex-wrap: wrap;
   align-items: baseline;
+  justify-content: center;
+  text-align: center;
 }
 .footer-inner nav { display: flex; gap: 1.1rem; flex-wrap: wrap; }
 .footer-inner a { color: var(--muted); }
