@@ -614,6 +614,11 @@ details .details-body { padding: 0.2rem 1rem 1rem; }
 }
 .footnotes h2 { font-size: 1rem; }
 .fineprint { font-size: 0.85rem; color: var(--muted); }
+/* academic-style inline citation markers + numbered references list (Related work) */
+.cite { font-size: 0.9em; white-space: nowrap; }
+.references { font-size: 0.85rem; color: var(--muted); padding-left: 1.5rem; margin: 0.6rem 0 0; }
+.references li { margin: 0.45rem 0; }
+.references a { overflow-wrap: anywhere; }
 sup.fnref { line-height: 0; }
 sup.fnref a { text-decoration: none; padding: 0 0.12em; }
 
