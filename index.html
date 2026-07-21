@@ -71,7 +71,7 @@ if((window.scrollY||window.pageYOffset||0)<=4){document.documentElement.classLis
   <h1>AgX</h1>
   <p class="subtitle">Agentic Scientific Imaging</p>
   <p class="tagline">Language-model agents that plan, implement, run, <strong>verify</strong>, and document
-     computational-imaging experiments end to end — with the skepticism built in.</p>
+     computational-imaging experiments end to end — with the skepticism built in.<sup class="fnref" id="fnref-1"><a href="#fn-1" aria-label="Footnote 1">1</a></sup></p>
   <div class="hero-links">
     <a class="btn btn-primary" href="tour.html">Watch the tour</a>
     <a class="btn" href="#workspace">Workspace demo</a>
@@ -124,7 +124,7 @@ if((window.scrollY||window.pageYOffset||0)<=4){document.documentElement.classLis
         <div class="workspace" id="ws">
           <div class="ws-goals" role="group" aria-label="Run goals (demo)">
             <span class="ws-goals-label">Goals</span>
-            <span class="ws-goal" id="ws-goal-g1" data-state="met">G1&ensp;Beat the Wiener baseline on val (+1&#8202;dB) <span class="ws-goal-state">met (demo)</span></span>
+            <span class="ws-goal" id="ws-goal-g1" data-state="met">G1&ensp;Beat the Wiener baseline on val (+1&#8202;dB)<sup class="fnref" id="fnref-2"><a href="#fn-2" aria-label="Footnote 2">2</a></sup> <span class="ws-goal-state">met (demo)</span></span>
             <span class="ws-goal" id="ws-goal-g2" data-state="met">G2&ensp;Residual ≤ 1.2× declared noise on every sample <span class="ws-goal-state">met (demo)</span></span>
             <span class="ws-goal" id="ws-goal-g3" data-state="met">G3&ensp;Publication-style report + doc <span class="ws-goal-state">met (demo)</span></span>
           </div>
@@ -478,7 +478,7 @@ verdict: within declared noise → eligible for reporting (demo)</code></pre>
           <div class="feature-card">
             <h3>Discovery</h3>
             <p>AgX proposes candidate reconstruction-algorithm variants, benchmarks them under matched
-               budgets, and reports which survive skeptical review — including the ones that don't.<sup class="fnref" id="fnref-1"><a href="#fn-1" aria-label="Footnote 1">1</a></sup></p>
+               budgets, and reports which survive skeptical review — including the ones that don't.<sup class="fnref" id="fnref-3"><a href="#fn-3" aria-label="Footnote 3">3</a></sup></p>
           </div>
         </div>
         <p class="feature-more">Full architecture and the two modes in depth →
@@ -496,7 +496,7 @@ verdict: within declared noise → eligible for reporting (demo)</code></pre>
             <h3>Measurement fidelity</h3>
             <p>Image-space metrics alone can never approve a result. The relative residual
                <code>‖A(x̂)−y‖ / ‖y‖</code> must be consistent with the declared noise level, or the
-               reconstruction is flagged as physics-inconsistent — however good its PSNR looks.<sup class="fnref" id="fnref-2"><a href="#fn-2" aria-label="Footnote 2">2</a></sup></p>
+               reconstruction is flagged as physics-inconsistent — however good its PSNR looks.<sup class="fnref" id="fnref-4"><a href="#fn-4" aria-label="Footnote 4">4</a></sup></p>
           </div>
           <div class="feature-card">
             <h3>Adversarial verification</h3>
@@ -559,7 +559,7 @@ verdict: within declared noise → eligible for reporting (demo)</code></pre>
         <p class="lead">
           Detailed material will live in the technical report and the documentation — this page stays focused
           on the interface. Everything below is prepared under the same evidence discipline and links here,
-          with checksums, when the human release gate approves publication.<sup class="fnref" id="fnref-3"><a href="#fn-3" aria-label="Footnote 3">3</a></sup>
+          with checksums, when the human release gate approves publication.<sup class="fnref" id="fnref-5"><a href="#fn-5" aria-label="Footnote 5">5</a></sup>
         </p>
         <div class="resource-grid">
           <div class="resource">
@@ -605,19 +605,23 @@ agx run examples/quickstart_deconvolution --live   # run the loop yourself</code
 
       <section class="footnotes" aria-label="Notes">
         <h2>Notes</h2>
-        <p class="footnotes-lead">Every number on this page is an illustrative placeholder until sealed
-          evidence is revealed and human-approved. This site shows the interface — the numbers will
-          live in the report.</p>
         <ol>
-          <li id="fn-1">Discovery-mode results are reported under matched compute budgets against
+          <li id="fn-1"><strong>AgX</strong> is the formula for a silver halide — silver (Ag) plus a halogen (<em>X</em>)
+            — the light-sensitive compound behind photographic film. “Agentic Imaging” abbreviates to AgI, silver
+            iodide; writing the halogen as the variable <em>X</em> signals that the pipeline reaches beyond imaging to
+            research across ML/AI and the sciences. <a href="#fnref-1" aria-label="Back to reference 1">↩</a></li>
+          <li id="fn-2">Every number on this page is an illustrative placeholder until sealed evidence is revealed and
+            human-approved. This site shows the interface — the numbers will live in the report.
+            <a href="#fnref-2" aria-label="Back to reference 2">↩</a></li>
+          <li id="fn-3">Discovery-mode results are reported under matched compute budgets against
             tuned classical and learned baselines; proposals that do not beat their baselines are
-            reported as such. <a href="#fnref-1" aria-label="Back to reference 1">↩</a></li>
-          <li id="fn-2">Reconstructions whose residual exceeds a small multiple of the declared
+            reported as such. <a href="#fnref-3" aria-label="Back to reference 3">↩</a></li>
+          <li id="fn-4">Reconstructions whose residual exceeds a small multiple of the declared
             noise level are flagged as physics-inconsistent regardless of how good their
-            image-space metrics look. <a href="#fnref-2" aria-label="Back to reference 2">↩</a></li>
-          <li id="fn-3">Publication itself — the arXiv submission, code release, and this site's
+            image-space metrics look. <a href="#fnref-4" aria-label="Back to reference 4">↩</a></li>
+          <li id="fn-5">Publication itself — the arXiv submission, code release, and this site's
             evidence pages going live — is a human-executed transaction; the automation prepares
-            it but cannot perform it. <a href="#fnref-3" aria-label="Back to reference 3">↩</a></li>
+            it but cannot perform it. <a href="#fnref-5" aria-label="Back to reference 5">↩</a></li>
         </ol>
       </section>
 
