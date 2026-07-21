@@ -28,6 +28,13 @@
   --banner-ink: #6b4a00;
   --chip-bg: #eef1f6;
   --shadow: 0 1px 3px rgba(0, 0, 0, 0.07);
+  /* warm ambient glow derived from the icon's aperture accent (~#e2822e), translucent glass top bar,
+     and the iOS-style app-icon tile surface — all theme-aware. */
+  --glow: rgba(230, 132, 46, 0.11);
+  --topbar-bg: rgba(255, 255, 255, 0.72);
+  --icon-box-bg: linear-gradient(150deg, #ffffff, #fbf2e7);
+  --icon-box-shadow: 0 10px 30px rgba(120, 66, 18, 0.16), 0 2px 6px rgba(0, 0, 0, 0.06);
+  --icon-box-border: rgba(0, 0, 0, 0.06);
 
   --measure: 46rem;      /* ~736px article column */
   --wide: 71rem;         /* page grid max width  */
@@ -46,6 +53,11 @@
   --banner-ink: #ffd27a;
   --chip-bg: #202531;
   --shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+  --glow: rgba(230, 132, 46, 0.16);
+  --topbar-bg: rgba(15, 17, 21, 0.64);
+  --icon-box-bg: linear-gradient(150deg, #1d212a, #15171d);
+  --icon-box-shadow: 0 12px 32px rgba(0, 0, 0, 0.5), 0 2px 6px rgba(0, 0, 0, 0.35);
+  --icon-box-border: rgba(255, 255, 255, 0.07);
   color-scheme: dark;
 }
 
@@ -63,6 +75,11 @@
     --banner-ink: #ffd27a;
     --chip-bg: #202531;
     --shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+    --glow: rgba(230, 132, 46, 0.16);
+    --topbar-bg: rgba(15, 17, 21, 0.64);
+    --icon-box-bg: linear-gradient(150deg, #1d212a, #15171d);
+    --icon-box-shadow: 0 12px 32px rgba(0, 0, 0, 0.5), 0 2px 6px rgba(0, 0, 0, 0.35);
+    --icon-box-border: rgba(255, 255, 255, 0.07);
     color-scheme: dark;
   }
 }
@@ -78,7 +95,9 @@ html { -webkit-text-size-adjust: 100%; }
 
 body {
   margin: 0;
-  background: var(--bg);
+  /* a very light warm gradient wash behind the hero, tinted from the icon's amber aperture */
+  background: radial-gradient(1200px 680px at 50% -12%, var(--glow), transparent 58%), var(--bg);
+  background-attachment: fixed;
   color: var(--text);
   /* Libertinus Sans is the AgX Studio primary/body font (matching the studio + tour --font-ui);
      the article body renders in it, with Georgia (--serif) kept only as a demo/doc accent. */
@@ -127,8 +146,11 @@ a:hover { text-decoration-thickness: 2px; }
   position: sticky;
   top: 0;
   z-index: 50;
-  background: var(--bg);
-  border-bottom: 1px solid var(--border);
+  /* minimal glass top bar: no divider line, translucent background that lets the page (and its warm
+     glow) show through, with a blur so scrolling content stays legible underneath. */
+  background: var(--topbar-bg);
+  -webkit-backdrop-filter: saturate(1.5) blur(14px);
+  backdrop-filter: saturate(1.5) blur(14px);
   font-family: var(--sans);
 }
 .topbar-inner {
@@ -191,19 +213,24 @@ a:hover { text-decoration-thickness: 2px; }
   padding: 4.5rem 1.25rem 3rem;
 }
 /* Product mark stacked above the wordmark (Codex-style hero): the icon leads, then AgX, then the
-   subtitle. Sized just under the title so the wordmark stays the focal point; transparent PNG shown
-   plainly (no tile/radius) with room to breathe before the name. */
+   subtitle. The transparent PNG sits inside an iOS-style rounded app-icon tile so the mark reads as a
+   product logo, with generous room to breathe before the name. */
 .hero-mark {
   display: block;
-  width: clamp(62px, 10vw, 84px);
-  height: auto;
-  /* sit close to the wordmark so icon + "AgX" read as one lockup (the big display type already
-     carries ascent space above the caps, so a small margin is enough). */
-  margin: 0 auto 0.35rem;
+  width: clamp(84px, 12vw, 100px);
+  height: clamp(84px, 12vw, 100px);
+  box-sizing: border-box;
+  padding: 14px;                   /* fixed inset (NOT %, which is relative to the parent width) */
+  object-fit: contain;
+  /* iOS app-icon tile: rounded-square (~22% squircle-ish), themed surface, soft shadow + hairline. */
+  border-radius: 23%;
+  background: var(--icon-box-bg);
+  box-shadow: var(--icon-box-shadow), inset 0 0 0 1px var(--icon-box-border);
+  margin: 0 auto 1.3rem;           /* more breathing room between the tile and the wordmark */
 }
 .hero h1 {
   font-family: var(--sans);
-  font-size: clamp(3.2rem, 9vw, 5.4rem);
+  font-size: clamp(2.5rem, 6vw, 3.9rem);
   font-weight: 750;
   letter-spacing: -0.02em;
   margin: 0 0 0.4rem;
@@ -1089,6 +1116,7 @@ footer.site-footer {
   border-radius: 10px;
   background: var(--bg);
   padding: 1.1rem 1.2rem;
+  min-width: 0; /* let the grid track shrink so a wide code block scrolls internally instead of overflowing the page on mobile */
 }
 .resource h3 {
   font-family: var(--sans);
