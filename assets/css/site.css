@@ -101,8 +101,9 @@ html { -webkit-text-size-adjust: 100%; }
 
 body {
   margin: 0;
-  /* a very light warm gradient wash behind the hero, tinted from the icon's amber aperture */
-  background: radial-gradient(1200px 680px at 50% -12%, var(--glow), transparent 58%), var(--bg);
+  /* a warm gradient wash (icon amber); JS eases its center toward the cursor (see site.js), and
+     without JS it stays at the top. */
+  background: radial-gradient(1100px 680px at var(--gx, 50%) var(--gy, -12%), var(--glow), transparent 58%), var(--bg);
   background-attachment: fixed;
   color: var(--text);
   /* Libertinus Sans is the AgX Studio primary/body font (matching the studio + tour --font-ui);
@@ -616,9 +617,28 @@ details .details-body { padding: 0.2rem 1rem 1rem; }
 .fineprint { font-size: 0.85rem; color: var(--muted); }
 /* academic-style inline citation markers + numbered references list (Related work) */
 .cite { font-size: 0.9em; white-space: nowrap; }
-.references { font-size: 0.85rem; color: var(--muted); padding-left: 1.5rem; margin: 0.6rem 0 0; }
-.references li { margin: 0.45rem 0; }
+.references { font-size: 0.85rem; color: var(--muted); list-style: none; counter-reset: ref; padding-left: 2.6rem; margin: 0.6rem 0 0; }
+.references li { counter-increment: ref; position: relative; margin: 0.45rem 0; }
+.references li::before { content: "[" counter(ref) "]"; position: absolute; left: -2.6rem; width: 2.2rem; text-align: right; }
 .references a { overflow-wrap: anywhere; }
+/* audio narration: topbar toggle (listen <-> pause) + a live single-line caption */
+#audio-toggle .icon-stopaudio { display: none; }
+#audio-toggle.playing .icon-listen { display: none; }
+#audio-toggle.playing .icon-stopaudio { display: inline; }
+#audio-toggle.playing { color: var(--accent); border-color: var(--accent); }
+.narration-caption {
+  position: fixed; left: 50%; bottom: 1.6rem; transform: translateX(-50%);
+  max-width: min(90vw, 46rem); z-index: 60;
+  padding: 0.6rem 1.15rem; border-radius: 999px;
+  background: var(--topbar-bg);
+  -webkit-backdrop-filter: saturate(1.5) blur(14px); backdrop-filter: saturate(1.5) blur(14px);
+  box-shadow: 0 8px 26px rgba(0, 0, 0, 0.16), inset 0 0 0 1px var(--border);
+  font-family: var(--sans); font-size: 0.98rem; line-height: 1.4; color: var(--text);
+  text-align: center; opacity: 0;
+}
+.narration-caption.show { opacity: 1; animation: capin 0.32s ease; }
+@keyframes capin { from { opacity: 0.15; transform: translateX(-50%) translateY(5px); } to { opacity: 1; transform: translateX(-50%) translateY(0); } }
+@media (prefers-reduced-motion: reduce) { .narration-caption.show { animation: none; } }
 sup.fnref { line-height: 0; }
 sup.fnref a { text-decoration: none; padding: 0 0.12em; }
 

@@ -39,6 +39,57 @@
   window.addEventListener("resize", syncTopbar, { passive: true });
   window.addEventListener("load", syncTopbar);
 
+  /* ---------- dynamic hero glow: the warm gradient eases toward the cursor ---------- */
+  var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if (!reduce) {
+    var gx = 50, gy = -12, tgx = 50, tgy = -12, graf = null;
+    function glowTick() {
+      gx += (tgx - gx) * 0.09; gy += (tgy - gy) * 0.09;
+      root.style.setProperty("--gx", gx.toFixed(1) + "%");
+      root.style.setProperty("--gy", gy.toFixed(1) + "%");
+      graf = (Math.abs(tgx - gx) > 0.1 || Math.abs(tgy - gy) > 0.1) ? requestAnimationFrame(glowTick) : null;
+    }
+    window.addEventListener("pointermove", function (e) {
+      if (e.pointerType === "touch") return;
+      tgx = (e.clientX / window.innerWidth) * 100;
+      tgy = (e.clientY / window.innerHeight) * 100;
+      if (!graf) graf = requestAnimationFrame(glowTick);
+    }, { passive: true });
+  }
+
+  /* ---------- audio narration: toggle + live one-line caption ---------- */
+  var audioBtn = document.getElementById("audio-toggle");
+  var caption = document.getElementById("narration-caption");
+  if (audioBtn && caption) {
+    var narr = null, cues = null, ci = -1;
+    function setState(playing) {
+      audioBtn.classList.toggle("playing", playing);
+      audioBtn.setAttribute("aria-pressed", playing ? "true" : "false");
+      audioBtn.setAttribute("aria-label", playing ? "Pause audio narration" : "Play audio narration");
+    }
+    function onTime() {
+      if (!cues || !cues.length) return;
+      var t = narr.currentTime, i = ci;
+      while (i + 1 < cues.length && cues[i + 1].t <= t) i++;
+      while (i >= 0 && cues[i].t > t) i--;
+      if (i !== ci && i >= 0) {
+        ci = i; caption.textContent = cues[i].s;
+        caption.classList.remove("show"); void caption.offsetWidth; caption.classList.add("show");
+      }
+    }
+    audioBtn.addEventListener("click", function () {
+      if (!narr) {
+        narr = new Audio(audioBtn.getAttribute("data-audio"));
+        narr.addEventListener("timeupdate", onTime);
+        narr.addEventListener("ended", function () { setState(false); caption.hidden = true; ci = -1; });
+        fetch(audioBtn.getAttribute("data-cues")).then(function (r) { return r.json(); })
+          .then(function (c) { cues = c; }).catch(function () { cues = []; });
+      }
+      if (narr.paused) { narr.play(); setState(true); caption.hidden = false; }
+      else { narr.pause(); setState(false); }
+    });
+  }
+
   /* ---------- mobile TOC drawer ---------- */
   var tocBtn = document.getElementById("toc-toggle");
   var toc = document.getElementById("toc");
