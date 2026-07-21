@@ -648,7 +648,6 @@ sup.fnref a { text-decoration: none; padding: 0 0.12em; }
 
 /* ---------- footer ---------- */
 footer.site-footer {
-  border-top: 1px solid var(--border);
   font-family: var(--sans);
   font-size: 0.85rem;
   color: var(--muted);
