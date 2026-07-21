@@ -52,9 +52,9 @@
       <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M2 4h12M2 8h12M2 12h12" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
     </button>
     <nav class="topnav" aria-label="Site">
-      <a href="#workspace">Workspace</a>
+      <a href="#workspace">Workspace demo</a>
+      <a href="tour.html">Watch the tour</a>
       <a href="#overview">How it works</a>
-      <a href="#trace">Trace</a>
       <a href="#evidence">Evidence</a>
       <a href="#report">Report</a>
     </nav>
@@ -72,7 +72,7 @@
      computational-imaging experiments end to end — with the skepticism built in.</p>
   <div class="hero-links">
     <a class="btn btn-primary" href="#workspace">See the workspace demo</a>
-    <a class="btn" href="#trace">Trace demo</a>
+    <a class="btn" href="tour.html">Watch the tour</a>
     <a class="btn" href="#report">Technical report <span class="pending">pending</span></a>
     <span class="btn" aria-disabled="true" title="Code release is prepared by the release pipeline and published only after the human release gate; it is not available yet.">Code <span class="pending">pending</span></span>
   </div>
@@ -84,9 +84,9 @@
   <nav class="toc" id="toc" aria-label="On this page">
     <h2>On this page</h2>
     <ol>
-      <li><a href="#workspace">The workspace</a></li>
+      <li><a href="#workspace">Workspace demo</a></li>
+      <li><a href="tour.html">Watch the tour</a></li>
       <li><a href="#overview">How it works</a></li>
-      <li><a href="#trace">Trace viewer</a></li>
       <li><a href="#system">Honest by construction</a></li>
       <li><a href="#evidence">Evidence</a></li>
       <li><a href="#report">Report &amp; docs</a></li>
@@ -334,74 +334,6 @@
         </div>
       </section>
 
-      <section class="feature" id="overview">
-        <h2>How it works</h2>
-        <p class="lead">
-          Turning raw measurements into a <em>trustworthy</em> image takes far more than calling a
-          solver: forward models must be checked, hyperparameters tuned on the right split, metrics
-          computed consistently, and every claim traced back to raw arrays. AgX runs that whole loop.
-        </p>
-
-        <figure class="figure-wide" id="fig-pipeline">
-          <svg class="teaser-svg" role="img" viewBox="0 0 920 300" aria-labelledby="fig1-title fig1-desc" xmlns="http://www.w3.org/2000/svg">
-            <title id="fig1-title">AgX pipeline overview</title>
-            <desc id="fig1-desc">Measurements flow into an agentic loop of plan, implement, run, and verify, which produces a reconstruction. A provenance ledger below records every step. A verifier gate sits between the loop and any reported claim.</desc>
-            <defs>
-              <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
-                <path d="M0 0 L10 5 L0 10 z" fill="currentColor"/>
-              </marker>
-            </defs>
-            <g fill="none" stroke="currentColor" stroke-width="1.6">
-              <rect x="18" y="86" width="150" height="86" rx="10"/>
-              <rect x="250" y="40" width="420" height="178" rx="12"/>
-              <rect x="278" y="76" width="130" height="44" rx="8"/>
-              <rect x="512" y="76" width="130" height="44" rx="8"/>
-              <rect x="278" y="148" width="130" height="44" rx="8"/>
-              <rect x="512" y="148" width="130" height="44" rx="8"/>
-              <rect x="752" y="86" width="150" height="86" rx="10"/>
-              <path d="M168 129 H 246" marker-end="url(#arr)"/>
-              <path d="M408 98 H 508" marker-end="url(#arr)"/>
-              <path d="M577 120 V 144" marker-end="url(#arr)"/>
-              <path d="M512 170 H 412" marker-end="url(#arr)"/>
-              <path d="M343 148 V 124" marker-end="url(#arr)"/>
-              <path d="M670 129 H 748" marker-end="url(#arr)"/>
-              <rect x="250" y="248" width="420" height="38" rx="8" stroke-dasharray="5 4"/>
-              <path d="M460 218 V 244" marker-end="url(#arr)"/>
-            </g>
-            <g font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" fill="currentColor">
-              <text x="93" y="122" font-size="14" text-anchor="middle">measurement</text>
-              <text x="93" y="142" font-size="15" text-anchor="middle" font-style="italic">y</text>
-              <text x="460" y="30" font-size="13" text-anchor="middle" opacity="0.75">agentic loop</text>
-              <text x="343" y="103" font-size="14" text-anchor="middle">plan</text>
-              <text x="577" y="103" font-size="14" text-anchor="middle">implement</text>
-              <text x="343" y="175" font-size="14" text-anchor="middle">verify</text>
-              <text x="577" y="175" font-size="14" text-anchor="middle">run</text>
-              <text x="827" y="122" font-size="14" text-anchor="middle">reconstruction</text>
-              <text x="827" y="142" font-size="15" text-anchor="middle" font-style="italic">x̂</text>
-              <text x="460" y="272" font-size="13" text-anchor="middle">provenance ledger — records, hashes, replay</text>
-            </g>
-          </svg>
-          <figcaption><span class="fig-label">Figure 1.</span> The AgX loop. Agents plan, implement,
-            run, and verify; a provenance ledger records every artifact. Original illustration for this
-            page, not a figure from the technical report.</figcaption>
-        </figure>
-
-        <div class="feature-cards">
-          <div class="feature-card">
-            <h3>Deployment</h3>
-            <p>Given a new imaging problem — forward model, data, goal — AgX adapts known solvers, tunes
-               them honestly on validation data, and delivers verified reconstructions on held-out test data.</p>
-          </div>
-          <div class="feature-card">
-            <h3>Discovery</h3>
-            <p>AgX proposes candidate reconstruction-algorithm variants, benchmarks them under matched
-               budgets, and reports which survive skeptical review — including the ones that don't.<sup class="fnref" id="fnref-1"><a href="#fn-1" aria-label="Footnote 1">1</a></sup></p>
-          </div>
-        </div>
-        <p class="feature-more">Full architecture and the two modes in depth →
-          <a href="#report">the technical report</a>.</p>
-      </section>
-
       <section class="feature" id="trace">
         <h2>Follow every decision</h2>
         <p class="lead">
@@ -485,6 +417,73 @@ verdict: within declared noise → eligible for reporting (demo)</code></pre>
         </div>
       </section>
 
+      <section class="feature" id="overview">
+        <h2>How it works</h2>
+        <p class="lead">
+          Turning raw measurements into a <em>trustworthy</em> image takes far more than calling a
+          solver: forward models must be checked, hyperparameters tuned on the right split, metrics
+          computed consistently, and every claim traced back to raw arrays. AgX runs that whole loop.
+        </p>
+
+        <figure class="figure-wide" id="fig-pipeline">
+          <svg class="teaser-svg" role="img" viewBox="0 0 920 300" aria-labelledby="fig1-title fig1-desc" xmlns="http://www.w3.org/2000/svg">
+            <title id="fig1-title">AgX pipeline overview</title>
+            <desc id="fig1-desc">Measurements flow into an agentic loop of plan, implement, run, and verify, which produces a reconstruction. A provenance ledger below records every step. A verifier gate sits between the loop and any reported claim.</desc>
+            <defs>
+              <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+                <path d="M0 0 L10 5 L0 10 z" fill="currentColor"/>
+              </marker>
+            </defs>
+            <g fill="none" stroke="currentColor" stroke-width="1.6">
+              <rect x="18" y="86" width="150" height="86" rx="10"/>
+              <rect x="250" y="40" width="420" height="178" rx="12"/>
+              <rect x="278" y="76" width="130" height="44" rx="8"/>
+              <rect x="512" y="76" width="130" height="44" rx="8"/>
+              <rect x="278" y="148" width="130" height="44" rx="8"/>
+              <rect x="512" y="148" width="130" height="44" rx="8"/>
+              <rect x="752" y="86" width="150" height="86" rx="10"/>
+              <path d="M168 129 H 246" marker-end="url(#arr)"/>
+              <path d="M408 98 H 508" marker-end="url(#arr)"/>
+              <path d="M577 120 V 144" marker-end="url(#arr)"/>
+              <path d="M512 170 H 412" marker-end="url(#arr)"/>
+              <path d="M343 148 V 124" marker-end="url(#arr)"/>
+              <path d="M670 129 H 748" marker-end="url(#arr)"/>
+              <rect x="250" y="248" width="420" height="38" rx="8" stroke-dasharray="5 4"/>
+              <path d="M460 218 V 244" marker-end="url(#arr)"/>
+            </g>
+            <g font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" fill="currentColor">
+              <text x="93" y="122" font-size="14" text-anchor="middle">measurement</text>
+              <text x="93" y="142" font-size="15" text-anchor="middle" font-style="italic">y</text>
+              <text x="460" y="30" font-size="13" text-anchor="middle" opacity="0.75">agentic loop</text>
+              <text x="343" y="103" font-size="14" text-anchor="middle">plan</text>
+              <text x="577" y="103" font-size="14" text-anchor="middle">implement</text>
+              <text x="343" y="175" font-size="14" text-anchor="middle">verify</text>
+              <text x="577" y="175" font-size="14" text-anchor="middle">run</text>
+              <text x="827" y="122" font-size="14" text-anchor="middle">reconstruction</text>
+              <text x="827" y="142" font-size="15" text-anchor="middle" font-style="italic">x̂</text>
+              <text x="460" y="272" font-size="13" text-anchor="middle">provenance ledger — records, hashes, replay</text>
+            </g>
+          </svg>
+          <figcaption><span class="fig-label">Figure 1.</span> The AgX loop. Agents plan, implement,
+            run, and verify; a provenance ledger records every artifact. Original illustration for this
+            page, not a figure from the technical report.</figcaption>
+        </figure>
+
+        <div class="feature-cards">
+          <div class="feature-card">
+            <h3>Deployment</h3>
+            <p>Given a new imaging problem — forward model, data, goal — AgX adapts known solvers, tunes
+               them honestly on validation data, and delivers verified reconstructions on held-out test data.</p>
+          </div>
+          <div class="feature-card">
+            <h3>Discovery</h3>
+            <p>AgX proposes candidate reconstruction-algorithm variants, benchmarks them under matched
+               budgets, and reports which survive skeptical review — including the ones that don't.<sup class="fnref" id="fnref-1"><a href="#fn-1" aria-label="Footnote 1">1</a></sup></p>
+          </div>
+        </div>
+        <p class="feature-more">Full architecture and the two modes in depth →
+          <a href="#report">the technical report</a>.</p>
+      </section>
       <section class="feature" id="system">
         <h2>Honest by construction</h2>
         <p class="lead">
