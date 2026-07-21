@@ -613,6 +613,7 @@ details .details-body { padding: 0.2rem 1rem 1rem; }
   padding-top: 1.2rem;
 }
 .footnotes h2 { font-size: 1rem; }
+.fineprint { font-size: 0.85rem; color: var(--muted); }
 sup.fnref { line-height: 0; }
 sup.fnref a { text-decoration: none; padding: 0 0.12em; }
 

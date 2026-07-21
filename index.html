@@ -35,7 +35,7 @@
 <link rel="icon" type="image/png" sizes="256x256" href="agx_icon.png">
 <link rel="icon" href="favicon.ico" sizes="any">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
-<link rel="stylesheet" href="assets/css/site.css?v=ded094c9">
+<link rel="stylesheet" href="assets/css/site.css?v=ed4fbf9b">
 <script>
 /* Apply stored theme + initial top-of-page bar state before first paint to avoid a flash. */
 (function(){try{var t=localStorage.getItem("agx-theme");if(t==="light"||t==="dark"){document.documentElement.setAttribute("data-theme",t);}}catch(e){}
@@ -91,11 +91,11 @@ if((window.scrollY||window.pageYOffset||0)<=4){document.documentElement.classLis
       <li><a href="#evidence">Evidence</a></li>
       <li><a href="#report">Report &amp; docs</a></li>
       <li><a href="#tutorial">Tutorial</a></li>
+      <li><a href="#related">Related work</a></li>
+      <li><a href="#ethics">Ethics &amp; social impact</a></li>
     </ol>
     <div class="toc-extra">
       <ol>
-        <li><a href="license.html">License</a></li>
-        <li><a href="privacy.html">Privacy</a></li>
         <li><a href="accessibility.html">Accessibility</a></li>
       </ol>
     </div>
@@ -601,7 +601,57 @@ agx run examples/quickstart_deconvolution --live   # run the loop yourself</code
         </div>
       </section>
 
-      <hr>
+      <section class="feature" id="related">
+        <h2>Related work</h2>
+        <p class="lead">AgX sits where three fast-moving lines of work meet — and takes a deliberate
+           position within them.</p>
+        <p><strong>ML for science.</strong> Machine learning is now a primary engine of discovery —
+           protein structure and design (<a href="https://www.nature.com/articles/s41586-024-07487-w" target="_blank" rel="noopener">AlphaFold&nbsp;3</a>, crowned by the 2024 Nobel Prize in
+           Chemistry), materials (GNoME, MatterGen), weather (GraphCast, GenCast — now operational at
+           ECMWF), and mathematics (FunSearch, AlphaProof) — increasingly organized around
+           <em>scientific foundation models</em>.</p>
+        <p><strong>Agentic AI for research.</strong> The frontier is autonomous: &#8220;AI-scientist&#8221;
+           systems (Sakana AI, Google&#8217;s AI co-scientist) and agent-run chemistry and materials labs
+           (Coscientist, ChemCrow, A-Lab). Yet research-agent benchmarks stay low —
+           <a href="https://openai.com/index/mle-bench/" target="_blank" rel="noopener">MLE-bench</a>
+           ~17%, ScienceAgentBench ~32%, CORE-Bench ~19% on the hardest tasks — and documented
+           failures (reward-hacked evaluations, contested &#8220;discoveries,&#8221; irreproducible results)
+           are common.</p>
+        <p><strong>The science of ML — and a rigor crisis.</strong> As ML becomes an object of study
+           (scaling laws, interpretability, the unsettled &#8220;emergence&#8221; debate), it inherits the
+           failures it imports elsewhere:
+           <a href="https://arxiv.org/abs/2207.07048" target="_blank" rel="noopener">leakage-driven
+           irreproducibility</a> across hundreds of papers, and a wave of AI-generated &#8220;slop&#8221;
+           straining peer review.</p>
+        <p>The common bottleneck is <strong>verification</strong>: generation has outpaced validation.
+           AgX&#8217;s response is to fold skepticism into the loop — measurement-fidelity checks, enforced
+           validation/test discipline, adversarial multi-agent review, and provenance-locked results —
+           so that connecting scientists to the best of AI/ML also yields results they can trust.</p>
+        <p class="fineprint">External work is cited for context and current as of mid-2026; some claims
+           (e.g., autonomous-lab &#8220;discovery&#8221; counts, the emergence debate) remain actively
+           disputed. Full citations appear in the technical report.</p>
+      </section>
+
+      <section class="feature" id="ethics">
+        <h2>Ethics &amp; social impact</h2>
+        <p><strong>Why it matters.</strong> Autonomous scientific agents can produce figures, metrics,
+           and even papers far faster than anyone can check them — and the field is already paying for
+           it in reward-hacked benchmarks, irreproducible findings, and AI-generated &#8220;slop.&#8221; An
+           agent that optimizes a number while ignoring the physics, the data split, or the provenance
+           is not a scientific tool; it is a liability.</p>
+        <p><strong>Our stance.</strong> AgX is built so that speed does not cost trust: every reported
+           number binds to raw artifacts and a provenance record; measurement-fidelity and
+           validation/test discipline are enforced, not optional; results are cross-examined by
+           adversarial verifiers; and publication stays a human-gated act — the automation prepares the
+           evidence, a person approves it.</p>
+        <p><strong>Limits and dual use.</strong> AgX accelerates the search over methods; it does not
+           replace domain expertise, experimental validation, or peer review, and its outputs are
+           proposals to be checked, not settled facts. The same automation that speeds honest work could
+           amplify careless or bad-faith work — which is precisely why we invest in verification, not
+           just generation.</p>
+        <p><strong>Access.</strong> We want the interface itself to be usable by as many people as
+           possible; see the <a href="accessibility.html">accessibility statement</a>.</p>
+      </section>
 
       <section class="footnotes" aria-label="Notes">
         <h2>Notes</h2>
@@ -632,12 +682,9 @@ agx run examples/quickstart_deconvolution --live   # run the loop yourself</code
 <footer class="site-footer">
   <div class="footer-inner">
     <span>© 2026 the AgX authors.</span>
-    <nav aria-label="Legal and accessibility">
-      <a href="license.html">License</a>
-      <a href="privacy.html">Privacy</a>
+    <nav aria-label="Accessibility">
       <a href="accessibility.html">Accessibility</a>
     </nav>
-    <span>Self-contained static page — no analytics, no cookies, no external requests.</span>
   </div>
 </footer>
 

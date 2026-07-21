@@ -4,12 +4,12 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Accessibility — AgX</title>
-<meta name="description" content="Accessibility statement for the AgX public site: WCAG 2.2 AA targets, keyboard support, and known limitations.">
+<meta name="description" content="Accessibility statement for the AgX public site: a WCAG 2.1 AA aim, keyboard support, honest limitations, and a contact.">
 <link rel="canonical" href="https://agentic-imaging.github.io/accessibility.html">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="AgX — Agentic Scientific Imaging">
 <meta property="og:title" content="Accessibility — AgX">
-<meta property="og:description" content="Accessibility statement for the AgX public site: WCAG 2.2 AA targets, keyboard support, and known limitations.">
+<meta property="og:description" content="Accessibility statement for the AgX public site: a WCAG 2.1 AA aim, keyboard support, honest limitations, and a contact.">
 <meta property="og:url" content="https://agentic-imaging.github.io/accessibility.html">
 <meta property="og:image" content="https://agentic-imaging.github.io/og-image.png">
 <meta name="twitter:card" content="summary_large_image">
@@ -18,7 +18,7 @@
 <link rel="icon" type="image/png" sizes="256x256" href="agx_icon.png">
 <link rel="icon" href="favicon.ico" sizes="any">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
-<link rel="stylesheet" href="assets/css/site.css?v=ded094c9">
+<link rel="stylesheet" href="assets/css/site.css?v=ed4fbf9b">
 <script>(function(){try{var t=localStorage.getItem("agx-theme");if(t==="light"||t==="dark"){document.documentElement.setAttribute("data-theme",t);}}catch(e){}})();</script>
 <noscript><style>#theme-toggle{display:none!important}</style></noscript>
 </head>
@@ -41,45 +41,47 @@
 
 <main id="main" class="page-narrow">
   <h1>Accessibility</h1>
-  <p>This site targets <strong>WCAG 2.2 level AA</strong>. Implemented measures:</p>
+  <p>The AgX project is committed, in good faith, to making this site usable by the widest possible
+     audience, including people with disabilities. This commitment is informed by the
+     digital-accessibility policies of
+     <a href="https://digitalaccessibility.caltech.edu/" target="_blank" rel="noopener">Caltech</a>,
+     <a href="https://accessibility.mit.edu/" target="_blank" rel="noopener">MIT</a>, and
+     <a href="https://www.hku.hk/web-accessibility/" target="_blank" rel="noopener">HKU</a>. We aim to meet
+     the W3C <strong>Web Content Accessibility Guidelines (WCAG) 2.1, Level AA</strong>.</p>
+  <h2>What we do</h2>
   <ul>
-    <li>Semantic landmarks (<code>header</code>, <code>nav</code>, <code>main</code>,
-        <code>article</code>, <code>footer</code>) and a skip-to-content link on every page.</li>
-    <li>Full keyboard operability: navigation, theme toggle, table-of-contents drawer
-        (with <kbd>Esc</kbd> to close), collapsible sections, and copy buttons are all reachable
-        and operable by keyboard, with visible <code>:focus-visible</code> indicators.</li>
-    <li>Color contrast at or above AA in both light and dark themes, for text, links, chips,
-        and the sample-evidence banner.</li>
-    <li>Alternative text for the diagram (an SVG with <code>role="img"</code>, a title, and a
-        long description) and no meaning conveyed by color alone.</li>
-    <li><code>prefers-reduced-motion</code> is honored: smooth scrolling and disclosure
-        animations are disabled when reduced motion is requested.</li>
-    <li>The site is fully readable without JavaScript; scripting only adds conveniences
-        (theme toggle, scroll-spy highlight, copy buttons, sample-table rendering — a
-        <code>noscript</code> note points at the raw sample file).</li>
-    <li>Responsive layout down to small phone widths, with no horizontal scrolling of body text
-        and touch targets sized for WCAG 2.2 (target-size minimum).</li>
+    <li>Semantic landmarks (<code>header</code>, <code>nav</code>, <code>main</code>, <code>article</code>,
+        <code>footer</code>), a logical heading order, and a skip-to-content link on every page.</li>
+    <li>Full keyboard operability — navigation, theme toggle, the table-of-contents drawer
+        (<kbd>Esc</kbd> to close), and copy buttons — with visible <code>:focus-visible</code> indicators.</li>
+    <li>Text and interface colors chosen for AA contrast in both light and dark themes; no information is
+        conveyed by color alone.</li>
+    <li>Text alternatives for the diagram (an SVG with <code>role="img"</code>, a title, and a long
+        description).</li>
+    <li>Responsive, zoomable layouts down to small phone widths, with no horizontal scrolling of body text
+        and generously sized touch targets.</li>
+    <li><code>prefers-reduced-motion</code> is honored, and the site is <strong>fully readable without
+        JavaScript</strong> — scripting only adds conveniences.</li>
   </ul>
   <h2>Known limitations</h2>
   <ul>
-    <li>Without JavaScript the table of contents is unavailable on small screens (headings and
-        the in-page order remain fully navigable).</li>
-    <li>The interactive trace demo presents code excerpts in horizontally scrollable blocks;
-        screen-reader users get the same content linearly.</li>
+    <li>Some data figures and the interactive demo convey information visually; screen-reader users get the
+        same content linearly, but text alternatives for data figures are limited.</li>
+    <li>Without JavaScript the small-screen table-of-contents drawer is unavailable (all headings and the
+        in-page order remain navigable).</li>
+    <li>The site has not had an independent third-party audit, so full WCAG 2.1 AA conformance is not
+        certified — this is a good-faith, self-assessed statement.</li>
   </ul>
-  <p>
-    Accessibility feedback is welcome — a contact route ships with the public release
-    (this preview intentionally publishes no contact addresses).
-  </p>
+  <h2>Feedback</h2>
+  <p>If you encounter a barrier, please email
+     <a href="mailto:bouman.group@gmail.com">bouman.group@gmail.com</a> and we will respond promptly.</p>
   <p><a href="index.html">← Back to the main page</a></p>
 </main>
 
 <footer class="site-footer">
   <div class="footer-inner">
     <span>© 2026 the AgX authors.</span>
-    <nav aria-label="Legal and accessibility">
-      <a href="license.html">License</a>
-      <a href="privacy.html">Privacy</a>
+    <nav aria-label="Accessibility">
       <a href="accessibility.html" aria-current="page">Accessibility</a>
     </nav>
   </div>
