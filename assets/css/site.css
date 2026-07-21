@@ -80,7 +80,9 @@ body {
   margin: 0;
   background: var(--bg);
   color: var(--text);
-  font-family: var(--serif);
+  /* Libertinus Sans is the AgX Studio primary/body font (matching the studio + tour --font-ui);
+     the article body renders in it, with Georgia (--serif) kept only as a demo/doc accent. */
+  font-family: var(--sans);
   font-size: 1.0625rem;
   line-height: 1.72;
 }
