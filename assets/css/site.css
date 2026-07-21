@@ -58,9 +58,11 @@
   --shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
   --glow: rgba(230, 132, 46, 0.16);
   --topbar-bg: rgba(15, 17, 21, 0.64);
-  --icon-box-bg: linear-gradient(150deg, #1d212a, #15171d);
+  /* the app-icon tile keeps its light/cream face in dark mode (like a real home-screen icon); only the
+     shadow deepens for the dark page. */
+  --icon-box-bg: linear-gradient(150deg, #ffffff, #fbf2e7);
   --icon-box-shadow: 0 12px 32px rgba(0, 0, 0, 0.5), 0 2px 6px rgba(0, 0, 0, 0.35);
-  --icon-box-border: rgba(255, 255, 255, 0.07);
+  --icon-box-border: rgba(0, 0, 0, 0.06);
   color-scheme: dark;
 }
 
@@ -81,9 +83,9 @@
     --shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
     --glow: rgba(230, 132, 46, 0.16);
     --topbar-bg: rgba(15, 17, 21, 0.64);
-    --icon-box-bg: linear-gradient(150deg, #1d212a, #15171d);
+    --icon-box-bg: linear-gradient(150deg, #ffffff, #fbf2e7);
     --icon-box-shadow: 0 12px 32px rgba(0, 0, 0, 0.5), 0 2px 6px rgba(0, 0, 0, 0.35);
-    --icon-box-border: rgba(255, 255, 255, 0.07);
+    --icon-box-border: rgba(0, 0, 0, 0.06);
     color-scheme: dark;
   }
 }
@@ -225,7 +227,7 @@ a:hover { color: var(--accent-hover); }
 /* ---------- hero ---------- */
 .hero {
   text-align: center;
-  padding: 10rem 1.25rem 6rem;   /* lots of air above the mark, and a comfortable gap to the content below */
+  padding: 4.5rem 1.25rem 3rem;   /* base hero; the landing page overrides this via .hero-product */
 }
 /* Product mark stacked above the wordmark (Codex-style hero): the icon leads, then AgX, then the
    subtitle. The transparent PNG sits inside an iOS-style rounded app-icon tile so the mark reads as a
@@ -691,7 +693,7 @@ footer.site-footer {
   .toc.open { display: block; }
 
   .topnav { display: none; }
-  .hero { padding-top: 6rem; }
+  .hero { padding-top: 3rem; }
 }
 
 @media print {
@@ -1032,7 +1034,9 @@ footer.site-footer {
    ============================================================ */
 
 /* hero: product framing (concise value prop + CTA row + honesty note) */
-.hero-product { padding: 4rem 1.25rem 2.4rem; }
+/* the landing hero owns its own generous spacing (this wins over .hero): lots of air above the mark and
+   a big open gap down to the content; clamp keeps it proportional on small screens. */
+.hero-product { padding: clamp(4.5rem, 9vw, 9rem) 1.25rem clamp(5rem, 13vw, 11rem); }
 .hero-product .tagline {
   font-family: var(--sans);
   font-style: normal;
