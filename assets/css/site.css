@@ -225,7 +225,7 @@ a:hover { color: var(--accent-hover); }
 /* ---------- hero ---------- */
 .hero {
   text-align: center;
-  padding: 7rem 1.25rem 3.5rem;   /* generous space above the mark for an airy, centered lockup */
+  padding: 10rem 1.25rem 4rem;   /* lots of air above the mark — spacing is the art */
 }
 /* Product mark stacked above the wordmark (Codex-style hero): the icon leads, then AgX, then the
    subtitle. The transparent PNG sits inside an iOS-style rounded app-icon tile so the mark reads as a
@@ -258,7 +258,7 @@ a:hover { color: var(--accent-hover); }
   font-size: clamp(1.15rem, 2.6vw, 1.5rem);
   font-weight: 400;
   color: var(--muted);
-  margin: 0 0 2.4rem;   /* open space after the subtitle before the tagline/CTAs */
+  margin: 0 0 3.75rem;   /* generous open space after the subtitle before the tagline/CTAs */
 }
 .hero .tagline {
   max-width: 38rem;
@@ -691,7 +691,7 @@ footer.site-footer {
   .toc.open { display: block; }
 
   .topnav { display: none; }
-  .hero { padding-top: 4.5rem; }
+  .hero { padding-top: 6rem; }
 }
 
 @media print {

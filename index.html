@@ -35,7 +35,7 @@
 <link rel="icon" type="image/png" sizes="256x256" href="agx_icon.png">
 <link rel="icon" href="favicon.ico" sizes="any">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
-<link rel="stylesheet" href="assets/css/site.css">
+<link rel="stylesheet" href="assets/css/site.css?v=66c614af">
 <script>
 /* Apply stored theme + initial top-of-page bar state before first paint to avoid a flash. */
 (function(){try{var t=localStorage.getItem("agx-theme");if(t==="light"||t==="dark"){document.documentElement.setAttribute("data-theme",t);}}catch(e){}
@@ -53,8 +53,8 @@ if((window.scrollY||window.pageYOffset||0)<=4){document.documentElement.classLis
       <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M2 4h12M2 8h12M2 12h12" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
     </button>
     <nav class="topnav" aria-label="Site">
-      <a href="#workspace">Workspace demo</a>
       <a href="tour.html">Watch the tour</a>
+      <a href="#workspace">Workspace demo</a>
       <a href="#overview">How it works</a>
       <a href="#evidence">Evidence</a>
       <a href="#report">Report</a>
@@ -73,10 +73,10 @@ if((window.scrollY||window.pageYOffset||0)<=4){document.documentElement.classLis
   <p class="tagline">Language-model agents that plan, implement, run, <strong>verify</strong>, and document
      computational-imaging experiments end to end — with the skepticism built in.</p>
   <div class="hero-links">
-    <a class="btn btn-primary" href="#workspace">Workspace demo</a>
-    <a class="btn" href="tour.html">Watch the tour</a>
+    <a class="btn btn-primary" href="tour.html">Watch the tour</a>
+    <a class="btn" href="#workspace">Workspace demo</a>
     <a class="btn" href="#report">Technical report <span class="pending">pending</span></a>
-    <span class="btn" aria-disabled="true" title="Code release is prepared by the release pipeline and published only after the human release gate; it is not available yet.">Code <span class="pending">pending</span></span>
+    <a class="btn" href="https://github.com/agentic-imaging" target="_blank" rel="noopener">Code</a>
   </div>
   <p class="hero-note">Every number on this page is an illustrative placeholder until sealed evidence is
      revealed and human-approved. This site shows the interface — the numbers will live in the report.</p>
@@ -86,8 +86,8 @@ if((window.scrollY||window.pageYOffset||0)<=4){document.documentElement.classLis
   <nav class="toc" id="toc" aria-label="On this page">
     <h2>On this page</h2>
     <ol>
-      <li><a href="#workspace">Workspace demo</a></li>
       <li><a href="tour.html">Watch the tour</a></li>
+      <li><a href="#workspace">Workspace demo</a></li>
       <li><a href="#overview">How it works</a></li>
       <li><a href="#system">Honest by construction</a></li>
       <li><a href="#evidence">Evidence</a></li>
@@ -645,7 +645,7 @@ agx run examples/quickstart_deconvolution --live   # run the loop yourself</code
   { "case_study": "Provenance study", "modality": "Tamper & replay battery", "metric": "Tamper detection", "value": "XX/XX (sample)", "evidence_id": "pending E10" }
 ] }
 </script>
-<script src="assets/js/site.js" defer></script>
-<script src="assets/js/tour.js" defer></script>
+<script src="assets/js/site.js?v=1afa71be" defer></script>
+<script src="assets/js/tour.js?v=3188771b" defer></script>
 </body>
 </html>
