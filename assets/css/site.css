@@ -21,7 +21,9 @@
   --bg-alt: #f6f6f4;
   --text: #1a1a1a;
   --muted: #535353;
-  --accent: #0b57d0;
+  /* accent = the warm amber of the background glow, darkened to pass AA on white (link text + button) */
+  --accent: #b5560d;
+  --accent-hover: #8f4409;
   --border: #e2e2df;
   --code-bg: #f4f4f2;
   --banner-bg: #fff4dc;
@@ -46,7 +48,8 @@
   --bg-alt: #171a21;
   --text: #e8e8e6;
   --muted: #a8a8a4;
-  --accent: #8ab4f8;
+  --accent: #ec9a4e;
+  --accent-hover: #f6b877;
   --border: #2a2e37;
   --code-bg: #1b1f27;
   --banner-bg: #2e2410;
@@ -68,7 +71,8 @@
     --bg-alt: #171a21;
     --text: #e8e8e6;
     --muted: #a8a8a4;
-    --accent: #8ab4f8;
+    --accent: #ec9a4e;
+    --accent-hover: #f6b877;
     --border: #2a2e37;
     --code-bg: #1b1f27;
     --banner-bg: #2e2410;
@@ -108,8 +112,9 @@ body {
 
 img, svg { max-width: 100%; height: auto; }
 
-a { color: var(--accent); text-decoration-thickness: 1px; text-underline-offset: 2px; }
-a:hover { text-decoration-thickness: 2px; }
+/* links carry color, not underlines: no rule underline, hover shifts to a deeper/brighter accent shade */
+a { color: var(--accent); text-decoration: none; }
+a:hover { color: var(--accent-hover); }
 
 :focus-visible {
   outline: 2px solid var(--accent);
@@ -195,7 +200,7 @@ a:hover { text-decoration-thickness: 2px; }
   font-size: 0.9rem;
   padding: 0.2rem 0.1rem;
 }
-.topnav a:hover { color: var(--accent); text-decoration: underline; }
+.topnav a:hover { color: var(--accent); }
 
 .icon-btn {
   background: none;
@@ -220,7 +225,7 @@ a:hover { text-decoration-thickness: 2px; }
 /* ---------- hero ---------- */
 .hero {
   text-align: center;
-  padding: 4.5rem 1.25rem 3rem;
+  padding: 7rem 1.25rem 3.5rem;   /* generous space above the mark for an airy, centered lockup */
 }
 /* Product mark stacked above the wordmark (Codex-style hero): the icon leads, then AgX, then the
    subtitle. The transparent PNG sits inside an iOS-style rounded app-icon tile so the mark reads as a
@@ -230,7 +235,7 @@ a:hover { text-decoration-thickness: 2px; }
   width: clamp(60px, 8vw, 76px);
   height: clamp(60px, 8vw, 76px);
   box-sizing: border-box;
-  padding: 8px;                    /* tighter inset so the aperture fills more of the tile (~79% at desktop) */
+  padding: 4px;                    /* thin inset so the aperture fills most of the tile (~90% at desktop) */
   object-fit: contain;
   /* iOS app-icon tile: rounded-square (~22% squircle-ish), themed surface, soft shadow + hairline. */
   border-radius: 23%;
@@ -253,7 +258,7 @@ a:hover { text-decoration-thickness: 2px; }
   font-size: clamp(1.15rem, 2.6vw, 1.5rem);
   font-weight: 400;
   color: var(--muted);
-  margin: 0 0 1.1rem;
+  margin: 0 0 2.4rem;   /* open space after the subtitle before the tagline/CTAs */
 }
 .hero .tagline {
   max-width: 38rem;
@@ -686,7 +691,7 @@ footer.site-footer {
   .toc.open { display: block; }
 
   .topnav { display: none; }
-  .hero { padding-top: 3rem; }
+  .hero { padding-top: 4.5rem; }
 }
 
 @media print {

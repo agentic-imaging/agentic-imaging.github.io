@@ -35,11 +35,33 @@
     --shadow:#539bf544;
   }
 }
+/* public-site frame: warm hero wash + iOS icon tile — matches agentic-imaging.github.io.
+   Added AFTER the studio-token snapshot so that stays byte-identical to styles.css. */
+:root{
+  --warm-glow:rgba(230,132,46,.11);
+  --tile-bg:linear-gradient(150deg,#ffffff,#fbf2e7);
+  --tile-shadow:0 10px 30px rgba(120,66,18,.16),0 2px 6px rgba(0,0,0,.06);
+  --tile-border:rgba(0,0,0,.06);
+}
+:root[data-theme="dark"]{
+  --warm-glow:rgba(230,132,46,.16);
+  --tile-bg:linear-gradient(150deg,#1d212a,#15171d);
+  --tile-shadow:0 12px 32px rgba(0,0,0,.5),0 2px 6px rgba(0,0,0,.35);
+  --tile-border:rgba(255,255,255,.07);
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --warm-glow:rgba(230,132,46,.16);
+    --tile-bg:linear-gradient(150deg,#1d212a,#15171d);
+    --tile-shadow:0 12px 32px rgba(0,0,0,.5),0 2px 6px rgba(0,0,0,.35);
+    --tile-border:rgba(255,255,255,.07);
+  }
+}
 *{box-sizing:border-box}
 html,body{margin:0;height:100%}
 body{
   background:
-    radial-gradient(1200px 600px at 50% -10%, color-mix(in srgb,var(--blue) 8%,transparent), transparent 60%),
+    radial-gradient(1200px 680px at 50% -12%, var(--warm-glow), transparent 58%),
     var(--bg);
   color:var(--text); font-family:var(--font-ui);
   display:flex; align-items:center; justify-content:center; overflow:hidden;
@@ -79,7 +101,7 @@ a{color:var(--blue)}
 @keyframes fadein{from{opacity:0}to{opacity:1}}
 
 /* ---------------- scene 1: title ---------------- */
-.mark{width:76px;height:76px;background:var(--agx) center/contain no-repeat}
+.mark{width:76px;height:76px;border-radius:23%;background:var(--agx) center/calc(100% - 8px) no-repeat,var(--tile-bg);box-shadow:var(--tile-shadow),inset 0 0 0 1px var(--tile-border)}
 .mark .ring{fill:none;stroke:var(--blue);stroke-width:5;opacity:.9}
 .scene.active .mark .ring{stroke-dasharray:210;stroke-dashoffset:210;animation:draw 1.1s .1s ease forwards}
 .mark .core{fill:var(--blue);opacity:0}
