@@ -147,11 +147,21 @@ a:hover { text-decoration-thickness: 2px; }
   top: 0;
   z-index: 50;
   /* minimal glass top bar: no divider line, translucent background that lets the page (and its warm
-     glow) show through, with a blur so scrolling content stays legible underneath. */
+     glow) show through, with a blur so scrolling content stays legible underneath. This glass state is
+     also the no-JS default; JS makes the bar fully transparent at the very top (see `.attop` below). */
   background: var(--topbar-bg);
   -webkit-backdrop-filter: saturate(1.5) blur(14px);
   backdrop-filter: saturate(1.5) blur(14px);
+  transition: background 0.25s ease, -webkit-backdrop-filter 0.25s ease, backdrop-filter 0.25s ease;
   font-family: var(--sans);
+}
+/* at the very top the bar blends into the hero — fully transparent, no blur — then turns to glass as
+   soon as content scrolls underneath. Progressive enhancement: JS toggles `.attop` on <html>, so
+   without JS the safe glass state above always applies. */
+.attop .topbar {
+  background: transparent;
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
 }
 .topbar-inner {
   max-width: var(--wide);
@@ -217,20 +227,22 @@ a:hover { text-decoration-thickness: 2px; }
    product logo, with generous room to breathe before the name. */
 .hero-mark {
   display: block;
-  width: clamp(84px, 12vw, 100px);
-  height: clamp(84px, 12vw, 100px);
+  width: clamp(60px, 8vw, 76px);
+  height: clamp(60px, 8vw, 76px);
   box-sizing: border-box;
-  padding: 14px;                   /* fixed inset (NOT %, which is relative to the parent width) */
+  padding: 8px;                    /* tighter inset so the aperture fills more of the tile (~79% at desktop) */
   object-fit: contain;
   /* iOS app-icon tile: rounded-square (~22% squircle-ish), themed surface, soft shadow + hairline. */
   border-radius: 23%;
   background: var(--icon-box-bg);
   box-shadow: var(--icon-box-shadow), inset 0 0 0 1px var(--icon-box-border);
-  margin: 0 auto 1.3rem;           /* more breathing room between the tile and the wordmark */
+  margin: 0 auto 1rem;             /* breathing room, kept proportional to the smaller tile */
 }
 .hero h1 {
   font-family: var(--sans);
-  font-size: clamp(2.5rem, 6vw, 3.9rem);
+  /* wordmark width tracks the tile width: AgX renders ~1.86x its font-size, so font = tile / 1.86
+     keeps "AgX" the same width as the rounded square across the whole clamp range. */
+  font-size: clamp(2.01rem, 4.3vw, 2.55rem);
   font-weight: 750;
   letter-spacing: -0.02em;
   margin: 0 0 0.4rem;

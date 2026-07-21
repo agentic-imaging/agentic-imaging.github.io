@@ -29,6 +29,16 @@
     });
   }
 
+  /* ---------- top bar: transparent at the very top, glass once scrolled ---------- */
+  function syncTopbar() {
+    var y = window.scrollY || window.pageYOffset || 0;
+    root.classList.toggle("attop", y <= 4);
+  }
+  syncTopbar();
+  window.addEventListener("scroll", syncTopbar, { passive: true });
+  window.addEventListener("resize", syncTopbar, { passive: true });
+  window.addEventListener("load", syncTopbar);
+
   /* ---------- mobile TOC drawer ---------- */
   var tocBtn = document.getElementById("toc-toggle");
   var toc = document.getElementById("toc");

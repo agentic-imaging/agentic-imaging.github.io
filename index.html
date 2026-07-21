@@ -37,8 +37,9 @@
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="stylesheet" href="assets/css/site.css">
 <script>
-/* Apply stored theme before first paint to avoid a flash (localStorage only). */
-(function(){try{var t=localStorage.getItem("agx-theme");if(t==="light"||t==="dark"){document.documentElement.setAttribute("data-theme",t);}}catch(e){}})();
+/* Apply stored theme + initial top-of-page bar state before first paint to avoid a flash. */
+(function(){try{var t=localStorage.getItem("agx-theme");if(t==="light"||t==="dark"){document.documentElement.setAttribute("data-theme",t);}}catch(e){}
+if((window.scrollY||window.pageYOffset||0)<=4){document.documentElement.classList.add("attop");}})();
 </script>
 <noscript><style>#theme-toggle,#toc-toggle,.trace-actions{display:none!important}</style></noscript>
 </head>
@@ -72,7 +73,7 @@
   <p class="tagline">Language-model agents that plan, implement, run, <strong>verify</strong>, and document
      computational-imaging experiments end to end — with the skepticism built in.</p>
   <div class="hero-links">
-    <a class="btn btn-primary" href="#workspace">See the workspace demo</a>
+    <a class="btn btn-primary" href="#workspace">Workspace demo</a>
     <a class="btn" href="tour.html">Watch the tour</a>
     <a class="btn" href="#report">Technical report <span class="pending">pending</span></a>
     <span class="btn" aria-disabled="true" title="Code release is prepared by the release pipeline and published only after the human release gate; it is not available yet.">Code <span class="pending">pending</span></span>
