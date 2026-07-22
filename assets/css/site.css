@@ -44,8 +44,8 @@
 }
 
 [data-theme="dark"] {
-  --bg: #131211;
-  --bg-alt: #1a1816;
+  --bg: #0f1115;
+  --bg-alt: #171a21;
   --text: #e8e8e6;
   --muted: #a8a8a4;
   --accent: #ec9a4e;
@@ -56,7 +56,7 @@
   --banner-ink: #ffd27a;
   --chip-bg: #202531;
   --shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
-  --glow: rgba(236, 154, 78, 0.09);
+  --glow: rgba(230, 132, 46, 0.16);
   --topbar-bg: rgba(15, 17, 21, 0.64);
   /* the app-icon tile keeps its light/cream face in dark mode (like a real home-screen icon); only the
      shadow deepens for the dark page. */
@@ -69,8 +69,8 @@
 /* System preference is the default when JS has not stamped a choice. */
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme]) {
-    --bg: #131211;
-    --bg-alt: #1a1816;
+    --bg: #0f1115;
+    --bg-alt: #171a21;
     --text: #e8e8e6;
     --muted: #a8a8a4;
     --accent: #ec9a4e;
@@ -81,7 +81,7 @@
     --banner-ink: #ffd27a;
     --chip-bg: #202531;
     --shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
-    --glow: rgba(236, 154, 78, 0.09);
+    --glow: rgba(230, 132, 46, 0.16);
     --topbar-bg: rgba(15, 17, 21, 0.64);
     --icon-box-bg: linear-gradient(150deg, #ffffff, #fbf2e7);
     --icon-box-shadow: 0 12px 32px rgba(0, 0, 0, 0.5), 0 2px 6px rgba(0, 0, 0, 0.35);
@@ -101,16 +101,40 @@ html { -webkit-text-size-adjust: 100%; }
 
 body {
   margin: 0;
-  /* a warm gradient wash (icon amber); JS eases its center toward the cursor (see site.js), and
-     without JS it stays at the top. */
-  background: radial-gradient(1100px 680px at var(--gx, 50%) var(--gy, -12%), var(--glow), transparent 58%), var(--bg);
-  background-attachment: fixed;
+  background: var(--bg);
   color: var(--text);
   /* Libertinus Sans is the AgX Studio primary/body font (matching the studio + tour --font-ui);
      the article body renders in it, with Georgia (--serif) kept only as a demo/doc accent. */
   font-family: var(--sans);
   font-size: 1.0625rem;
   line-height: 1.72;
+}
+
+/* warm ambient glow as a fixed backdrop layer (moved off the body background so it can fade and
+   "breathe" independently). JS eases its center toward the cursor (--gx/--gy), shows/hides it
+   (--glow-on), and toggles .breathing on <html> after an idle hover. Without JS it stays centered
+   near the top and fully visible (--glow-on defaults to 1). */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background: radial-gradient(1100px 680px at var(--gx, 50%) var(--gy, -12%), var(--glow), transparent 58%);
+  opacity: var(--glow-on, 1);
+  transition: opacity 0.5s ease;
+  will-change: opacity, transform;
+  transform: translateZ(0);
+}
+@media (hover: hover) and (pointer: fine) {
+  :root.breathing body::before { animation: agx-breathe 14s ease-in-out infinite; }
+}
+@keyframes agx-breathe {
+  0%, 100% { transform: translateZ(0) scale(0.94); opacity: 0.86; }
+  50%      { transform: translateZ(0) scale(1.06); opacity: 1; }
+}
+@media (prefers-reduced-motion: reduce) {
+  :root.breathing body::before { animation: none; }
 }
 
 img, svg { max-width: 100%; height: auto; }
@@ -617,8 +641,6 @@ details .details-body { padding: 0.2rem 1rem 1rem; }
 .fineprint { font-size: 0.85rem; color: var(--muted); }
 /* academic-style inline citation markers + numbered references list (Related work) */
 .cite { font-size: 0.9em; white-space: nowrap; }
-.cite-back { color: var(--muted); text-decoration: none; white-space: nowrap; }
-.cite-back:hover, .cite-back:focus-visible { color: var(--accent); text-decoration: underline; }
 .references { font-size: 0.85rem; color: var(--muted); list-style: none; counter-reset: ref; padding-left: 2.6rem; margin: 0.6rem 0 0; }
 .references li { counter-increment: ref; position: relative; margin: 0.45rem 0; }
 .references li::before { content: "[" counter(ref) "]"; position: absolute; left: -2.6rem; width: 2.2rem; text-align: right; }
@@ -641,14 +663,6 @@ details .details-body { padding: 0.2rem 1rem 1rem; }
 .narration-caption.show { opacity: 1; animation: capin 0.32s ease; }
 @keyframes capin { from { opacity: 0.15; transform: translateX(-50%) translateY(5px); } to { opacity: 1; transform: translateX(-50%) translateY(0); } }
 @media (prefers-reduced-motion: reduce) { .narration-caption.show { animation: none; } }
-.cap-close {
-  position: absolute; top: -10px; right: -10px; width: 22px; height: 22px; padding: 0;
-  display: grid; place-items: center; border-radius: 50%;
-  border: 1px solid var(--border); background: var(--bg-alt); color: var(--muted);
-  font: 400 15px/1 var(--sans); cursor: pointer; opacity: 0; transition: opacity 0.18s, color 0.18s, border-color 0.18s;
-}
-.narration-caption:hover .cap-close, .cap-close:focus-visible { opacity: 1; outline: none; }
-.cap-close:hover { color: var(--text); border-color: var(--accent); }
 sup.fnref { line-height: 0; }
 sup.fnref a { text-decoration: none; padding: 0 0.12em; }
 
@@ -1090,6 +1104,51 @@ footer.site-footer {
   font-size: 0.95rem;
   line-height: 1.55;
   color: var(--muted);
+}
+
+/* ---------- embedded tour (landing) ----------
+   A full-width band between the hero and the article; the guided tour renders in a same-origin
+   iframe, driven by the start/theme/pause handshake in site.js. */
+.tour-embed {
+  padding: clamp(3rem, 6vw, 5.5rem) 0;
+  background: var(--bg-alt);
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+}
+#tour { scroll-margin-top: 64px; }   /* clear the sticky top bar when navigated to */
+.tour-embed-inner {
+  max-width: 1060px;
+  margin: 0 auto;
+  padding: 0 1.25rem;
+  text-align: center;
+}
+.tour-embed-inner h2 {
+  font-family: var(--sans);
+  font-size: clamp(1.5rem, 3.2vw, 2rem);
+  margin: 0 0 0.5rem;
+}
+.tour-embed-sub {
+  max-width: 40rem;
+  margin: 0 auto 1.6rem;
+  color: var(--muted);
+  font-size: 1rem;
+}
+.tour-stage { margin: 0 auto; }
+#tour-frame {
+  width: 100%;
+  height: clamp(500px, 82vh, 760px);      /* fallback for browsers without dvh */
+  height: clamp(500px, 82dvh, 760px);
+  border: 0;
+  border-radius: 16px;
+  box-shadow: var(--shadow);
+  background: var(--bg);
+  overscroll-behavior: contain;
+  display: block;
+}
+.tour-embed-fallback {
+  display: none;   /* revealed under <noscript> */
+  margin-top: 1.2rem;
+  font-weight: 600;
 }
 
 /* primary CTA — filled accent; text contrast flips with the theme's accent */

@@ -7,6 +7,7 @@
   /* ---------- theme toggle (localStorage only; no cookies) ---------- */
   var THEME_KEY = "agx-theme";
   var root = document.documentElement;
+  var tourFrame = document.getElementById("tour-frame");
 
   function storedTheme() {
     try { return localStorage.getItem(THEME_KEY); } catch (e) { return null; }
@@ -26,6 +27,10 @@
       applyTheme(next);
       try { localStorage.setItem(THEME_KEY, next); } catch (e) { /* private mode */ }
       themeBtn.setAttribute("aria-pressed", next === "dark" ? "true" : "false");
+      if (tourFrame && tourFrame.contentWindow) {
+        tourFrame.contentWindow.postMessage(
+          { agx: "theme", mode: root.getAttribute("data-theme") || null }, location.origin);
+      }
     });
   }
 
@@ -55,18 +60,41 @@
       tgy = (e.clientY / window.innerHeight) * 100;
       if (!graf) graf = requestAnimationFrame(glowTick);
     }, { passive: true });
+
+    /* Glow presence + a slow "breathing" on lingering hover — pointer/hover devices only.
+       The blob is visible by default (CSS: --glow-on defaults to 1); it fades out when the
+       cursor leaves the page/window, and breathes after ~1.2s of stillness via a CSS keyframe
+       animation on :root.breathing body::before (no rAF loop). Touch already early-returns. */
+    if (window.matchMedia && window.matchMedia("(hover: hover) and (pointer: fine)").matches) {
+      var breatheTimer = null;
+      var showGlow = function () { root.style.setProperty("--glow-on", "1"); };
+      var hideGlow = function () {
+        root.style.setProperty("--glow-on", "0");
+        if (breatheTimer) { clearTimeout(breatheTimer); breatheTimer = null; }
+        root.classList.remove("breathing");
+      };
+      document.addEventListener("pointerenter", showGlow);
+      window.addEventListener("pointermove", function (e) {
+        if (e.pointerType === "touch") return;
+        showGlow();
+        root.classList.remove("breathing");
+        if (breatheTimer) clearTimeout(breatheTimer);
+        breatheTimer = setTimeout(function () { root.classList.add("breathing"); }, 1200);
+      }, { passive: true });
+      document.addEventListener("pointerleave", hideGlow);
+      document.addEventListener("mouseout", function (e) { if (!e.relatedTarget) hideGlow(); });
+      window.addEventListener("blur", hideGlow);
+      document.addEventListener("visibilitychange", function () {
+        if (document.visibilityState !== "visible") hideGlow();
+      });
+    }
   }
 
   /* ---------- audio narration: toggle + live one-line caption ---------- */
   var audioBtn = document.getElementById("audio-toggle");
   var caption = document.getElementById("narration-caption");
   if (audioBtn && caption) {
-    var capText = document.getElementById("narration-caption-text") || caption;
-    var capClose = document.getElementById("narration-caption-close");
-    var narr = null, cues = null, ci = -1, capTimer = null;
-    function armAuto() { clearTimeout(capTimer); capTimer = setTimeout(hideCap, 60000); }  // auto-close ~1 min after narration stops updating
-    function hideCap() { clearTimeout(capTimer); if (narr && !narr.paused) { narr.pause(); setState(false); } caption.hidden = true; ci = -1; }
-    if (capClose) capClose.addEventListener("click", function () { hideCap(); if (audioBtn) audioBtn.focus(); });  // return focus on manual close (a11y)
+    var narr = null, cues = null, ci = -1;
     function setState(playing) {
       audioBtn.classList.toggle("playing", playing);
       audioBtn.setAttribute("aria-pressed", playing ? "true" : "false");
@@ -78,7 +106,7 @@
       while (i + 1 < cues.length && cues[i + 1].t <= t) i++;
       while (i >= 0 && cues[i].t > t) i--;
       if (i !== ci && i >= 0) {
-        ci = i; capText.textContent = cues[i].s; armAuto();
+        ci = i; caption.textContent = cues[i].s;
         caption.classList.remove("show"); void caption.offsetWidth; caption.classList.add("show");
       }
     }
@@ -90,7 +118,7 @@
         fetch(audioBtn.getAttribute("data-cues")).then(function (r) { return r.json(); })
           .then(function (c) { cues = c; }).catch(function () { cues = []; });
       }
-      if (narr.paused) { narr.play(); setState(true); caption.hidden = false; armAuto(); }
+      if (narr.paused) { narr.play(); setState(true); caption.hidden = false; }
       else { narr.pause(); setState(false); }
     });
   }
@@ -232,5 +260,63 @@
        inline #evidence-fallback JSON identical to content/evidence.sample.json
        (editing convention; the file remains the canonical editable source). */
     fallback();
+  }
+
+  /* ---------- embedded tour: start handshake, theme sync, offscreen pause ----------
+     The guided tour lives in a same-origin <iframe src="tour.html?embed=1">. It stays
+     paused until the visitor asks for it (a click on any #tour link); then we hand it the
+     current theme and tell it to start — exactly once. Every message is origin- and
+     source-validated on both sides. Iframe height is owned by the CSS clamp, so incoming
+     {agx:'resize'} messages are accepted but intentionally do not override it. */
+  var tourSection = document.getElementById("tour");
+  if (tourFrame && tourSection && window.postMessage) {
+    var frameReady = false, pendingStart = false, startedOnce = false;
+
+    var postToFrame = function (msg) {
+      if (tourFrame.contentWindow) tourFrame.contentWindow.postMessage(msg, location.origin);
+    };
+    var requestStart = function () {
+      if (startedOnce) return;
+      if (frameReady) { startedOnce = true; postToFrame({ agx: "start" }); }
+      else pendingStart = true;
+    };
+
+    /* Explicit start only — no auto-start on scroll. Native #tour hash-scroll still happens;
+       we only move focus (a11y) and ask the tour to play. */
+    document.querySelectorAll('a[href="#tour"]').forEach(function (a) {
+      a.addEventListener("click", function () {
+        tourSection.setAttribute("tabindex", "-1");
+        try { tourSection.focus({ preventScroll: true }); } catch (e) { tourSection.focus(); }
+        requestStart();
+      });
+    });
+
+    window.addEventListener("message", function (e) {
+      if (e.origin !== location.origin || e.source !== tourFrame.contentWindow) return;
+      var d = e.data;
+      if (!d || typeof d !== "object") return;
+      if (d.agx === "ready") {
+        frameReady = true;
+        postToFrame({ agx: "theme", mode: root.getAttribute("data-theme") || null });
+        if (pendingStart && !startedOnce) { startedOnce = true; postToFrame({ agx: "start" }); }
+      }
+      /* {agx:'resize'} is intentionally not applied — CSS clamp(500px,82dvh,760px) plus
+         overscroll-behavior:contain own the height, so the two never fight. */
+    });
+
+    /* Offscreen / hidden tab → pause; return → resume only if it had been started. */
+    tourFrame.addEventListener("load", function () { postToFrame({ agx: "hello" }); });
+    postToFrame({ agx: "hello" });
+    var inView = false, pageVisible = (document.visibilityState === "visible");
+    var syncPlayback = function () { if (startedOnce) postToFrame({ agx: (inView && pageVisible) ? "resume" : "pause" }); };
+    if ("IntersectionObserver" in window) {
+      new IntersectionObserver(function (entries) {
+        entries.forEach(function (en) { inView = en.isIntersecting; });
+        syncPlayback();
+      }).observe(tourFrame);
+    }
+    document.addEventListener("visibilitychange", function () {
+      pageVisible = (document.visibilityState === "visible"); syncPlayback();
+    });
   }
 })();
