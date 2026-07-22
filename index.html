@@ -35,7 +35,7 @@
 <link rel="icon" type="image/png" sizes="256x256" href="agx_icon.png">
 <link rel="icon" href="favicon.ico" sizes="any">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
-<link rel="stylesheet" href="assets/css/site.css?v=f1570814">
+<link rel="stylesheet" href="assets/css/site.css?v=a8531b25">
 <script>
 /* Apply stored theme + initial top-of-page bar state before first paint to avoid a flash. */
 (function(){try{var t=localStorage.getItem("agx-theme");if(t==="light"||t==="dark"){document.documentElement.setAttribute("data-theme",t);}}catch(e){}
@@ -90,7 +90,12 @@ if((window.scrollY||window.pageYOffset||0)<=4){document.documentElement.classLis
     <h2 id="tour-h">See it in motion</h2>
     <p class="tour-embed-sub">A guided walkthrough of AgX Studio — press play, or turn on narration.</p>
     <div class="tour-stage">
-      <iframe id="tour-frame" src="tour.html?embed=1&v=acd7911d" title="Guided tour of AgX Studio" tabindex="0" loading="lazy" allow="autoplay"></iframe>
+      <button type="button" class="tour-poster" id="tour-poster" aria-label="Play the guided tour of AgX Studio">
+        <span class="tour-poster-play" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></span>
+        <span class="tour-poster-label">Watch the guided tour</span>
+        <span class="tour-poster-sub">~60-second walkthrough of AgX Studio</span>
+      </button>
+      <iframe id="tour-frame" data-src="tour.html?embed=1&v=03bffc1a" title="Guided tour of AgX Studio" tabindex="-1" aria-hidden="true" allow="autoplay"></iframe>
     </div>
     <a class="tour-embed-fallback" href="tour.html">Watch the animated tour →</a>
   </div>
@@ -734,7 +739,7 @@ agx run examples/quickstart_deconvolution --live   # run the loop yourself</code
 ] }
 </script>
 <div id="narration-caption" class="narration-caption" hidden><span id="narration-caption-text" role="status" aria-live="polite"></span><button type="button" id="narration-caption-close" class="cap-close" aria-label="Close narration caption" title="Close">×</button></div>
-<script src="assets/js/site.js?v=7724ad49" defer></script>
+<script src="assets/js/site.js?v=4ebe3674" defer></script>
 <script src="assets/js/tour.js?v=3188771b" defer></script>
 </body>
 </html>

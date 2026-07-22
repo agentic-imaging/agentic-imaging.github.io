@@ -8,6 +8,7 @@
   var THEME_KEY = "agx-theme";
   var root = document.documentElement;
   var tourFrame = document.getElementById("tour-frame");
+  var msgTarget = (location.origin && location.origin !== "null") ? location.origin : "*";  // file:// has an opaque "null" origin; postMessage needs "*" (receivers still validate event.source)
 
   function storedTheme() {
     try { return localStorage.getItem(THEME_KEY); } catch (e) { return null; }
@@ -29,7 +30,7 @@
       themeBtn.setAttribute("aria-pressed", next === "dark" ? "true" : "false");
       if (tourFrame && tourFrame.contentWindow) {
         tourFrame.contentWindow.postMessage(
-          { agx: "theme", mode: root.getAttribute("data-theme") || null }, location.origin);
+          { agx: "theme", mode: root.getAttribute("data-theme") || null }, msgTarget);
       }
     });
   }
@@ -278,23 +279,43 @@
     var frameReady = false, pendingStart = false, startedOnce = false;
 
     var postToFrame = function (msg) {
-      if (tourFrame.contentWindow) tourFrame.contentWindow.postMessage(msg, location.origin);
+      if (tourFrame.contentWindow) tourFrame.contentWindow.postMessage(msg, msgTarget);
     };
     var requestStart = function () {
       if (startedOnce) return;
       if (frameReady) { startedOnce = true; postToFrame({ agx: "start" }); syncPlayback(); }
       else pendingStart = true;
     };
+    var tourPoster = document.getElementById("tour-poster");
+    var revealed = false;
+    var reveal = function () {
+      if (!revealed) {
+        revealed = true;
+        tourSection.classList.add("revealed");                 // fade the poster out
+        tourFrame.tabIndex = 0;                                // now holds the tour: restore focusability + a11y
+        tourFrame.removeAttribute("aria-hidden");
+        tourSection.setAttribute("tabindex", "-1");            // move focus off the poster (about to be hidden) to a stable container
+        try { tourSection.focus({ preventScroll: true }); } catch (e) {}
+        if (tourPoster) tourPoster.tabIndex = -1;              // drop the poster from tab order at once
+        if (tourFrame.dataset && tourFrame.dataset.src && !tourFrame.getAttribute("src")) {
+          tourFrame.src = tourFrame.dataset.src;                // defer the tour load until the visitor asks for it
+        }
+        var noAnim = !!(window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches);
+        if (tourPoster) setTimeout(function () { tourPoster.hidden = true; }, noAnim ? 0 : 450);  // after the fade, remove from layout/a11y/tab
+      }
+      requestStart();
+    };
 
-    /* Explicit start only — no auto-start on scroll. Native #tour hash-scroll still happens;
-       we only move focus (a11y) and ask the tour to play. */
+    /* Explicit start only — reveal the folded stage, load the tour, and play.
+       Native #tour hash-scroll still happens; we move focus (a11y) + reveal + play. */
     document.querySelectorAll('a[href="#tour"]').forEach(function (a) {
       a.addEventListener("click", function () {
         tourSection.setAttribute("tabindex", "-1");
         try { tourSection.focus({ preventScroll: true }); } catch (e) { tourSection.focus(); }
-        requestStart();
+        reveal();
       });
     });
+    if (tourPoster) tourPoster.addEventListener("click", reveal);
 
     window.addEventListener("message", function (e) {
       if (e.origin !== location.origin || e.source !== tourFrame.contentWindow) return;

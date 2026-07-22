@@ -1143,17 +1143,71 @@ footer.site-footer {
   color: var(--muted);
   font-size: 1rem;
 }
-.tour-stage { margin: 0 auto; }
-#tour-frame {
-  width: 100%;
+.tour-stage {
+  position: relative;
+  margin: 0 auto;
   height: clamp(500px, 82vh, 760px);      /* fallback for browsers without dvh */
   height: clamp(500px, 82dvh, 760px);
+}
+#tour-frame {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
   border: 0;
   border-radius: 16px;
   box-shadow: var(--shadow);
   background: var(--bg);
   overscroll-behavior: contain;
   display: block;
+}
+/* Folded state: a play-poster overlays the (unloaded) frame until "Watch the tour" is clicked. */
+.tour-poster {
+  position: absolute;
+  inset: 0;
+  z-index: 2;                 /* paint above the (later-in-DOM) iframe so the poster is visible + clickable */
+  display: grid;
+  place-content: center;
+  justify-items: center;
+  gap: 0.5rem;
+  width: 100%;
+  height: 100%;
+  padding: 1rem;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  background: radial-gradient(130% 100% at 50% 0%, var(--bg-alt), var(--bg));
+  box-shadow: var(--shadow);
+  cursor: pointer;
+  text-align: center;
+  font-family: var(--sans);
+  transition: opacity 0.4s ease;
+}
+.tour-poster-play {
+  display: grid;
+  place-content: center;
+  width: 74px;
+  height: 74px;
+  border-radius: 50%;
+  border: 2px solid var(--accent);
+  color: var(--accent);
+  background: var(--bg);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.tour-poster-play svg { width: 26px; height: 26px; margin-left: 3px; }
+.tour-poster:hover .tour-poster-play,
+.tour-poster:focus-visible .tour-poster-play {
+  transform: scale(1.07);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.14);
+}
+.tour-poster:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+.tour-poster-label { font-size: 1.05rem; font-weight: 600; color: var(--text); }
+.tour-poster-sub { font-size: 0.9rem; color: var(--muted); }
+/* Revealed: fade the poster out; the loaded frame shows through. */
+.tour-embed.revealed .tour-poster { opacity: 0; pointer-events: none; }
+/* [hidden] must beat the .tour-poster{display:grid} above (UA [hidden] rule alone would lose) so reveal() fully removes it from layout + a11y + tab order. */
+.tour-poster[hidden] { display: none; }
+@media (prefers-reduced-motion: reduce) {
+  .tour-poster, .tour-poster-play { transition: none; }
 }
 .tour-embed-fallback {
   display: none;   /* revealed under <noscript> */
