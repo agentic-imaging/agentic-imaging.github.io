@@ -1247,7 +1247,7 @@ b.addEventListener("click",function(){if(!a){a=new Audio("audio/tour.mp3");a.add
 a.addEventListener("ended",function(){st(false);c.hidden=true;ci=-1;});
 fetch("audio/tour.cues.json").then(function(r){return r.json();}).then(function(x){q=x;buildSceneMap();}).catch(function(){q=[];});}
 if(a.paused){if(window.__agxTourPause)window.__agxTourPause();curScene=-1;a.play().catch(function(){});st(true);c.hidden=false;armAuto();}else{a.pause();st(false);}});
-window.__agxTourAudio={isPlaying:function(){return a&&!a.paused;},pause:function(){a&&a.pause();},resume:function(){a&&a.play().catch(function(){});}};})();
+window.__agxTourAudio={isPlaying:function(){return a&&!a.paused;},pause:function(){if(a){a.pause();clearTimeout(capTimer);}},resume:function(){if(a){a.play().catch(function(){});if(ci>=0)c.hidden=false;armAuto();}}};})();
 </script>
 </body>
 </html>

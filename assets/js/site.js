@@ -282,7 +282,7 @@
     };
     var requestStart = function () {
       if (startedOnce) return;
-      if (frameReady) { startedOnce = true; postToFrame({ agx: "start" }); }
+      if (frameReady) { startedOnce = true; postToFrame({ agx: "start" }); syncPlayback(); }
       else pendingStart = true;
     };
 
@@ -303,7 +303,7 @@
       if (d.agx === "ready") {
         frameReady = true;
         postToFrame({ agx: "theme", mode: root.getAttribute("data-theme") || null });
-        if (pendingStart && !startedOnce) { startedOnce = true; postToFrame({ agx: "start" }); }
+        if (pendingStart && !startedOnce) { startedOnce = true; postToFrame({ agx: "start" }); syncPlayback(); }
       }
       /* {agx:'resize'} is intentionally not applied — CSS clamp(500px,82dvh,760px) plus
          overscroll-behavior:contain own the height, so the two never fight. */
