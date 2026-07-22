@@ -44,8 +44,8 @@
 }
 
 [data-theme="dark"] {
-  --bg: #0f1115;
-  --bg-alt: #171a21;
+  --bg: #131211;
+  --bg-alt: #1a1816;
   --text: #e8e8e6;
   --muted: #a8a8a4;
   --accent: #ec9a4e;
@@ -56,7 +56,7 @@
   --banner-ink: #ffd27a;
   --chip-bg: #202531;
   --shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
-  --glow: rgba(230, 132, 46, 0.16);
+  --glow: rgba(236, 154, 78, 0.09);
   --topbar-bg: rgba(15, 17, 21, 0.64);
   /* the app-icon tile keeps its light/cream face in dark mode (like a real home-screen icon); only the
      shadow deepens for the dark page. */
@@ -69,8 +69,8 @@
 /* System preference is the default when JS has not stamped a choice. */
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme]) {
-    --bg: #0f1115;
-    --bg-alt: #171a21;
+    --bg: #131211;
+    --bg-alt: #1a1816;
     --text: #e8e8e6;
     --muted: #a8a8a4;
     --accent: #ec9a4e;
@@ -81,7 +81,7 @@
     --banner-ink: #ffd27a;
     --chip-bg: #202531;
     --shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
-    --glow: rgba(230, 132, 46, 0.16);
+    --glow: rgba(236, 154, 78, 0.09);
     --topbar-bg: rgba(15, 17, 21, 0.64);
     --icon-box-bg: linear-gradient(150deg, #ffffff, #fbf2e7);
     --icon-box-shadow: 0 12px 32px rgba(0, 0, 0, 0.5), 0 2px 6px rgba(0, 0, 0, 0.35);
@@ -641,6 +641,8 @@ details .details-body { padding: 0.2rem 1rem 1rem; }
 .fineprint { font-size: 0.85rem; color: var(--muted); }
 /* academic-style inline citation markers + numbered references list (Related work) */
 .cite { font-size: 0.9em; white-space: nowrap; }
+.cite-back { color: var(--muted); text-decoration: none; white-space: nowrap; }
+.cite-back:hover, .cite-back:focus-visible { color: var(--accent); text-decoration: underline; }
 .references { font-size: 0.85rem; color: var(--muted); list-style: none; counter-reset: ref; padding-left: 2.6rem; margin: 0.6rem 0 0; }
 .references li { counter-increment: ref; position: relative; margin: 0.45rem 0; }
 .references li::before { content: "[" counter(ref) "]"; position: absolute; left: -2.6rem; width: 2.2rem; text-align: right; }
@@ -663,6 +665,14 @@ details .details-body { padding: 0.2rem 1rem 1rem; }
 .narration-caption.show { opacity: 1; animation: capin 0.32s ease; }
 @keyframes capin { from { opacity: 0.15; transform: translateX(-50%) translateY(5px); } to { opacity: 1; transform: translateX(-50%) translateY(0); } }
 @media (prefers-reduced-motion: reduce) { .narration-caption.show { animation: none; } }
+.cap-close {
+  position: absolute; top: -10px; right: -10px; width: 22px; height: 22px; padding: 0;
+  display: grid; place-items: center; border-radius: 50%;
+  border: 1px solid var(--border); background: var(--bg-alt); color: var(--muted);
+  font: 400 15px/1 var(--sans); cursor: pointer; opacity: 0; transition: opacity 0.18s, color 0.18s, border-color 0.18s;
+}
+.narration-caption:hover .cap-close, .cap-close:focus-visible { opacity: 1; outline: none; }
+.cap-close:hover { color: var(--text); border-color: var(--accent); }
 sup.fnref { line-height: 0; }
 sup.fnref a { text-decoration: none; padding: 0 0.12em; }
 

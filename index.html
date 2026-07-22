@@ -35,7 +35,7 @@
 <link rel="icon" type="image/png" sizes="256x256" href="agx_icon.png">
 <link rel="icon" href="favicon.ico" sizes="any">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
-<link rel="stylesheet" href="assets/css/site.css?v=76a445dc">
+<link rel="stylesheet" href="assets/css/site.css?v=f1570814">
 <script>
 /* Apply stored theme + initial top-of-page bar state before first paint to avoid a flash. */
 (function(){try{var t=localStorage.getItem("agx-theme");if(t==="light"||t==="dark"){document.documentElement.setAttribute("data-theme",t);}}catch(e){}
@@ -90,7 +90,7 @@ if((window.scrollY||window.pageYOffset||0)<=4){document.documentElement.classLis
     <h2 id="tour-h">See it in motion</h2>
     <p class="tour-embed-sub">A guided walkthrough of AgX Studio — press play, or turn on narration.</p>
     <div class="tour-stage">
-      <iframe id="tour-frame" src="tour.html?embed=1&v=31ef5ae7" title="Guided tour of AgX Studio" tabindex="0" loading="lazy" allow="autoplay"></iframe>
+      <iframe id="tour-frame" src="tour.html?embed=1&v=61ef183e" title="Guided tour of AgX Studio" tabindex="0" loading="lazy" allow="autoplay"></iframe>
     </div>
     <a class="tour-embed-fallback" href="tour.html">Watch the animated tour →</a>
   </div>
@@ -623,21 +623,21 @@ agx run examples/quickstart_deconvolution --live   # run the loop yourself</code
         <p class="lead">AgX sits where three fast-moving lines of work meet — and takes a deliberate
            position within them.</p>
         <p><strong>ML for science.</strong> Machine learning is now a primary engine of discovery —
-           protein structure and design (AlphaFold&nbsp;3<a class="cite" href="#ref-1">[1]</a>, crowned by the 2024 Nobel
-           Prize in Chemistry), materials (GNoME<a class="cite" href="#ref-2">[2]</a>, MatterGen<a class="cite" href="#ref-3">[3]</a>), weather
-           (GraphCast<a class="cite" href="#ref-4">[4]</a>, GenCast<a class="cite" href="#ref-5">[5]</a> — now operational at ECMWF), and
-           mathematics (FunSearch<a class="cite" href="#ref-6">[6]</a>, AlphaProof<a class="cite" href="#ref-7">[7]</a>) — increasingly organized
+           protein structure and design (AlphaFold&nbsp;3<a class="cite" href="#ref-1" id="cite-1">[1]</a>, crowned by the 2024 Nobel
+           Prize in Chemistry), materials (GNoME<a class="cite" href="#ref-2" id="cite-2">[2]</a>, MatterGen<a class="cite" href="#ref-3" id="cite-3">[3]</a>), weather
+           (GraphCast<a class="cite" href="#ref-4" id="cite-4">[4]</a>, GenCast<a class="cite" href="#ref-5" id="cite-5">[5]</a> — now operational at ECMWF), and
+           mathematics (FunSearch<a class="cite" href="#ref-6" id="cite-6">[6]</a>, AlphaProof<a class="cite" href="#ref-7" id="cite-7">[7]</a>) — increasingly organized
            around <em>scientific foundation models</em>.</p>
         <p><strong>Agentic AI for research.</strong> The frontier is autonomous: &#8220;AI-scientist&#8221;
-           systems (Sakana AI<a class="cite" href="#ref-8">[8]</a>, Google&#8217;s AI co-scientist<a class="cite" href="#ref-9">[9]</a>) and
-           agent-run chemistry and materials labs (Coscientist<a class="cite" href="#ref-10">[10]</a>, ChemCrow<a class="cite" href="#ref-11">[11]</a>,
-           A-Lab<a class="cite" href="#ref-12">[12]</a>). Yet research-agent benchmarks stay low — MLE-bench<a class="cite" href="#ref-13">[13]</a>
-           ~17%, ScienceAgentBench<a class="cite" href="#ref-14">[14]</a> ~32%, CORE-Bench<a class="cite" href="#ref-15">[15]</a> ~19% on the hardest
+           systems (Sakana AI<a class="cite" href="#ref-8" id="cite-8">[8]</a>, Google&#8217;s AI co-scientist<a class="cite" href="#ref-9" id="cite-9">[9]</a>) and
+           agent-run chemistry and materials labs (Coscientist<a class="cite" href="#ref-10" id="cite-10">[10]</a>, ChemCrow<a class="cite" href="#ref-11" id="cite-11">[11]</a>,
+           A-Lab<a class="cite" href="#ref-12" id="cite-12">[12]</a>). Yet research-agent benchmarks stay low — MLE-bench<a class="cite" href="#ref-13" id="cite-13">[13]</a>
+           ~17%, ScienceAgentBench<a class="cite" href="#ref-14" id="cite-14">[14]</a> ~32%, CORE-Bench<a class="cite" href="#ref-15" id="cite-15">[15]</a> ~19% on the hardest
            tasks — and documented failures (reward-hacked evaluations, contested &#8220;discoveries,&#8221;
            irreproducible results) are common.</p>
         <p><strong>The science of ML — and a rigor crisis.</strong> As ML becomes an object of study
-           (scaling laws, interpretability, the unsettled &#8220;emergence&#8221; debate<a class="cite" href="#ref-16">[16]</a>), it
-           inherits the failures it imports elsewhere: leakage-driven irreproducibility<a class="cite" href="#ref-17">[17]</a>
+           (scaling laws, interpretability, the unsettled &#8220;emergence&#8221; debate<a class="cite" href="#ref-16" id="cite-16">[16]</a>), it
+           inherits the failures it imports elsewhere: leakage-driven irreproducibility<a class="cite" href="#ref-17" id="cite-17">[17]</a>
            across hundreds of papers, and a wave of AI-generated &#8220;slop&#8221; straining peer review.</p>
         <p>The common bottleneck is <strong>verification</strong>: generation has outpaced validation.
            AgX&#8217;s response is to fold skepticism into the loop — measurement-fidelity checks, enforced
@@ -648,23 +648,23 @@ agx run examples/quickstart_deconvolution --live   # run the loop yourself</code
            emergence debate<a class="cite" href="#ref-16">[16]</a>.</p>
         <h3>References</h3>
         <ol class="references">
-          <li id="ref-1">J. Abramson et al., &#8220;<a href="https://doi.org/10.1038/s41586-024-07487-w" target="_blank" rel="noopener">Accurate structure prediction of biomolecular interactions with AlphaFold 3</a>,&#8221; <em>Nature</em> 630, 493&#8211;500 (2024).</li>
-          <li id="ref-2">A. Merchant et al., &#8220;<a href="https://doi.org/10.1038/s41586-023-06735-9" target="_blank" rel="noopener">Scaling deep learning for materials discovery</a>,&#8221; <em>Nature</em> 624, 80&#8211;85 (2023). [GNoME]</li>
-          <li id="ref-3">C. Zeni et al., &#8220;<a href="https://doi.org/10.1038/s41586-025-08628-5" target="_blank" rel="noopener">A generative model for inorganic materials design</a>,&#8221; <em>Nature</em> 639, 624&#8211;632 (2025). [MatterGen]</li>
-          <li id="ref-4">R. Lam et al., &#8220;<a href="https://doi.org/10.1126/science.adi2336" target="_blank" rel="noopener">Learning skillful medium-range global weather forecasting</a>,&#8221; <em>Science</em> 382, 1416&#8211;1421 (2023). [GraphCast]</li>
-          <li id="ref-5">I. Price et al., &#8220;<a href="https://doi.org/10.1038/s41586-024-08252-9" target="_blank" rel="noopener">Probabilistic weather forecasting with machine learning</a>,&#8221; <em>Nature</em> 637, 84&#8211;90 (2024). [GenCast]</li>
-          <li id="ref-6">B. Romera-Paredes et al., &#8220;<a href="https://doi.org/10.1038/s41586-023-06924-6" target="_blank" rel="noopener">Mathematical discoveries from program search with large language models</a>,&#8221; <em>Nature</em> 625, 468&#8211;475 (2023). [FunSearch]</li>
-          <li id="ref-7">T. Hubert et al., &#8220;<a href="https://doi.org/10.1038/s41586-025-09833-y" target="_blank" rel="noopener">Olympiad-level formal mathematical reasoning with reinforcement learning</a>,&#8221; <em>Nature</em> 651, 607&#8211;613 (2025). [AlphaProof]</li>
-          <li id="ref-8">C. Lu et al., &#8220;<a href="https://arxiv.org/abs/2408.06292" target="_blank" rel="noopener">The AI Scientist: Towards Fully Automated Open-Ended Scientific Discovery</a>,&#8221; arXiv:2408.06292 (2024). [Sakana AI]</li>
-          <li id="ref-9">J. Gottweis et al., &#8220;<a href="https://arxiv.org/abs/2502.18864" target="_blank" rel="noopener">Towards an AI co-scientist</a>,&#8221; arXiv:2502.18864 (2025).</li>
-          <li id="ref-10">D. A. Boiko et al., &#8220;<a href="https://doi.org/10.1038/s41586-023-06792-0" target="_blank" rel="noopener">Autonomous chemical research with large language models</a>,&#8221; <em>Nature</em> 624, 570&#8211;578 (2023). [Coscientist]</li>
-          <li id="ref-11">A. M. Bran et al., &#8220;<a href="https://doi.org/10.1038/s42256-024-00832-8" target="_blank" rel="noopener">Augmenting large language models with chemistry tools</a>,&#8221; <em>Nature Machine Intelligence</em> 6, 525&#8211;535 (2024). [ChemCrow]</li>
-          <li id="ref-12">N. J. Szymanski et al., &#8220;<a href="https://doi.org/10.1038/s41586-023-06734-w" target="_blank" rel="noopener">An autonomous laboratory for the accelerated synthesis of inorganic materials</a>,&#8221; <em>Nature</em> 624, 86&#8211;91 (2023); Author Correction, <em>Nature</em> 650, E1 (2026). [A-Lab]</li>
-          <li id="ref-13">J. S. Chan et al., &#8220;<a href="https://arxiv.org/abs/2410.07095" target="_blank" rel="noopener">MLE-bench: Evaluating Machine Learning Agents on Machine Learning Engineering</a>,&#8221; arXiv:2410.07095 (2024).</li>
-          <li id="ref-14">Z. Chen et al., &#8220;<a href="https://arxiv.org/abs/2410.05080" target="_blank" rel="noopener">ScienceAgentBench: Toward Rigorous Assessment of Language Agents for Data-Driven Scientific Discovery</a>,&#8221; arXiv:2410.05080 (2024).</li>
-          <li id="ref-15">Z. S. Siegel et al., &#8220;<a href="https://arxiv.org/abs/2409.11363" target="_blank" rel="noopener">CORE-Bench: Fostering the Credibility of Published Research Through a Computational Reproducibility Agent Benchmark</a>,&#8221; arXiv:2409.11363 (2024).</li>
-          <li id="ref-16">R. Schaeffer, B. Miranda &amp; S. Koyejo, &#8220;<a href="https://proceedings.neurips.cc/paper_files/paper/2023/hash/adc98a266f45005c403b8311ca7e8bd7-Abstract-Conference.html" target="_blank" rel="noopener">Are Emergent Abilities of Large Language Models a Mirage?</a>,&#8221; <em>NeurIPS</em> 36 (2023).</li>
-          <li id="ref-17">S. Kapoor &amp; A. Narayanan, &#8220;<a href="https://doi.org/10.1016/j.patter.2023.100804" target="_blank" rel="noopener">Leakage and the reproducibility crisis in machine-learning-based science</a>,&#8221; <em>Patterns</em> 4(9), 100804 (2023).</li>
+          <li id="ref-1">J. Abramson et al., &#8220;<a href="https://doi.org/10.1038/s41586-024-07487-w" target="_blank" rel="noopener">Accurate structure prediction of biomolecular interactions with AlphaFold 3</a>,&#8221; <em>Nature</em> 630, 493&#8211;500 (2024). <a class="cite-back" href="#cite-1" title="Back to citation" aria-label="Back to citation">↩</a></li>
+          <li id="ref-2">A. Merchant et al., &#8220;<a href="https://doi.org/10.1038/s41586-023-06735-9" target="_blank" rel="noopener">Scaling deep learning for materials discovery</a>,&#8221; <em>Nature</em> 624, 80&#8211;85 (2023). <a class="cite-back" href="#cite-2" title="Back to citation">[GNoME]</a></li>
+          <li id="ref-3">C. Zeni et al., &#8220;<a href="https://doi.org/10.1038/s41586-025-08628-5" target="_blank" rel="noopener">A generative model for inorganic materials design</a>,&#8221; <em>Nature</em> 639, 624&#8211;632 (2025). <a class="cite-back" href="#cite-3" title="Back to citation">[MatterGen]</a></li>
+          <li id="ref-4">R. Lam et al., &#8220;<a href="https://doi.org/10.1126/science.adi2336" target="_blank" rel="noopener">Learning skillful medium-range global weather forecasting</a>,&#8221; <em>Science</em> 382, 1416&#8211;1421 (2023). <a class="cite-back" href="#cite-4" title="Back to citation">[GraphCast]</a></li>
+          <li id="ref-5">I. Price et al., &#8220;<a href="https://doi.org/10.1038/s41586-024-08252-9" target="_blank" rel="noopener">Probabilistic weather forecasting with machine learning</a>,&#8221; <em>Nature</em> 637, 84&#8211;90 (2024). <a class="cite-back" href="#cite-5" title="Back to citation">[GenCast]</a></li>
+          <li id="ref-6">B. Romera-Paredes et al., &#8220;<a href="https://doi.org/10.1038/s41586-023-06924-6" target="_blank" rel="noopener">Mathematical discoveries from program search with large language models</a>,&#8221; <em>Nature</em> 625, 468&#8211;475 (2023). <a class="cite-back" href="#cite-6" title="Back to citation">[FunSearch]</a></li>
+          <li id="ref-7">T. Hubert et al., &#8220;<a href="https://doi.org/10.1038/s41586-025-09833-y" target="_blank" rel="noopener">Olympiad-level formal mathematical reasoning with reinforcement learning</a>,&#8221; <em>Nature</em> 651, 607&#8211;613 (2025). <a class="cite-back" href="#cite-7" title="Back to citation">[AlphaProof]</a></li>
+          <li id="ref-8">C. Lu et al., &#8220;<a href="https://arxiv.org/abs/2408.06292" target="_blank" rel="noopener">The AI Scientist: Towards Fully Automated Open-Ended Scientific Discovery</a>,&#8221; arXiv:2408.06292 (2024). <a class="cite-back" href="#cite-8" title="Back to citation">[Sakana AI]</a></li>
+          <li id="ref-9">J. Gottweis et al., &#8220;<a href="https://arxiv.org/abs/2502.18864" target="_blank" rel="noopener">Towards an AI co-scientist</a>,&#8221; arXiv:2502.18864 (2025). <a class="cite-back" href="#cite-9" title="Back to citation" aria-label="Back to citation">↩</a></li>
+          <li id="ref-10">D. A. Boiko et al., &#8220;<a href="https://doi.org/10.1038/s41586-023-06792-0" target="_blank" rel="noopener">Autonomous chemical research with large language models</a>,&#8221; <em>Nature</em> 624, 570&#8211;578 (2023). <a class="cite-back" href="#cite-10" title="Back to citation">[Coscientist]</a></li>
+          <li id="ref-11">A. M. Bran et al., &#8220;<a href="https://doi.org/10.1038/s42256-024-00832-8" target="_blank" rel="noopener">Augmenting large language models with chemistry tools</a>,&#8221; <em>Nature Machine Intelligence</em> 6, 525&#8211;535 (2024). <a class="cite-back" href="#cite-11" title="Back to citation">[ChemCrow]</a></li>
+          <li id="ref-12">N. J. Szymanski et al., &#8220;<a href="https://doi.org/10.1038/s41586-023-06734-w" target="_blank" rel="noopener">An autonomous laboratory for the accelerated synthesis of inorganic materials</a>,&#8221; <em>Nature</em> 624, 86&#8211;91 (2023); Author Correction, <em>Nature</em> 650, E1 (2026). <a class="cite-back" href="#cite-12" title="Back to citation">[A-Lab]</a></li>
+          <li id="ref-13">J. S. Chan et al., &#8220;<a href="https://arxiv.org/abs/2410.07095" target="_blank" rel="noopener">MLE-bench: Evaluating Machine Learning Agents on Machine Learning Engineering</a>,&#8221; arXiv:2410.07095 (2024). <a class="cite-back" href="#cite-13" title="Back to citation" aria-label="Back to citation">↩</a></li>
+          <li id="ref-14">Z. Chen et al., &#8220;<a href="https://arxiv.org/abs/2410.05080" target="_blank" rel="noopener">ScienceAgentBench: Toward Rigorous Assessment of Language Agents for Data-Driven Scientific Discovery</a>,&#8221; arXiv:2410.05080 (2024). <a class="cite-back" href="#cite-14" title="Back to citation" aria-label="Back to citation">↩</a></li>
+          <li id="ref-15">Z. S. Siegel et al., &#8220;<a href="https://arxiv.org/abs/2409.11363" target="_blank" rel="noopener">CORE-Bench: Fostering the Credibility of Published Research Through a Computational Reproducibility Agent Benchmark</a>,&#8221; arXiv:2409.11363 (2024). <a class="cite-back" href="#cite-15" title="Back to citation" aria-label="Back to citation">↩</a></li>
+          <li id="ref-16">R. Schaeffer, B. Miranda &amp; S. Koyejo, &#8220;<a href="https://proceedings.neurips.cc/paper_files/paper/2023/hash/adc98a266f45005c403b8311ca7e8bd7-Abstract-Conference.html" target="_blank" rel="noopener">Are Emergent Abilities of Large Language Models a Mirage?</a>,&#8221; <em>NeurIPS</em> 36 (2023). <a class="cite-back" href="#cite-16" title="Back to citation" aria-label="Back to citation">↩</a></li>
+          <li id="ref-17">S. Kapoor &amp; A. Narayanan, &#8220;<a href="https://doi.org/10.1016/j.patter.2023.100804" target="_blank" rel="noopener">Leakage and the reproducibility crisis in machine-learning-based science</a>,&#8221; <em>Patterns</em> 4(9), 100804 (2023). <a class="cite-back" href="#cite-17" title="Back to citation" aria-label="Back to citation">↩</a></li>
         </ol>
       </section>
 
@@ -733,8 +733,8 @@ agx run examples/quickstart_deconvolution --live   # run the loop yourself</code
   { "case_study": "Provenance study", "modality": "Tamper & replay battery", "metric": "Tamper detection", "value": "XX/XX (sample)", "evidence_id": "pending E10" }
 ] }
 </script>
-<div id="narration-caption" class="narration-caption" role="status" aria-live="polite" hidden></div>
-<script src="assets/js/site.js?v=240aa2c4" defer></script>
+<div id="narration-caption" class="narration-caption" hidden><span id="narration-caption-text" role="status" aria-live="polite"></span><button type="button" id="narration-caption-close" class="cap-close" aria-label="Close narration caption" title="Close">×</button></div>
+<script src="assets/js/site.js?v=4c269f6c" defer></script>
 <script src="assets/js/tour.js?v=3188771b" defer></script>
 </body>
 </html>
