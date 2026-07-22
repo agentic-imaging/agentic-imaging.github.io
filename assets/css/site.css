@@ -1098,8 +1098,6 @@ footer.site-footer {
 /* the landing hero owns its own generous spacing (this wins over .hero): lots of air above the mark and
    a big open gap down to the content; clamp keeps it proportional on small screens. */
 :root { --nav-h: 3rem; }   /* sticky topbar height reserved for the full-viewport "pages" + anchor/snap clearance */
-html { scroll-snap-type: y proximity; }   /* page-by-page: hero + tour snap on a single scroll; the body scrolls freely */
-@media (prefers-reduced-motion: reduce) { html { scroll-snap-type: none; } }   /* a11y: no page-snapping for reduced-motion */
 .hero-product {
   padding: clamp(2rem, 4vw, 3rem) 1.25rem;
   min-height: calc(100vh - var(--nav-h));
@@ -1109,8 +1107,6 @@ html { scroll-snap-type: y proximity; }   /* page-by-page: hero + tour snap on a
   justify-content: center;
   align-items: center;
   scroll-margin-top: var(--nav-h);
-  scroll-snap-align: start;
-  scroll-snap-stop: always;
 }
 .hero-product .tagline {
   font-family: var(--sans);
@@ -1140,10 +1136,9 @@ html { scroll-snap-type: y proximity; }   /* page-by-page: hero + tour snap on a
   display: flex;
   flex-direction: column;
   justify-content: center;
-  scroll-snap-align: start;
-  scroll-snap-stop: always;
 }
-#tour { scroll-margin-top: var(--nav-h); }   /* clear the sticky top bar when navigated to */
+#tour { scroll-margin-top: var(--nav-h); }
+.layout-product { scroll-margin-top: var(--nav-h); }   /* clear the sticky top bar when navigated to */
 .tour-embed-inner {
   width: 100%;
   max-width: 1060px;
@@ -1176,8 +1171,8 @@ html { scroll-snap-type: y proximity; }   /* page-by-page: hero + tour snap on a
   height: 100%;
   border: 0;
   border-radius: 16px;
-  box-shadow: var(--shadow);
-  background: var(--bg);
+  box-shadow: none;
+  background: transparent;
   display: block;
 }
 /* Folded state: a play-poster overlays the (unloaded) frame until "Watch the tour" is clicked. */
@@ -1193,8 +1188,8 @@ html { scroll-snap-type: y proximity; }   /* page-by-page: hero + tour snap on a
   height: 100%;
   padding: 1rem;
   border-radius: 16px;
-  background: radial-gradient(130% 100% at 50% 0%, var(--bg-alt), var(--bg));
-  box-shadow: var(--shadow);
+  background: transparent;
+  box-shadow: none;
   cursor: pointer;
   text-align: center;
   font-family: var(--sans);

@@ -287,24 +287,22 @@
       else pendingStart = true;
     };
     var tourPoster = document.getElementById("tour-poster");
-    var revealed = false;
-    var reveal = function () {
-      if (!revealed) {
-        revealed = true;
-        tourSection.classList.add("revealed");                 // fade the poster out
-        tourFrame.tabIndex = 0;                                // now holds the tour: restore focusability + a11y
-        tourFrame.removeAttribute("aria-hidden");
-        tourSection.setAttribute("tabindex", "-1");            // move focus off the poster (about to be hidden) to a stable container
-        try { tourSection.focus({ preventScroll: true }); } catch (e) {}
-        if (tourPoster) tourPoster.tabIndex = -1;              // drop the poster from tab order at once
-        if (tourFrame.dataset && tourFrame.dataset.src && !tourFrame.getAttribute("src")) {
-          tourFrame.src = tourFrame.dataset.src;                // defer the tour load until the visitor asks for it
-        }
-        var noAnim = !!(window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches);
-        if (tourPoster) setTimeout(function () { tourPoster.hidden = true; }, noAnim ? 0 : 450);  // after the fade, remove from layout/a11y/tab
-      }
+    var primed = false;
+    var prime = function () {                                  // load the tour + drop the poster (no "blocking frame"); does NOT start playback
+      if (primed) return; primed = true;
+      tourSection.classList.add("revealed");
+      tourFrame.tabIndex = 0; tourFrame.removeAttribute("aria-hidden");
+      if (tourFrame.dataset && tourFrame.dataset.src && !tourFrame.getAttribute("src")) tourFrame.src = tourFrame.dataset.src;
+      if (tourPoster) { tourPoster.tabIndex = -1; tourPoster.hidden = true; }
+    };
+    var reveal = function () {                                 // the "Watch the tour" CTA: prime + focus + play
+      prime();
+      tourSection.setAttribute("tabindex", "-1");
+      try { tourSection.focus({ preventScroll: true }); } catch (e) {}
       requestStart();
     };
+    window.__agxTourPrime = prime;                             // page controller: preload + drop the poster on load
+    window.__agxTourPlay = function () { prime(); requestStart(); };   // page controller: start the demo when the tour page is reached
 
     /* Explicit start only — reveal the folded stage, load the tour, and play.
        Native #tour hash-scroll still happens; we move focus (a11y) + reveal + play. */
@@ -349,64 +347,69 @@
   }
 })();
 
-/* Page-by-page snap release: hero + tour snap as full-screen pages (JS upgrades scroll-snap to mandatory;
-   CSS default is proximity so no-JS never traps). Release to none the instant the reader asks to leave the
-   tour downward (wheel/swipe/key in the parent OR relayed from the tour iframe via postMessage, or an
-   in-body anchor click); re-arm only after they've gone into the body AND scrolled back up (the leftTour
-   guard). Opening in the body (deep link / reload) starts RELEASED. A reduced-motion change drops to none. */
+/* Page-by-page: the hero and the tour are full-screen pages. ONE wheel/swipe/key does ONE DISCRETE page
+   transition (the deck never scrolls continuously); the body below scrolls normally. Scrolling over the
+   revealed tour iframe is relayed via postMessage. Progressive enhancement: no-JS + reduced-motion get
+   plain continuous scrolling (the sections are just tall). */
 (function () {
   "use strict";
-  var root = document.documentElement;
-  if (!("scrollSnapType" in root.style)) return;
-  var mm = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)");
-  if (mm && mm.matches) return;                                       // initial reduced-motion: CSS handles it
-  var tour = document.getElementById("tour");
-  if (!tour) return;
-  var tourFrame = document.getElementById("tour-frame");
-  var snapped = false, leftTour = false, ticking = false, rm = false;
-  function release() { if (snapped) { root.style.scrollSnapType = "none"; snapped = false; leftTour = false; } }
-  function rearm() { if (!snapped && !rm) { root.style.scrollSnapType = "y mandatory"; snapped = true; leftTour = false; } }
-  function onTour() { var r = tour.getBoundingClientRect(); return r.top <= 80 && r.bottom > window.innerHeight * 0.5; }
+  var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var hero = document.getElementById("top"), tour = document.getElementById("tour"), tourFrame = document.getElementById("tour-frame");
+  var bodyEl = document.querySelector(".layout-product");
+  if (reduce || !hero || !tour || !bodyEl) return;
+  var sections = [hero, tour, bodyEl];   // 0 hero, 1 tour, 2 body (the body is scrollable internally)
+  var idx = 0, animating = false, aTimer = null;
+  var NAVH = (function () { var v = getComputedStyle(document.documentElement).getPropertyValue("--nav-h").trim(); var n = parseFloat(v) || 3; return v.indexOf("px") >= 0 ? n : n * 16; })();
+
+  function anim() { animating = true; clearTimeout(aTimer); aTimer = setTimeout(function () { animating = false; }, 700); }
+  function go(i) { idx = i; anim(); if (i === 1 && window.__agxTourPlay) window.__agxTourPlay(); sections[i].scrollIntoView({ behavior: "smooth", block: "start" }); }   // reaching the tour auto-starts the demo; scroll-margin-top clears the topbar
+  function atBodyTop() { return bodyEl.getBoundingClientRect().top >= NAVH - 6; }
+  function down() { if (idx < 2) go(idx + 1); }
+  function up() { if (idx === 2) { if (atBodyTop()) go(1); } else if (idx > 0) go(idx - 1); }
   function isControl(t) { if (!t || !t.tagName) return false; var g = t.tagName; return g === "INPUT" || g === "TEXTAREA" || g === "SELECT" || g === "BUTTON" || g === "A" || t.isContentEditable; }
+  function sync() { if (animating) return; if (bodyEl.getBoundingClientRect().top <= window.innerHeight * 0.5) idx = 2; else idx = (tour.getBoundingClientRect().top <= 80) ? 1 : 0; }
 
-  var body = document.querySelector(".layout-product");
-  var hashEl = location.hash.length > 1 ? document.getElementById(location.hash.slice(1)) : null;
-  // Structural (layout-independent) check: a hash into the body, or an already-restored body scroll, starts RELEASED
-  // so mandatory can't snap the fragment scroll back to the tour. Otherwise upgrade to crisp mandatory.
-  if ((hashEl && body && body.contains(hashEl)) || window.pageYOffset > tour.offsetTop + tour.offsetHeight * 0.5) { leftTour = true; }
-  else { root.style.scrollSnapType = "y mandatory"; snapped = true; }
+  window.addEventListener("wheel", function (e) {
+    if (idx === 2) { if (e.deltaY < 0 && atBodyTop()) { e.preventDefault(); go(1); } return; }   // body: continuous, except one scroll up at its top -> tour
+    e.preventDefault();                                                                          // deck: no continuous scroll
+    if (animating) return;
+    if (e.deltaY > 0) down(); else if (e.deltaY < 0) up();
+  }, { passive: false });
 
-  window.addEventListener("wheel", function (e) { if (snapped && e.deltaY > 0 && onTour()) release(); }, { passive: true });
   var ty = null;
   window.addEventListener("touchstart", function (e) { ty = e.touches[0].clientY; }, { passive: true });
-  window.addEventListener("touchmove", function (e) { if (snapped && ty !== null && (ty - e.touches[0].clientY) > 8 && onTour()) release(); }, { passive: true });
+  window.addEventListener("touchmove", function (e) { if (idx < 2) e.preventDefault(); }, { passive: false });   // block continuous swipe on the deck
+  window.addEventListener("touchend", function (e) {
+    if (ty === null) return; var dy = ty - e.changedTouches[0].clientY; ty = null;
+    if (Math.abs(dy) < 30 || animating) return;
+    if (idx === 2) { if (dy < 0 && atBodyTop()) go(1); return; }
+    if (dy > 0) down(); else up();
+  }, { passive: true });
+
   window.addEventListener("keydown", function (e) {
-    if (!snapped || !onTour() || isControl(e.target)) return;
-    if (e.key === "PageDown" || e.key === "ArrowDown" || e.key === "End" || e.key === " ") release();
-  }, { passive: true });
+    if (idx === 2 || isControl(e.target)) return;
+    if (e.key === "PageDown" || e.key === "ArrowDown" || e.key === " ") { e.preventDefault(); down(); }
+    else if (e.key === "PageUp" || e.key === "ArrowUp") { e.preventDefault(); up(); }
+  });
+
   document.addEventListener("click", function (e) {
-    var a = e.target.closest && e.target.closest('a[href^="#"]');
-    if (!a) return;
-    var t = document.getElementById(a.getAttribute("href").slice(1));
-    if (t && t.getBoundingClientRect().top + window.pageYOffset > tour.offsetTop + tour.offsetHeight * 0.5) release();
-  }, true);
-  window.addEventListener("message", function (e) {                               // scroll relayed from the tour iframe (it eats the wheel; drive the parent)
-    if (!tourFrame || e.source !== tourFrame.contentWindow) return;
-    var d = e.data;
-    if (d && d.agx === "framescroll" && d.dir === "down") {
-      if (snapped && onTour()) release();
-      window.scrollBy(0, typeof d.dy === "number" ? d.dy : 60);
-    }
+    var a = e.target.closest && e.target.closest('a[href^="#"]'); if (!a) return;
+    var t = document.getElementById(a.getAttribute("href").slice(1)); if (!t) return;
+    if (t === hero) { e.preventDefault(); go(0); }
+    else if (t === tour) { e.preventDefault(); go(1); }
+    else setTimeout(sync, 60);                                                                   // body anchor: default jump, then resync
   }, false);
-  window.addEventListener("scroll", function () {
-    if (ticking) return; ticking = true;
-    requestAnimationFrame(function () {
-      ticking = false;
-      var r = tour.getBoundingClientRect(), vh = window.innerHeight, deep = r.bottom < vh * 0.25;
-      if (snapped) { if (deep) { release(); leftTour = true; } return; }   // snapped but settled deep in the body (deep link/reload) -> release
-      if (deep) leftTour = true;
-      else if (leftTour && r.top <= 80 && r.bottom > vh * 0.6) rearm();
-    });
-  }, { passive: true });
-  if (mm && mm.addEventListener) mm.addEventListener("change", function (ev) { rm = ev.matches; if (rm) { root.style.scrollSnapType = "none"; snapped = false; } });
+
+  window.addEventListener("message", function (e) {                                              // relayed from the tour iframe (it eats the wheel)
+    if (!tourFrame || e.source !== tourFrame.contentWindow) return;
+    var d = e.data; if (!d || d.agx !== "framescroll" || animating) return;
+    if (d.dir === "down") down(); else if (d.dir === "up") up();
+  }, false);
+
+  var st = false;
+  window.addEventListener("scroll", function () { if (st) return; st = true; requestAnimationFrame(function () { st = false; sync(); }); }, { passive: true });
+  window.addEventListener("resize", sync, { passive: true });
+  if (window.__agxTourPrime) window.__agxTourPrime();                                             // preload the tour + drop the poster (no blocking frame)
+  sync();
+  if (location.hash === "#tour" && window.__agxTourPlay) { idx = 1; window.__agxTourPlay(); }       // landed directly on the tour -> play
 })();
