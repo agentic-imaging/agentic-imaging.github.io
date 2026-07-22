@@ -24,13 +24,13 @@
   --shadow:#0969da30;
 }
 :root[data-theme="dark"]{
-  --bg:#0f1217; --panel:#161b22; --line:#2d333b; --text:#d4dae2; --dim:#768390;
+  --bg:#131211; --panel:#161b22; --line:#2d333b; --text:#d4dae2; --dim:#768390;
   --blue:#539bf5; --green:#57ab5a; --red:#e5534b; --amber:#c69026; --purple:#b083f0;
   --shadow:#539bf544;
 }
 @media (prefers-color-scheme:dark){
   :root:not([data-theme="light"]){
-    --bg:#0f1217; --panel:#161b22; --line:#2d333b; --text:#d4dae2; --dim:#768390;
+    --bg:#131211; --panel:#161b22; --line:#2d333b; --text:#d4dae2; --dim:#768390;
     --blue:#539bf5; --green:#57ab5a; --red:#e5534b; --amber:#c69026; --purple:#b083f0;
     --shadow:#539bf544;
   }
@@ -44,14 +44,14 @@
   --tile-border:rgba(0,0,0,.06);
 }
 :root[data-theme="dark"]{
-  --warm-glow:rgba(230,132,46,.16);
+  --warm-glow:rgba(236,154,78,.09);
   --tile-bg:linear-gradient(150deg,#ffffff,#fbf2e7);
   --tile-shadow:0 12px 32px rgba(0,0,0,.5),0 2px 6px rgba(0,0,0,.35);
   --tile-border:rgba(0,0,0,.06);
 }
 @media (prefers-color-scheme:dark){
   :root:not([data-theme="light"]){
-    --warm-glow:rgba(230,132,46,.16);
+    --warm-glow:rgba(236,154,78,.09);
     --tile-bg:linear-gradient(150deg,#ffffff,#fbf2e7);
     --tile-shadow:0 12px 32px rgba(0,0,0,.5),0 2px 6px rgba(0,0,0,.35);
     --tile-border:rgba(0,0,0,.06);
@@ -391,6 +391,7 @@ svg.graph{width:100%;height:230px;display:block}
     <section class="scene" data-scene="1" aria-label="New run">
       <div class="eyebrow rise">1 · New run</div>
       <h2 class="hero rise" style="font-size:23px">Describe the task in plain language.</h2>
+      <p class="say visually-hidden">It reads your task and auto-detects whether it's an imaging or a generic problem, then plans the right comparisons — you can even at-mention attached files as exact references.</p>
       <div class="composer rise2">
         <div class="ta"><span id="typed"></span><span class="caret"></span></div>
         <div class="tray">
@@ -412,6 +413,7 @@ svg.graph{width:100%;height:230px;display:block}
     <section class="scene" data-scene="2" aria-label="Plan">
       <div class="eyebrow rise">2 · Plan</div>
       <h2 class="hero rise" style="font-size:23px">The agent plans the experiment.</h2>
+      <p class="say visually-hidden">Before a single GPU job runs, the agent's entire plan is adversarially reviewed by three independent models.</p>
       <div class="plan rise2">
         <div class="ph"><span>Proposed pipeline</span><span class="mono">4 steps</span></div>
         <div class="prow"><span class="tick"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M3 8.5l3.2 3.2L13 5"/></svg></span>Forward model — fluorescence PSF convolution<span class="k">forward_op</span></div>
@@ -426,6 +428,7 @@ svg.graph{width:100%;height:230px;display:block}
     <section class="scene" data-scene="3" aria-label="Provenance graph">
       <div class="eyebrow rise">3 · Execute</div>
       <h2 class="hero rise" style="font-size:23px">Every step is traced.</h2>
+      <p class="say visually-hidden">Every step is captured in an append-only provenance graph, where each metric links straight back to the exact code and raw data that produced it.</p>
       <div class="graphwrap rise2">
         <svg class="graph" viewBox="0 0 620 230" aria-label="provenance graph building">
           <path class="gedge e1" d="M110 60 C 180 60, 180 115, 250 115"></path>
@@ -446,6 +449,7 @@ svg.graph{width:100%;height:230px;display:block}
     <section class="scene" data-scene="4" aria-label="Report">
       <div class="eyebrow rise">4 · Report</div>
       <h2 class="hero rise" style="font-size:23px">Results become a traceable paper.</h2>
+      <p class="say visually-hidden">The results become a traceable paper where every number carries its raw arrays and a measurement residual, so every claim cites its own evidence.</p>
       <div class="report rise2">
         <div class="rcol">
           <div class="rh">Results</div>
@@ -480,6 +484,7 @@ svg.graph{width:100%;height:230px;display:block}
     <section class="scene ws-scene" data-scene="5" aria-label="Workspace">
       <div class="eyebrow rise">5 · Your turn</div>
       <h2 class="hero rise" style="font-size:23px">Steer the run — it's a workspace, not a slideshow.</h2>
+      <p class="say visually-hidden">Try an action or type a prompt and the workspace responds live, with the run's goals tracked as you steer it.</p>
       <p class="ws-honesty rise2" role="note"><b>Interactive demo</b> — every agent reply is pre-scripted and every number is an illustrative placeholder. <span class="ws-hint">Try an action or type a prompt, then press → to continue.</span></p>
       <noscript><p class="ws-noscript">With JavaScript this becomes an interactive scripted workspace; the panels below show its final state.</p></noscript>
 
@@ -777,6 +782,8 @@ svg.graph{width:100%;height:230px;display:block}
   if(reduce){                                    // reduced-motion: no autoplay; play control disabled, manual stepper only
     playBtn.disabled=true; playBtn.title='Autoplay off (reduced motion)'; playBtn.innerHTML=PLAY;
   } else { play(); }
+  window.__agxTourGo = go;        // audio-narration sync: jump the slideshow to a scene by index
+  window.__agxTourPause = pause;  // audio-narration sync: stop the fixed-timer autoplay while narration drives the slides
 })();
 </script>
 
@@ -1177,17 +1184,33 @@ svg.graph{width:100%;height:230px;display:block}
 })();
 </script>
 
-<div id="tour-caption" role="status" aria-live="polite" hidden style="position:fixed;left:50%;bottom:5.2rem;transform:translateX(-50%);max-width:min(90vw,44rem);z-index:1000;padding:.55rem 1.1rem;border-radius:999px;background:var(--panel,#fff);border:1px solid var(--line,#d0d7de);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);box-shadow:0 8px 26px rgba(0,0,0,.16);font:400 15px/1.4 var(--font-ui,system-ui,sans-serif);color:var(--text,#1f2328);text-align:center;opacity:0;transition:opacity .28s"></div>
+<style>
+.cap-close-t{position:absolute;top:-10px;right:-10px;width:22px;height:22px;padding:0;display:grid;place-items:center;border-radius:50%;border:1px solid var(--line,#d0d7de);background:var(--panel,#fff);color:var(--dim,#8a8a8a);font:400 15px/1 var(--font-ui,system-ui,sans-serif);cursor:pointer;opacity:0;transition:opacity .18s,color .18s,border-color .18s}
+#tour-caption:hover .cap-close-t,.cap-close-t:focus-visible{opacity:1;outline:none}
+.cap-close-t:hover{color:var(--text);border-color:var(--agx,#e6842e)}
+</style>
+<div id="tour-caption" hidden style="position:fixed;left:50%;bottom:5.2rem;transform:translateX(-50%);max-width:min(90vw,44rem);z-index:1000;padding:.55rem 1.1rem;border-radius:999px;background:var(--panel,#fff);border:1px solid var(--line,#d0d7de);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);box-shadow:0 8px 26px rgba(0,0,0,.16);font:400 15px/1.4 var(--font-ui,system-ui,sans-serif);color:var(--text,#1f2328);text-align:center;opacity:0;transition:opacity .28s"><span id="tour-caption-text" role="status" aria-live="polite"></span><button type="button" id="tour-caption-close" class="cap-close-t" aria-label="Close narration caption" title="Close">×</button></div>
 <script>
 (function(){var b=document.getElementById("tour-audio"),c=document.getElementById("tour-caption");if(!b||!c)return;
-var a=null,q=null,ci=-1,il=b.querySelector(".ic-listen"),ip=b.querySelector(".ic-pause");
+var a=null,q=null,ci=-1,sceneT=null,curScene=-1,capTimer=null,ct=document.getElementById("tour-caption-text")||c,cx=document.getElementById("tour-caption-close"),il=b.querySelector(".ic-listen"),ip=b.querySelector(".ic-pause");
 function st(p){il.style.display=p?"none":"";ip.style.display=p?"":"none";b.setAttribute("aria-label",p?"Pause audio narration":"Play audio narration");}
-function onT(){if(!q||!q.length)return;var t=a.currentTime,i=ci;while(i+1<q.length&&q[i+1].t<=t)i++;while(i>=0&&q[i].t>t)i--;
-if(i!==ci&&i>=0){ci=i;c.textContent=q[i].s;c.style.opacity="0";void c.offsetWidth;c.style.opacity="1";}}
+function armAuto(){clearTimeout(capTimer);capTimer=setTimeout(hideCap,60000);}          // auto-close ~1 min after narration stops updating
+function hideCap(){clearTimeout(capTimer);if(a&&!a.paused){a.pause();st(false);}c.hidden=true;ci=-1;}
+if(cx)cx.addEventListener("click",function(){hideCap();if(b)b.focus();});
+function norm(s){return (s||"").toLowerCase().replace(/[^a-z0-9 ]+/g," ").replace(/\s+/g," ").trim();}
+function buildSceneMap(){                                   // scene index -> its narration start time, by matching each scene heading to the cue that speaks it
+  var heads=[].slice.call(document.querySelectorAll(".scene")).map(function(sc){var h=sc.querySelector("h1,h2");return h?norm(h.textContent):"";});
+  sceneT=heads.map(function(h){if(!h)return null;for(var j=0;j<q.length;j++){var s=norm(q[j].s);if(s&&(s===h||s.indexOf(h)===0||h.indexOf(s)===0))return q[j].t;}return null;});
+}
+function onT(){if(!q||!q.length)return;var t=a.currentTime;
+  var i=ci;while(i+1<q.length&&q[i+1].t<=t)i++;while(i>=0&&q[i].t>t)i--;                                    // caption line
+  if(i!==ci&&i>=0){ci=i;ct.textContent=q[i].s;c.style.opacity="0";void c.offsetWidth;c.style.opacity="1";armAuto();}
+  if(sceneT){var sc=curScene;for(var k=0;k<sceneT.length;k++){if(sceneT[k]!=null&&sceneT[k]<=t+0.12)sc=k;}   // slide follows the narration
+    if(sc!==curScene&&sc>=0){curScene=sc;if(window.__agxTourGo)window.__agxTourGo(sc);}}}
 b.addEventListener("click",function(){if(!a){a=new Audio("audio/tour.mp3");a.addEventListener("timeupdate",onT);
 a.addEventListener("ended",function(){st(false);c.hidden=true;ci=-1;});
-fetch("audio/tour.cues.json").then(function(r){return r.json();}).then(function(x){q=x;}).catch(function(){q=[];});}
-if(a.paused){a.play();st(true);c.hidden=false;}else{a.pause();st(false);}});})();
+fetch("audio/tour.cues.json").then(function(r){return r.json();}).then(function(x){q=x;buildSceneMap();}).catch(function(){q=[];});}
+if(a.paused){if(window.__agxTourPause)window.__agxTourPause();curScene=-1;a.play();st(true);c.hidden=false;armAuto();}else{a.pause();st(false);}});})();
 </script>
 </body>
 </html>

@@ -61,7 +61,12 @@
   var audioBtn = document.getElementById("audio-toggle");
   var caption = document.getElementById("narration-caption");
   if (audioBtn && caption) {
-    var narr = null, cues = null, ci = -1;
+    var capText = document.getElementById("narration-caption-text") || caption;
+    var capClose = document.getElementById("narration-caption-close");
+    var narr = null, cues = null, ci = -1, capTimer = null;
+    function armAuto() { clearTimeout(capTimer); capTimer = setTimeout(hideCap, 60000); }  // auto-close ~1 min after narration stops updating
+    function hideCap() { clearTimeout(capTimer); if (narr && !narr.paused) { narr.pause(); setState(false); } caption.hidden = true; ci = -1; }
+    if (capClose) capClose.addEventListener("click", function () { hideCap(); if (audioBtn) audioBtn.focus(); });  // return focus on manual close (a11y)
     function setState(playing) {
       audioBtn.classList.toggle("playing", playing);
       audioBtn.setAttribute("aria-pressed", playing ? "true" : "false");
@@ -73,7 +78,7 @@
       while (i + 1 < cues.length && cues[i + 1].t <= t) i++;
       while (i >= 0 && cues[i].t > t) i--;
       if (i !== ci && i >= 0) {
-        ci = i; caption.textContent = cues[i].s;
+        ci = i; capText.textContent = cues[i].s; armAuto();
         caption.classList.remove("show"); void caption.offsetWidth; caption.classList.add("show");
       }
     }
@@ -85,7 +90,7 @@
         fetch(audioBtn.getAttribute("data-cues")).then(function (r) { return r.json(); })
           .then(function (c) { cues = c; }).catch(function () { cues = []; });
       }
-      if (narr.paused) { narr.play(); setState(true); caption.hidden = false; }
+      if (narr.paused) { narr.play(); setState(true); caption.hidden = false; armAuto(); }
       else { narr.pause(); setState(false); }
     });
   }
