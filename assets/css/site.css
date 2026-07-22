@@ -1130,7 +1130,7 @@ footer.site-footer {
    A full-width band between the hero and the article; the guided tour renders in a same-origin
    iframe, driven by the start/theme/pause handshake in site.js. */
 .tour-embed {
-  padding: clamp(1.5rem, 4vw, 3rem) 0;
+  padding: clamp(0.5rem, 1.5vw, 0.9rem) 0;
   min-height: calc(100vh - var(--nav-h));
   min-height: calc(100dvh - var(--nav-h));
   display: flex;
@@ -1148,21 +1148,21 @@ footer.site-footer {
 }
 .tour-embed-inner h2 {
   font-family: var(--sans);
-  font-size: clamp(1.5rem, 3.2vw, 2rem);
-  margin: 0 0 0.5rem;
+  font-size: clamp(1.25rem, 2.6vw, 1.6rem);
+  margin: 0 0 0.3rem;
 }
 .tour-embed-sub {
   max-width: 40rem;
-  margin: 0 auto 1.6rem;
+  margin: 0 auto 0.75rem;
   color: var(--muted);
-  font-size: 1rem;
+  font-size: 0.95rem;
 }
 .tour-stage {
   position: relative;
   margin: 0 auto;
   width: 100%;
-  height: clamp(380px, 62vh, 640px);      /* fallback for browsers without dvh */
-  height: clamp(380px, 62dvh, 640px);
+  height: min(652px, calc(100vh - var(--nav-h) - 5.5rem));   /* tall enough for the tour's natural 940x600; fallback for no dvh */
+  height: min(652px, calc(100dvh - var(--nav-h) - 5.5rem));
 }
 #tour-frame {
   position: absolute;
