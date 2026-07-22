@@ -319,6 +319,8 @@
         entries.forEach(function (en) { inView = en.isIntersecting; });
         syncPlayback();
       }).observe(tourFrame);
+    } else {
+      inView = true;  // no IntersectionObserver: can't track the viewport, so assume visible (never leave a started tour stuck paused)
     }
     document.addEventListener("visibilitychange", function () {
       pageVisible = (document.visibilityState === "visible"); syncPlayback();
