@@ -348,3 +348,65 @@
     });
   }
 })();
+
+/* Page-by-page snap release: hero + tour snap as full-screen pages (JS upgrades scroll-snap to mandatory;
+   CSS default is proximity so no-JS never traps). Release to none the instant the reader asks to leave the
+   tour downward (wheel/swipe/key in the parent OR relayed from the tour iframe via postMessage, or an
+   in-body anchor click); re-arm only after they've gone into the body AND scrolled back up (the leftTour
+   guard). Opening in the body (deep link / reload) starts RELEASED. A reduced-motion change drops to none. */
+(function () {
+  "use strict";
+  var root = document.documentElement;
+  if (!("scrollSnapType" in root.style)) return;
+  var mm = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)");
+  if (mm && mm.matches) return;                                       // initial reduced-motion: CSS handles it
+  var tour = document.getElementById("tour");
+  if (!tour) return;
+  var tourFrame = document.getElementById("tour-frame");
+  var snapped = false, leftTour = false, ticking = false, rm = false;
+  function release() { if (snapped) { root.style.scrollSnapType = "none"; snapped = false; leftTour = false; } }
+  function rearm() { if (!snapped && !rm) { root.style.scrollSnapType = "y mandatory"; snapped = true; leftTour = false; } }
+  function onTour() { var r = tour.getBoundingClientRect(); return r.top <= 80 && r.bottom > window.innerHeight * 0.5; }
+  function isControl(t) { if (!t || !t.tagName) return false; var g = t.tagName; return g === "INPUT" || g === "TEXTAREA" || g === "SELECT" || g === "BUTTON" || g === "A" || t.isContentEditable; }
+
+  var body = document.querySelector(".layout-product");
+  var hashEl = location.hash.length > 1 ? document.getElementById(location.hash.slice(1)) : null;
+  // Structural (layout-independent) check: a hash into the body, or an already-restored body scroll, starts RELEASED
+  // so mandatory can't snap the fragment scroll back to the tour. Otherwise upgrade to crisp mandatory.
+  if ((hashEl && body && body.contains(hashEl)) || window.pageYOffset > tour.offsetTop + tour.offsetHeight * 0.5) { leftTour = true; }
+  else { root.style.scrollSnapType = "y mandatory"; snapped = true; }
+
+  window.addEventListener("wheel", function (e) { if (snapped && e.deltaY > 0 && onTour()) release(); }, { passive: true });
+  var ty = null;
+  window.addEventListener("touchstart", function (e) { ty = e.touches[0].clientY; }, { passive: true });
+  window.addEventListener("touchmove", function (e) { if (snapped && ty !== null && (ty - e.touches[0].clientY) > 8 && onTour()) release(); }, { passive: true });
+  window.addEventListener("keydown", function (e) {
+    if (!snapped || !onTour() || isControl(e.target)) return;
+    if (e.key === "PageDown" || e.key === "ArrowDown" || e.key === "End" || e.key === " ") release();
+  }, { passive: true });
+  document.addEventListener("click", function (e) {
+    var a = e.target.closest && e.target.closest('a[href^="#"]');
+    if (!a) return;
+    var t = document.getElementById(a.getAttribute("href").slice(1));
+    if (t && t.getBoundingClientRect().top + window.pageYOffset > tour.offsetTop + tour.offsetHeight * 0.5) release();
+  }, true);
+  window.addEventListener("message", function (e) {                               // scroll relayed from the tour iframe (it eats the wheel; drive the parent)
+    if (!tourFrame || e.source !== tourFrame.contentWindow) return;
+    var d = e.data;
+    if (d && d.agx === "framescroll" && d.dir === "down") {
+      if (snapped && onTour()) release();
+      window.scrollBy(0, typeof d.dy === "number" ? d.dy : 60);
+    }
+  }, false);
+  window.addEventListener("scroll", function () {
+    if (ticking) return; ticking = true;
+    requestAnimationFrame(function () {
+      ticking = false;
+      var r = tour.getBoundingClientRect(), vh = window.innerHeight, deep = r.bottom < vh * 0.25;
+      if (snapped) { if (deep) { release(); leftTour = true; } return; }   // snapped but settled deep in the body (deep link/reload) -> release
+      if (deep) leftTour = true;
+      else if (leftTour && r.top <= 80 && r.bottom > vh * 0.6) rearm();
+    });
+  }, { passive: true });
+  if (mm && mm.addEventListener) mm.addEventListener("change", function (ev) { rm = ev.matches; if (rm) { root.style.scrollSnapType = "none"; snapped = false; } });
+})();

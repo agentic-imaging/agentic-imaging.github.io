@@ -1097,7 +1097,21 @@ footer.site-footer {
 /* hero: product framing (concise value prop + CTA row + honesty note) */
 /* the landing hero owns its own generous spacing (this wins over .hero): lots of air above the mark and
    a big open gap down to the content; clamp keeps it proportional on small screens. */
-.hero-product { padding: clamp(3.5rem, 6vw, 6.5rem) 1.25rem clamp(4rem, 9vw, 8rem); }
+:root { --nav-h: 3rem; }   /* sticky topbar height reserved for the full-viewport "pages" + anchor/snap clearance */
+html { scroll-snap-type: y proximity; }   /* page-by-page: hero + tour snap on a single scroll; the body scrolls freely */
+@media (prefers-reduced-motion: reduce) { html { scroll-snap-type: none; } }   /* a11y: no page-snapping for reduced-motion */
+.hero-product {
+  padding: clamp(2rem, 4vw, 3rem) 1.25rem;
+  min-height: calc(100vh - var(--nav-h));
+  min-height: calc(100dvh - var(--nav-h));
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  scroll-margin-top: var(--nav-h);
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+}
 .hero-product .tagline {
   font-family: var(--sans);
   font-style: normal;
@@ -1120,13 +1134,18 @@ footer.site-footer {
    A full-width band between the hero and the article; the guided tour renders in a same-origin
    iframe, driven by the start/theme/pause handshake in site.js. */
 .tour-embed {
-  padding: clamp(3rem, 6vw, 5.5rem) 0;
-  background: var(--bg-alt);
-  border-top: 1px solid var(--border);
-  border-bottom: 1px solid var(--border);
+  padding: clamp(1.5rem, 4vw, 3rem) 0;
+  min-height: calc(100vh - var(--nav-h));
+  min-height: calc(100dvh - var(--nav-h));
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
 }
-#tour { scroll-margin-top: 64px; }   /* clear the sticky top bar when navigated to */
+#tour { scroll-margin-top: var(--nav-h); }   /* clear the sticky top bar when navigated to */
 .tour-embed-inner {
+  width: 100%;
   max-width: 1060px;
   margin: 0 auto;
   padding: 0 1.25rem;
@@ -1146,8 +1165,9 @@ footer.site-footer {
 .tour-stage {
   position: relative;
   margin: 0 auto;
-  height: clamp(500px, 82vh, 760px);      /* fallback for browsers without dvh */
-  height: clamp(500px, 82dvh, 760px);
+  width: 100%;
+  height: clamp(380px, 62vh, 640px);      /* fallback for browsers without dvh */
+  height: clamp(380px, 62dvh, 640px);
 }
 #tour-frame {
   position: absolute;
@@ -1158,7 +1178,6 @@ footer.site-footer {
   border-radius: 16px;
   box-shadow: var(--shadow);
   background: var(--bg);
-  overscroll-behavior: contain;
   display: block;
 }
 /* Folded state: a play-poster overlays the (unloaded) frame until "Watch the tour" is clicked. */
@@ -1173,7 +1192,6 @@ footer.site-footer {
   width: 100%;
   height: 100%;
   padding: 1rem;
-  border: 1px solid var(--border);
   border-radius: 16px;
   background: radial-gradient(130% 100% at 50% 0%, var(--bg-alt), var(--bg));
   box-shadow: var(--shadow);
