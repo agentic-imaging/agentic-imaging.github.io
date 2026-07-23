@@ -108,43 +108,48 @@ a:focus-visible, input:focus-visible, button:focus-visible {
 
 /* ---------- top bar ---------- */
 .dochead {
-  /* full-width sticky bar: border + background span the whole viewport */
-  border-bottom: 1px solid var(--border); background: var(--bg);
-  position: sticky; top: 0; z-index: 10;
+  /* transparent: col 1 gets the sidebar tint, col 2 the content bg + border (JTD) */
+  background: none; position: sticky; top: 0; z-index: 10;
 }
 /* centered inner: same width + column grid as .layout so controls track the content column */
 .dochead-inner {
   max-width: var(--page-max); margin: 0 auto; padding-inline: 1.5rem;
   display: grid; grid-template-columns: var(--sidebar-w) minmax(0, var(--measure));
-  align-items: center; min-height: var(--head-h);
+  align-items: stretch; min-height: var(--head-h);
 }
 /* search + toggle live in grid column 2 (over the content column) */
 .dochead-controls {
-  display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+  display: flex; align-items: center; gap: 1rem;
+  background: var(--bg); border-bottom: 1px solid var(--border);
+  padding: 0 1.75rem;   /* align search + toggle with the content text box */
 }
 .brand {
-  display: inline-flex; align-items: center; gap: .4rem;
+  display: flex; align-items: center; gap: .5rem;
   font-family: var(--sans); font-weight: 700; font-size: 1.05rem;
   letter-spacing: -.01em; color: var(--text); text-decoration: none;
-  padding-left: .85rem;   /* align brand with the sidebar nav's left padding */
+  padding-left: 1.55rem;   /* align brand with the sidebar nav's text */
+  background: var(--sidebar-bg); border-right: 1px solid var(--border);
 }
 .brand-logo { width: 1.4em; height: 1.4em; display: block; flex: 0 0 auto; }
 .brand:hover { color: var(--accent); text-decoration: none; }
-.search { display: flex; align-items: center; }
+/* just-the-docs style: borderless field spanning the content column, magnifier at the split line */
+.search { display: flex; align-items: center; gap: .55rem; flex: 1 1 auto; min-width: 0; color: var(--muted); border-bottom: 2px solid transparent; }
+.search:focus-within { border-bottom-color: var(--accent); color: var(--text); }
+.search-icon { width: 1rem; height: 1rem; flex: 0 0 auto; color: var(--muted); }
 .search input {
-  font: inherit; font-family: var(--sans); font-size: .9rem;
-  padding: .4rem .7rem; width: 15rem; max-width: 42vw;
-  border: 1px solid var(--muted); border-radius: 8px;
-  background: var(--bg-alt); color: var(--text);
+  font: inherit; font-family: var(--sans); font-size: .95rem;
+  flex: 1 1 auto; width: 100%; min-width: 0; padding: .55rem 0;
+  border: none; background: none; color: var(--text);
 }
 .search input::placeholder { color: var(--muted); }
+.search input:focus-visible { outline: none; }
 
 /* theme toggle button (markup + icon-swap mirror public/agx-site) */
 .icon-btn {
-  background: none; border: 1px solid var(--border); border-radius: 6px;
-  color: var(--muted); padding: .35rem .5rem; cursor: pointer; line-height: 0;
+  background: none; border: none; border-radius: 6px;
+  color: var(--muted); padding: .4rem; cursor: pointer; line-height: 0; flex: 0 0 auto;
 }
-.icon-btn:hover { color: var(--accent); border-color: var(--accent); }
+.icon-btn:hover { color: var(--accent); background: var(--hover-bg); }
 #theme-toggle .icon-moon { display: none; }
 :root[data-theme="dark"] #theme-toggle .icon-sun { display: none; }
 :root[data-theme="dark"] #theme-toggle .icon-moon { display: inline; }
@@ -164,6 +169,7 @@ a:focus-visible, input:focus-visible, button:focus-visible {
 /* ---------- sidebar (just-the-docs navigation panel) ---------- */
 .sidebar {
   font-family: var(--sans);
+  display: flex; flex-direction: column;
   background: var(--sidebar-bg);
   border-right: 1px solid var(--border);
   padding: 1.25rem .85rem 2.5rem;
@@ -200,10 +206,16 @@ a:focus-visible, input:focus-visible, button:focus-visible {
 }
 .results a:hover { background: var(--hover-bg); text-decoration: none; }
 
+.sidebar-footer {
+  margin-top: auto; padding: 1rem .7rem .9rem;
+  font-size: .75rem; line-height: 1.4; color: var(--muted);
+  border-top: 1px solid var(--border);
+}
+
 /* ---------- content column ---------- */
 .content {
   max-width: 100%;   /* the --measure grid column already bounds the content */
-  padding: 2.25rem 2.75rem 5rem;
+  padding: 2.25rem 1.75rem 5rem;
   min-width: 0;
 }
 .content h1, .content h2, .content h3, .content h4, .content h5, .content h6 {
@@ -227,6 +239,17 @@ a:focus-visible, input:focus-visible, button:focus-visible {
   border-left: 3px solid var(--accent); background: var(--bg-alt); border-radius: 0 6px 6px 0;
 }
 .content img { max-width: 100%; height: auto; }
+
+/* just-the-docs style page footer: back-to-top + copyright + accessibility */
+.content-footer {
+  margin-top: 3.5rem; padding: 1.5rem 0 2rem;
+  border-top: 1px solid var(--border);
+  display: flex; flex-wrap: wrap; align-items: baseline; gap: .35rem 1.1rem;
+  font-size: .85rem; color: var(--muted);
+}
+.content-footer .to-top { margin-right: auto; }
+.content-footer a { color: var(--accent); }
+.content-footer a:hover { color: var(--accent-hover); }
 
 /* code: subtle tinted background + Fira Code */
 .content code {
@@ -254,8 +277,8 @@ a:focus-visible, input:focus-visible, button:focus-visible {
 @media (max-width: 46.25rem) {
   /* header collapses to a single column: brand over a flexible controls row */
   .dochead-inner { grid-template-columns: 1fr; row-gap: .6rem; min-height: 0; padding: .6rem 1rem; }
-  .brand { padding-left: 0; }
-  .dochead-controls { gap: .75rem; }
+  .brand { padding-left: 0; background: none; border-right: none; }
+  .dochead-controls { gap: .75rem; background: none; border-bottom: none; padding: 0; }
   .search { flex: 1 1 auto; }
   .search input { width: 100%; max-width: none; }
   .layout { grid-template-columns: 1fr; padding-inline: 1rem; }
