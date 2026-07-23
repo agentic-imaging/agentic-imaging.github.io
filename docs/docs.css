@@ -29,6 +29,7 @@
   --measure: 48rem;        /* content column max width */
   --sidebar-w: 16.5rem;    /* ~264px left sidebar */
   --head-h: 3.5rem;        /* sticky top-bar height */
+  --page-max: calc(var(--sidebar-w) + var(--measure) + 3rem);  /* content 64.5rem + 1.5rem screen-edge gutters */
   color-scheme: light;
 }
 
@@ -107,16 +108,25 @@ a:focus-visible, input:focus-visible, button:focus-visible {
 
 /* ---------- top bar ---------- */
 .dochead {
-  display: flex; align-items: center; gap: 1rem;
-  padding: 0 1.25rem; min-height: var(--head-h);
+  /* full-width sticky bar: border + background span the whole viewport */
   border-bottom: 1px solid var(--border); background: var(--bg);
   position: sticky; top: 0; z-index: 10;
+}
+/* centered inner: same width + column grid as .layout so controls track the content column */
+.dochead-inner {
+  max-width: var(--page-max); margin: 0 auto; padding-inline: 1.5rem;
+  display: grid; grid-template-columns: var(--sidebar-w) minmax(0, var(--measure));
+  align-items: center; min-height: var(--head-h);
+}
+/* search + toggle live in grid column 2 (over the content column) */
+.dochead-controls {
+  display: flex; align-items: center; justify-content: space-between; gap: 1rem;
 }
 .brand {
   display: inline-flex; align-items: center; gap: .4rem;
   font-family: var(--sans); font-weight: 700; font-size: 1.05rem;
   letter-spacing: -.01em; color: var(--text); text-decoration: none;
-  margin-right: auto;   /* pushes search + toggle to the right */
+  padding-left: .85rem;   /* align brand with the sidebar nav's left padding */
 }
 .brand-logo { width: 1.4em; height: 1.4em; display: block; flex: 0 0 auto; }
 .brand:hover { color: var(--accent); text-decoration: none; }
@@ -146,8 +156,9 @@ a:focus-visible, input:focus-visible, button:focus-visible {
 /* ---------- layout: fixed left sidebar + content column ---------- */
 .layout {
   display: grid;
-  grid-template-columns: var(--sidebar-w) minmax(0, 1fr);
+  grid-template-columns: var(--sidebar-w) minmax(0, var(--measure));
   align-items: start;
+  max-width: var(--page-max); margin: 0 auto; padding-inline: 1.5rem;   /* center + screen-edge gutter */
 }
 
 /* ---------- sidebar (just-the-docs navigation panel) ---------- */
@@ -156,8 +167,8 @@ a:focus-visible, input:focus-visible, button:focus-visible {
   background: var(--sidebar-bg);
   border-right: 1px solid var(--border);
   padding: 1.25rem .85rem 2.5rem;
-  position: sticky; top: var(--head-h);
-  height: calc(100vh - var(--head-h));
+  position: sticky; top: calc(var(--head-h) + 1px);
+  height: calc(100vh - var(--head-h) - 1px);
   overflow-y: auto;
 }
 .sidebar ul { list-style: none; margin: 0; padding: 0; }
@@ -191,7 +202,7 @@ a:focus-visible, input:focus-visible, button:focus-visible {
 
 /* ---------- content column ---------- */
 .content {
-  max-width: var(--measure);
+  max-width: 100%;   /* the --measure grid column already bounds the content */
   padding: 2.25rem 2.75rem 5rem;
   min-width: 0;
 }
@@ -219,7 +230,7 @@ a:focus-visible, input:focus-visible, button:focus-visible {
 
 /* code: subtle tinted background + Fira Code */
 .content code {
-  font-family: var(--mono); font-size: .88em;
+  font-family: var(--mono); font-size: .88em; overflow-wrap: anywhere;
   background: var(--code-bg); color: var(--text);
   padding: .12em .4em; border-radius: 5px;
 }
@@ -241,10 +252,13 @@ a:focus-visible, input:focus-visible, button:focus-visible {
 
 /* ---------- responsive: sidebar collapses under ~740px ---------- */
 @media (max-width: 46.25rem) {
-  .dochead { flex-wrap: wrap; padding: .6rem 1rem; min-height: 0; row-gap: .6rem; }
-  .search { order: 3; flex-basis: 100%; }
+  /* header collapses to a single column: brand over a flexible controls row */
+  .dochead-inner { grid-template-columns: 1fr; row-gap: .6rem; min-height: 0; padding: .6rem 1rem; }
+  .brand { padding-left: 0; }
+  .dochead-controls { gap: .75rem; }
+  .search { flex: 1 1 auto; }
   .search input { width: 100%; max-width: none; }
-  .layout { grid-template-columns: 1fr; }
+  .layout { grid-template-columns: 1fr; padding-inline: 1rem; }
   .sidebar {
     position: static; height: auto; overflow: visible;
     border-right: none; border-bottom: 1px solid var(--border);
