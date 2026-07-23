@@ -93,6 +93,8 @@ a claim is approved, docs and site show visible placeholders (<code>XX.X</code>)
   applyTheme(storedTheme());
   var themeBtn=document.getElementById("theme-toggle");
   if(themeBtn){
+    var sysDark0=window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches;
+    themeBtn.setAttribute("aria-pressed", (root.getAttribute("data-theme")||(sysDark0?"dark":"light"))==="dark"?"true":"false");
     themeBtn.addEventListener("click", function(){
       var systemDark=window.matchMedia("(prefers-color-scheme: dark)").matches;
       var current=root.getAttribute("data-theme")||(systemDark?"dark":"light");
