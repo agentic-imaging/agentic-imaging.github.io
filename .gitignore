@@ -1,0 +1,4 @@
+
+# The technical-report PDF is a build artifact, but it MUST ship in the deployed site
+# bundle (github.io/agx-imaging.pdf, the Report tab). Track this one despite the global *.pdf ignore.
+!agx-imaging.pdf

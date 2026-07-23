@@ -33,7 +33,7 @@
   /* warm ambient glow derived from the icon's aperture accent (~#e2822e), translucent glass top bar,
      and the iOS-style app-icon tile surface — all theme-aware. */
   --glow: rgba(230, 132, 46, 0.11);
-  --topbar-bg: rgba(255, 255, 255, 0.72);
+  --topbar-bg: rgba(255, 255, 255, 0.5);
   --icon-box-bg: linear-gradient(150deg, #ffffff, #fbf2e7);
   --icon-box-shadow: 0 10px 30px rgba(120, 66, 18, 0.16), 0 2px 6px rgba(0, 0, 0, 0.06);
   --icon-box-border: rgba(0, 0, 0, 0.06);
@@ -57,7 +57,7 @@
   --chip-bg: #202531;
   --shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
   --glow: rgba(236, 154, 78, 0.09);
-  --topbar-bg: rgba(15, 17, 21, 0.64);
+  --topbar-bg: rgba(15, 17, 21, 0.42);
   /* the app-icon tile keeps its light/cream face in dark mode (like a real home-screen icon); only the
      shadow deepens for the dark page. */
   --icon-box-bg: linear-gradient(150deg, #ffffff, #fbf2e7);
@@ -82,7 +82,7 @@
     --chip-bg: #202531;
     --shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
     --glow: rgba(236, 154, 78, 0.09);
-    --topbar-bg: rgba(15, 17, 21, 0.64);
+    --topbar-bg: rgba(15, 17, 21, 0.42);
     --icon-box-bg: linear-gradient(150deg, #ffffff, #fbf2e7);
     --icon-box-shadow: 0 12px 32px rgba(0, 0, 0, 0.5), 0 2px 6px rgba(0, 0, 0, 0.35);
     --icon-box-border: rgba(0, 0, 0, 0.06);
@@ -221,6 +221,48 @@ a:hover { color: var(--accent-hover); }
 }
 .brand:hover { color: var(--accent); }
 .topnav { display: flex; gap: 0.9rem; margin-left: auto; flex-wrap: wrap; }
+
+/* ===== front-page scroll-dock: the top bar assembles itself from the hero =====
+   Home page, desktop, motion-ok, scroll-timeline-capable browsers only. The bar's
+   own .brand + .topnav start big and centred (reading as the hero) and settle into
+   the bar over the first ~62vh of scroll. Pure scroll-driven -> reversible + smooth
+   (compositor transform/opacity). Fallback = the bar + hero are their static selves. */
+@supports (animation-timeline: scroll()) {
+  @media (min-width: 64rem) and (prefers-reduced-motion: no-preference) {
+    body.home {
+      --dock-end: 62vh;
+      --dock-brand-x: 31.5rem; --dock-brand-y: 30vh; --dock-brand-scale: 2.8;
+      --dock-nav-x: -23rem; --dock-nav-y: 68vh; --dock-nav-scale: 1.55;
+    }
+    body.home .hero-product .hero-mark,
+    body.home .hero-product > h1,
+    body.home .hero-product .hero-links { visibility: hidden; }
+    body.home .hero-product .subtitle,
+    body.home .hero-product .tagline {
+      animation-name: dock-fade; animation-timing-function: linear; animation-fill-mode: both;
+      animation-timeline: scroll(root); animation-range: 0 var(--dock-end);
+    }
+    body.home .brand {
+      transform-origin: center center; will-change: transform;
+      animation-name: dock-brand; animation-timing-function: linear; animation-fill-mode: both;
+      animation-timeline: scroll(root); animation-range: 0 var(--dock-end);
+    }
+    body.home .topnav {
+      transform-origin: center center; will-change: transform;
+      animation-name: dock-nav; animation-timing-function: linear; animation-fill-mode: both;
+      animation-timeline: scroll(root); animation-range: 0 var(--dock-end);
+    }
+    @keyframes dock-brand {
+      from { transform: translate(var(--dock-brand-x), var(--dock-brand-y)) scale(var(--dock-brand-scale)); }
+      to { transform: none; }
+    }
+    @keyframes dock-nav {
+      from { transform: translate(var(--dock-nav-x), var(--dock-nav-y)) scale(var(--dock-nav-scale)); }
+      to { transform: none; }
+    }
+    @keyframes dock-fade { from { opacity: 1; } 55% { opacity: 1; } to { opacity: 0; } }
+  }
+}
 .topnav a {
   color: var(--muted);
   text-decoration: none;
