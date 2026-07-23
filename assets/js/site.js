@@ -347,6 +347,36 @@
   }
 })();
 
+/* ---------- front page: auto-hide the top-bar controls (audio + theme) ----------
+   Hover/pointer devices, motion-ok, home page only. The two toggles fade out to keep the hero
+   clean and reveal on interaction (pointer near the top bar, click, keyboard focus, scroll),
+   fading after ~2.5s idle. Keyboard focus reveals + holds. Touch / reduced-motion / no-JS keep
+   the controls visible (see CSS + <noscript>). */
+(function () {
+  "use strict";
+  if (!document.body.classList.contains("home")) return;
+  if (!(window.matchMedia && window.matchMedia("(hover: hover) and (pointer: fine)").matches)) return;
+  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  var controls = [document.getElementById("audio-toggle"), document.getElementById("theme-toggle")].filter(Boolean);
+  if (!controls.length) return;
+  var body = document.body, TOP = 130, IDLE = 2500, hideTimer = null, nearTop = false;
+  function focused() { return controls.indexOf(document.activeElement) >= 0; }
+  function scheduleHide() { clearTimeout(hideTimer); hideTimer = setTimeout(maybeHide, IDLE); }
+  function reveal() { body.classList.add("chrome-active"); scheduleHide(); }
+  function maybeHide() { if (focused() || nearTop) { scheduleHide(); return; } body.classList.remove("chrome-active"); }
+  window.addEventListener("pointermove", function (e) {
+    if (e.pointerType === "touch") return;
+    nearTop = e.clientY <= TOP;
+    if (nearTop) reveal();
+  }, { passive: true });
+  window.addEventListener("scroll", reveal, { passive: true });
+  document.addEventListener("click", reveal);
+  controls.forEach(function (c) {
+    c.addEventListener("focus", reveal);
+    c.addEventListener("blur", scheduleHide);
+  });
+})();
+
 /* Page-by-page: the hero and the tour are full-screen pages. ONE wheel/swipe/key does ONE DISCRETE page
    transition (the deck never scrolls continuously); the body below scrolls normally. Scrolling over the
    revealed tour iframe is relayed via postMessage. Progressive enhancement: no-JS + reduced-motion get

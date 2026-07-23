@@ -249,16 +249,34 @@ a:hover { color: var(--accent-hover); }
       animation-timeline: scroll(root); animation-range: 0 var(--dock-end);
     }
     @keyframes dock-brand {
-      from { opacity: 0; transform: translate(var(--dock-brand-x), var(--dock-brand-y)) scale(var(--dock-brand-scale)); }
-      45% { opacity: 0; }
-      to { opacity: 1; transform: none; }
+      from { opacity: 0; visibility: hidden; transform: translate(var(--dock-brand-x), var(--dock-brand-y)) scale(var(--dock-brand-scale)); }
+      45% { opacity: 0; visibility: hidden; }
+      45.01% { visibility: visible; }
+      to { opacity: 1; visibility: visible; transform: none; }
     }
     @keyframes dock-nav {
-      from { opacity: 0; transform: translate(var(--dock-nav-x), var(--dock-nav-y)) scale(var(--dock-nav-scale)); }
-      45% { opacity: 0; }
-      to { opacity: 1; transform: none; }
+      from { opacity: 0; visibility: hidden; transform: translate(var(--dock-nav-x), var(--dock-nav-y)) scale(var(--dock-nav-scale)); }
+      45% { opacity: 0; visibility: hidden; }
+      45.01% { visibility: visible; }
+      to { opacity: 1; visibility: visible; transform: none; }
     }
   }
+}
+
+/* ===== front page: auto-hide the top-bar controls (audio + theme) =====
+   Hover/pointer devices + motion-ok only. On home the two toggles fade out to keep the
+   hero clean; JS adds .chrome-active on interaction (pointer near the top, click, keyboard
+   focus, scroll) to reveal them, removing it after ~2.5s idle. Touch, reduced-motion, and
+   no-JS (see <noscript>) keep the controls visible. Keyboard focus always reveals. */
+@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  body.home #audio-toggle, body.home #theme-toggle { opacity: 0; transition: opacity 0.35s ease; }
+  body.home.chrome-active #audio-toggle, body.home.chrome-active #theme-toggle { opacity: 1; }
+  body.home #audio-toggle:focus-visible, body.home #theme-toggle:focus-visible { opacity: 1; }
+}
+
+/* mobile: the hero already shows the brand, so drop the duplicate top-bar brand on home */
+@media (max-width: 63.99rem) {
+  body.home .topbar .brand { display: none; }
 }
 .topnav a {
   color: var(--muted);
@@ -1141,12 +1159,14 @@ footer.site-footer {
    a big open gap down to the content; clamp keeps it proportional on small screens. */
 :root { --nav-h: 3rem; }   /* sticky topbar height reserved for the full-viewport "pages" + anchor/snap clearance */
 .hero-product {
-  padding: clamp(2rem, 4vw, 3rem) 1.25rem;
+  /* top-anchored (was centred) with a modest offset so the hero sits high on the page — the
+     top bar auto-hides, so dead-centre left too much blank up top. Silhouette + rhythm unchanged. */
+  padding: clamp(2rem, 6vh, 5rem) 1.25rem clamp(2rem, 4vw, 3rem);
   min-height: calc(100vh - var(--nav-h));
   min-height: calc(100dvh - var(--nav-h));
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
   scroll-margin-top: var(--nav-h);
 }
