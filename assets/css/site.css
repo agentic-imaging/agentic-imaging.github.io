@@ -307,7 +307,9 @@ a:hover { color: var(--accent-hover); }
   font-family: var(--sans);
 }
 .btn {
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5em;
   border: 1px solid var(--border);
   border-radius: 999px;
   padding: 0.42rem 1.05rem;
@@ -317,6 +319,7 @@ a:hover { color: var(--accent-hover); }
   background: var(--bg);
 }
 .btn:hover { border-color: var(--accent); color: var(--accent); }
+.btn-icon { width: 1.1em; height: 1.1em; flex: 0 0 auto; }
 .btn[aria-disabled="true"] {
   color: var(--muted);
   cursor: not-allowed;
