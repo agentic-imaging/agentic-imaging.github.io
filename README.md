@@ -1,4 +1,4 @@
-# AgX public site (`instances/agx_public_release/public/agx-site/`)
+# AgX public site (`public/agx-site/`)
 
 Self-contained static website for the AgX public release. No build step, no dependencies,
 no external requests: plain HTML + CSS + vanilla JS with system fonts only.
@@ -6,7 +6,7 @@ no external requests: plain HTML + CSS + vanilla JS with system fonts only.
 ## Preview locally
 
 ```bash
-cd instances/agx_public_release/public/agx-site
+cd public/agx-site
 python3 -m http.server 8080
 # open http://localhost:8080/
 ```
@@ -44,7 +44,7 @@ release owner approves:
 
 1. Push this directory's contents to the branch GitHub Pages serves, e.g. keep the repo's
    Pages configuration pointed at a `gh-pages` branch (or `docs/` folder) and copy
-   `instances/agx_public_release/public/agx-site/` there, preserving `.nojekyll`.
+   `public/agx-site/` there, preserving `.nojekyll`.
 2. In the repository settings, enable **Pages → Deploy from branch**, select the branch/folder.
 3. Verify the served site: every route loads, the browser network tab shows **zero external
    requests**, and `404.html` handles bad URLs.
