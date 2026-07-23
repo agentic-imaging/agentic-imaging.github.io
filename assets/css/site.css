@@ -222,45 +222,42 @@ a:hover { color: var(--accent-hover); }
 .brand:hover { color: var(--accent); }
 .topnav { display: flex; gap: 0.9rem; margin-left: auto; flex-wrap: wrap; }
 
-/* ===== front-page scroll-dock: the top bar assembles itself from the hero =====
-   Home page, desktop, motion-ok, scroll-timeline-capable browsers only. The bar's
-   own .brand + .topnav start big and centred (reading as the hero) and settle into
-   the bar over the first ~62vh of scroll. Pure scroll-driven -> reversible + smooth
-   (compositor transform/opacity). Fallback = the bar + hero are their static selves. */
+/* ===== front-page top-bar dock: the bar assembles itself as you scroll =====
+   Home page, desktop, motion-ok, scroll-timeline-capable browsers only. The FRONT PAGE
+   / HERO IS UNCHANGED. Only the top bar animates: its own .brand + .topnav are hidden
+   at the top (the hero already shows the icon/text/tabs) and fade + slide in from the
+   hero direction, settling into place over the first ~60vh of scroll — a loose
+   correspondence to the hero, not an exact map. Delayed fade so they appear as the hero
+   scrolls out (no double). Pure scroll-driven -> reversible + smooth (compositor
+   transform/opacity). Fallback (no scroll-timeline / reduced-motion / <64rem) = the bar
+   is its normal static self. */
 @supports (animation-timeline: scroll()) {
   @media (min-width: 64rem) and (prefers-reduced-motion: no-preference) {
     body.home {
-      --dock-end: 62vh;
-      --dock-brand-x: 31.5rem; --dock-brand-y: 30vh; --dock-brand-scale: 2.8;
-      --dock-nav-x: -23rem; --dock-nav-y: 68vh; --dock-nav-scale: 1.55;
-    }
-    body.home .hero-product .hero-mark,
-    body.home .hero-product > h1,
-    body.home .hero-product .hero-links { visibility: hidden; }
-    body.home .hero-product .subtitle,
-    body.home .hero-product .tagline {
-      animation-name: dock-fade; animation-timing-function: linear; animation-fill-mode: both;
-      animation-timeline: scroll(root); animation-range: 0 var(--dock-end);
+      --dock-end: 60vh;
+      --dock-brand-x: 14rem; --dock-brand-y: 15vh; --dock-brand-scale: 1.6;
+      --dock-nav-x: -10rem; --dock-nav-y: 22vh; --dock-nav-scale: 1.3;
     }
     body.home .brand {
-      transform-origin: center center; will-change: transform;
+      transform-origin: center center; will-change: transform, opacity;
       animation-name: dock-brand; animation-timing-function: linear; animation-fill-mode: both;
       animation-timeline: scroll(root); animation-range: 0 var(--dock-end);
     }
     body.home .topnav {
-      transform-origin: center center; will-change: transform;
+      transform-origin: center center; will-change: transform, opacity;
       animation-name: dock-nav; animation-timing-function: linear; animation-fill-mode: both;
       animation-timeline: scroll(root); animation-range: 0 var(--dock-end);
     }
     @keyframes dock-brand {
-      from { transform: translate(var(--dock-brand-x), var(--dock-brand-y)) scale(var(--dock-brand-scale)); }
-      to { transform: none; }
+      from { opacity: 0; transform: translate(var(--dock-brand-x), var(--dock-brand-y)) scale(var(--dock-brand-scale)); }
+      45% { opacity: 0; }
+      to { opacity: 1; transform: none; }
     }
     @keyframes dock-nav {
-      from { transform: translate(var(--dock-nav-x), var(--dock-nav-y)) scale(var(--dock-nav-scale)); }
-      to { transform: none; }
+      from { opacity: 0; transform: translate(var(--dock-nav-x), var(--dock-nav-y)) scale(var(--dock-nav-scale)); }
+      45% { opacity: 0; }
+      to { opacity: 1; transform: none; }
     }
-    @keyframes dock-fade { from { opacity: 1; } 55% { opacity: 1; } to { opacity: 0; } }
   }
 }
 .topnav a {
