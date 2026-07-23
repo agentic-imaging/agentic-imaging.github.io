@@ -1161,7 +1161,7 @@ footer.site-footer {
 .hero-product {
   /* upward-biased centre: midway between dead-centre (too much top blank now the bar auto-hides)
      and top-anchored (too high). A larger bottom pad shifts the centred block up. Silhouette unchanged. */
-  padding: clamp(2rem, 4vw, 3rem) 1.25rem clamp(8rem, 20vh, 13rem);
+  padding: clamp(2rem, 4vw, 3rem) 1.25rem clamp(9rem, 25vh, 16rem);
   min-height: calc(100vh - var(--nav-h));
   min-height: calc(100dvh - var(--nav-h));
   display: flex;
